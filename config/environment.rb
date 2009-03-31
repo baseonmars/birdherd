@@ -16,6 +16,8 @@ Rails::Initializer.run do |config|
 
   # Specify gems that this application depends on and have them installed with rake gems:install
   config.gem "authlogic", :version => '>2.0.4'
+  config.gem "thoughtbot-shoulda", :lib => "shoulda", :source => "http://gems.github.com", :version => '>2.9.1'
+	config.gem "thoughtbot-factory_girl", :lib => "factory_girl", :source => "http://gems.github.com"
 
   # Only load the plugins named here, in the order given (default is alphabetical).
   # :all can be used as a placeholder for all plugins not explicitly named
