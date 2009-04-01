@@ -1,0 +1,6 @@
+<h1><%= h @twitter_user.screen_name %></h1>
+<ul>
+	<% @statuses.each do |status| %>
+	<li><strong><%= status.poster.screen_name %></strong> <%= status.text %></li>
+	<% end -%>
+</ul>

@@ -1,0 +1,8 @@
+<%= h @account.screen_name %>
+<ul>
+<% @account.statuses.each do |status| -%>
+	<li><%= h status.text %></li>
+<% end -%>
+</ul>
+
+<%= link_to 'Show statuses', twitter_user_twitter_statuses_path(@account) %>

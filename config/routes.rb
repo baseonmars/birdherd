@@ -5,6 +5,9 @@ ActionController::Routing::Routes.draw do |map|
   map.resource :user do |user|
     user.resources :twitter_users, :as => 'accounts'
   end
+  map.resources :twitter_users do |twitter_user|
+    twitter_user.resources :twitter_statuses, :as => 'statuses'
+  end
   map.resource :user_session
   map.connect 'logout' , :controller => 'user_sessions', :action => 'destroy' 
   map.root :controller => "user_sessions", :action => "new"

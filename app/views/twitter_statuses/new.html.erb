@@ -1,0 +1,5 @@
+post a status
+<% form_for [@twitter_user, @status] do |f| -%>
+  <%= f.text_area :text, :cols => 72, :rows => 3 %>
+<p><%= f.submit "Submit", :disable_with => 'Submiting...' %></p>
+<% end -%>

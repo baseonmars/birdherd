@@ -1,0 +1,5 @@
+<% form_for [@user, @account], :url =>  user_twitter_users_path  do |f| -%>
+	<p><%= f.label :screen_name, "Screen Name" %> <%= f.text_field :screen_name %></p>
+	<p><%= f.label :password, "Password" %><%= f.text_field :password %></p>
+	<%= f.submit "Submit", :disable_with => 'Submiting...' %>
+<% end -%>

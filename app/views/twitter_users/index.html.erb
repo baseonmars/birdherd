@@ -1,0 +1,8 @@
+<p>Hi <%= h @user.login %></p>
+
+<p>You've got <%= @accounts.count %> accounts</p>
+<ul>
+	<% @accounts.each do |account| %>
+		<li><%= link_to "@#{account.screen_name}", user_twitter_user_path(account) %></li>
+		<% end %>
+</ul>
