@@ -3,9 +3,6 @@ require 'test_helper'
 class UsersControllerTest < ActionController::TestCase
 
   context "when not logged in" do
-    setup do
-
-    end
 
     should "require login to view dashboard" do
       get :show
@@ -17,7 +14,7 @@ class UsersControllerTest < ActionController::TestCase
       assert_redirected_to new_user_session_path
     end
 
-    should  "require login to update" do
+    should "require login to update" do
       get :update
       assert_redirected_to new_user_session_path
     end
@@ -46,6 +43,22 @@ class UsersControllerTest < ActionController::TestCase
       assert_not_nil assigns('user')
       assert_equal assigns('user'), @user
     end
+    
+    should "be able to edit their account" do
+      get :edit
+      assert_response :success
+      assert_template 'edit'
+      assert_not_nil assigns('user')
+      assert_equal assigns('user'), @user
+    end
+    
+    should "be able to update their account" do
+        get :update, :user => {:login => 'jimbob'}
+        assert_response :redirect
+        assert_template :show
+        assert_equal assigns('user').login, 'jimbob'
+    end
+    
   end
 
 end
