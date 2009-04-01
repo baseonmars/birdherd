@@ -1,0 +1,6 @@
+<h1>Reply</h1>
+<p><strong>@<%= h @status.poster.screen_name %></strong> <%= h @status.text%></p>
+<% form_for [@twitter_user,@reply] do |f| -%>
+	<%= f.text_area :text, :cols => 72, :rows => 3 %>
+	<%= f.submit "Submit", :disable_with => 'Submiting...' %>
+<% end -%>

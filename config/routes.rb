@@ -6,7 +6,12 @@ ActionController::Routing::Routes.draw do |map|
     user.resources :twitter_users, :as => 'accounts'
   end
   map.resources :twitter_users do |twitter_user|
-    twitter_user.resources :twitter_statuses, :as => 'statuses'
+    twitter_user.resources :twitter_statuses, :as => 'statuses' do |status|
+      status.reply 'reply', :controller => 'twitter_statuses', :action => 'reply'
+    end
+  end
+  map.resources :twitter_statuses,:as => 'statuses' do |status|
+
   end
   map.resource :user_session
   map.connect 'logout' , :controller => 'user_sessions', :action => 'destroy' 
@@ -27,7 +32,7 @@ ActionController::Routing::Routes.draw do |map|
 
   # Sample resource route with sub-resources:
   #   map.resources :products, :has_many => [ :comments, :sales ], :has_one => :seller
-  
+
   # Sample resource route with more complex sub-resources
   #   map.resources :products do |products|
   #     products.resources :comments

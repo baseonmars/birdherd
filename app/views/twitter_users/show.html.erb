@@ -1,7 +1,7 @@
 <%= h @account.screen_name %>
 <ul>
 <% @account.statuses.each do |status| -%>
-	<li><%= h status.text %></li>
+	<li><%= h status.text %>			<%= link_to 'reply', twitter_user_twitter_status_reply_path(@account,status) %></li>
 <% end -%>
 </ul>
 
