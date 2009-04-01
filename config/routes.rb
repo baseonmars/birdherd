@@ -11,7 +11,6 @@ ActionController::Routing::Routes.draw do |map|
     end
   end
   map.resources :twitter_statuses,:as => 'statuses' do |status|
-
   end
   map.resource :user_session
   map.connect 'logout' , :controller => 'user_sessions', :action => 'destroy' 
