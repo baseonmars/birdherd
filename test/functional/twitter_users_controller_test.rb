@@ -40,12 +40,18 @@ class TwitterUsersControllerTest < ActionController::TestCase
       get :show, :id => @account.id
       assert_not_nil assigns('account')
       assert_not_nil assigns('timeline')
-      assert_kind_of Twitter::Status, assigns('timeline').first
+      assert_kind_of TwitterStatus, assigns('timeline').first
+      assert_kind_of TwitterStatus, assigns('replies').first
     end
     
     should "fill a twitter user with the statuses it recieves" do
       get :show, :id => @account.id
       assert assigns('timeline').length, TwitterStatus.count
+    end
+    
+    should "set the poster on statuses it recieves" do
+      get :show, :id => @account.id
+      assert !assigns('timeline').first.poster.nil?
     end
   end
 
@@ -61,7 +67,7 @@ class TwitterUsersControllerTest < ActionController::TestCase
       post :create, :twitter_user => Factory.attributes_for(:twitter_user)
       assert_redirected_to user_twitter_user_path(TwitterUser.find(1))
       assert_not_nil assigns('account')
-      assert assigns(:account).owned_by? @user
+      assert assigns(:account).owned_by?(@user)
     end
   end
   

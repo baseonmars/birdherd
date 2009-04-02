@@ -10,7 +10,17 @@ class ApplicationController < ActionController::Base
   # Scrub sensitive parameters from your log
   filter_parameter_logging :password
   helper_method :current_user_session, :current_user, :get_twitter
-
+  
+  @update_twitter_user_and_status = lambda { |api_status|
+    status = TwitterStatus.find_or_create_by_id(api_status.id)
+    status.update_from_twitter(api_status)
+    poster = TwitterUser.find_or_create_by_id(api_status.user.id)
+    poster.update_from_twitter(api_status.user).save
+    status.poster = poster
+    status.save
+    status
+  }
+  
   private
     def current_user_session
       return @current_user_session if defined?(@current_user_session)
@@ -48,14 +58,15 @@ class ApplicationController < ActionController::Base
       redirect_to(session[:return_to] || default)
       session[:return_to] = nil
     end
-    
-    def get_timeline(account)
-      twitter = Twitter::Base.new(account.screen_name, account.password)
-      twitter.timeline(:friends).map do |api_status|
-        status = TwitterStatus.find_or_create_by_id(api_status.id)
-        status.update_from_twitter(api_status).save
-        api_status
-      end
-    end
 
+    def get_timeline(account, type=:friends)
+      twitter = Twitter::Base.new(account.screen_name, account.password)
+      timeline = twitter.timeline(type).map &@update_twitter_user_and_status
+      timeline
+    end
+    
+    def get_replies(account)
+      twitter = Twitter::Base.new(account.screen_name, account.password)
+      twitter.replies.map &@update_twitter_user_and_status
+    end
 end

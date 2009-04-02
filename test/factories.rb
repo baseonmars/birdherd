@@ -27,16 +27,17 @@ Factory.define :api_status, :class => Twitter::Status do |f|
  f.created_at "Tue Mar 31 19:07:33 +0000 2009"
  f.text "bob bob"
  f.in_reply_to_user_id ""
- # f.user <Twitter::User:0x33a0720 @location=""
- # f.profile_image_url "http://static.twitter.com/images/default_profile_normal.png"
- # f.followers_count "0"
- # f.name "Bird Herd"
- # f.protected false
- # f.description ""
- # f.screen_name "birdherd"
- # # f.id "25256654"
- # f.url ""
  f.in_reply_to_status_id " "
  f.source "web"
  f.truncated false
+end
+
+Factory.define :api_user, :class => Twitter::User do |f|
+  f.profile_image_url "http://static.twitter.com/images/default_profile_normal.png"
+  f.followers_count "0"
+  f.name "Bird Herd"
+  f.protected false
+  f.description ""
+  f.screen_name "birdherd"
+  f.url ""
 end

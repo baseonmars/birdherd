@@ -29,6 +29,7 @@ class TwitterUsersController < ApplicationController
     @account = @user.twitter_users.find(params[:id], :include => :users)
     if @account.owned_by? @user
       @timeline = get_timeline(@account)
+      @replies = get_replies(@account)
     end
   end
   
