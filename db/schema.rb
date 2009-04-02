@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20090331232653) do
+ActiveRecord::Schema.define(:version => 20090402230509) do
 
   create_table "twitter_statuses", :force => true do |t|
     t.text     "text"
@@ -24,6 +24,7 @@ ActiveRecord::Schema.define(:version => 20090331232653) do
     t.date     "last_pulled"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.date     "last_api_access"
   end
 
   create_table "twitter_users_users", :id => false, :force => true do |t|

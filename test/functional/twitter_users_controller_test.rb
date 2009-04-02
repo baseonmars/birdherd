@@ -34,6 +34,7 @@ class TwitterUsersControllerTest < ActionController::TestCase
       get :show, :id => @account.id
       assert_response :success
       assert_not_nil assigns('account')
+      assert_kind_of TwitterStatus, assigns('timeline').first
     end
     
     should "see the public timeline for an account they own" do

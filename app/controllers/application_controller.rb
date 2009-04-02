@@ -11,16 +11,6 @@ class ApplicationController < ActionController::Base
   filter_parameter_logging :password
   helper_method :current_user_session, :current_user, :get_twitter
   
-  @update_twitter_user_and_status = lambda { |api_status|
-    status = TwitterStatus.find_or_create_by_id(api_status.id)
-    status.update_from_twitter(api_status)
-    poster = TwitterUser.find_or_create_by_id(api_status.user.id)
-    poster.update_from_twitter(api_status.user).save
-    status.poster = poster
-    status.save
-    status
-  }
-  
   private
     def current_user_session
       return @current_user_session if defined?(@current_user_session)
@@ -58,15 +48,33 @@ class ApplicationController < ActionController::Base
       redirect_to(session[:return_to] || default)
       session[:return_to] = nil
     end
+    
+    def twitter_client(account)
+      account.update_attributes(:last_api_access => Time.now)
+      @twitter_client ||= Twitter::Base.new(account.screen_name, account.password)
+    end
 
     def get_timeline(account, type=:friends)
-      twitter = Twitter::Base.new(account.screen_name, account.password)
-      timeline = twitter.timeline(type).map &@update_twitter_user_and_status
-      timeline
+      timeline = twitter_client(account).timeline(type).map do |api_status|
+        status = TwitterStatus.find_or_create_by_id(api_status.id)
+        status.update_from_twitter(api_status)
+        poster = TwitterUser.find_or_create_by_id(api_status.user.id)
+        poster.update_from_twitter(api_status.user).save
+        status.poster = poster
+        status.save
+        status
+      end
     end
     
     def get_replies(account)
-      twitter = Twitter::Base.new(account.screen_name, account.password)
-      twitter.replies.map &@update_twitter_user_and_status
+      timeline = twitter_client(account).replies.map do |api_status|
+        status = TwitterStatus.find_or_create_by_id(api_status.id)
+        status.update_from_twitter(api_status)
+        poster = TwitterUser.find_or_create_by_id(api_status.user.id)
+        poster.update_from_twitter(api_status.user).save
+        status.poster = poster
+        status.save
+        status
+      end
     end
 end
