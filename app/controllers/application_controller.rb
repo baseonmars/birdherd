@@ -1,6 +1,8 @@
 # Filters added to this controller apply to all controllers in the application.
 # Likewise, all the methods added will be available for all controllers.
 
+require 'twitter'
+
 class ApplicationController < ActionController::Base
   helper :all # include all helpers, all the time
   protect_from_forgery # See ActionController::RequestForgeryProtection for details
@@ -45,6 +47,15 @@ class ApplicationController < ActionController::Base
     def redirect_back_or_default(default)
       redirect_to(session[:return_to] || default)
       session[:return_to] = nil
+    end
+    
+    def get_timeline(account)
+      twitter = Twitter::Base.new(account.screen_name, account.password)
+      twitter.timeline(:friends).map do |api_status|
+        status = TwitterStatus.find_or_create_by_id(api_status.id)
+        status.update_from_twitter(api_status).save
+        api_status
+      end
     end
 
 end

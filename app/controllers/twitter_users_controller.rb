@@ -15,7 +15,7 @@ class TwitterUsersController < ApplicationController
     @user = @current_user
     @account = @user.twitter_users.new(params[:twitter_user])
     @account.users << @user
-    if @account.save
+    if @account.save && @user.save
       flash[:notice] = "Twitter Account Created!"
       redirect_to user_twitter_user_url(@account.id)
     else
@@ -26,7 +26,10 @@ class TwitterUsersController < ApplicationController
   
   def show
     @user = @current_user
-    @account = @user.twitter_users.find(params[:id])
+    @account = @user.twitter_users.find(params[:id], :include => :users)
+    if @account.owned_by? @user
+      @timeline = get_timeline(@account)
+    end
   end
   
 end

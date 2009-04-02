@@ -5,4 +5,15 @@
 <% end -%>
 </ul>
 
+<% if @timeline -%>
+	<ul>
+		<% @timeline.each do |status| -%>
+		<li><%= h status.user.screen_name %> <%= h status.text %></li>
+		<% end -%>
+<% else -%>
+		<li>you don't own this account</li>
+	</ul>
+<% end -%>
+
+
 <%= link_to 'Show statuses', twitter_user_twitter_statuses_path(@account) %>

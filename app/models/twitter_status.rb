@@ -5,4 +5,17 @@ class TwitterStatus < ActiveRecord::Base
     TwitterStatus.new
   end
   
+  def update_from_twitter(api_status)
+    api_status.instance_variables.each do |attrib|
+      if attrib.nil? || attrib == '@user'
+        next
+      end
+      attrib.gsub!(/^@/,'')
+      if self.respond_to?(attrib)
+        self.send("#{attrib}=", api_status.send(attrib))
+      end
+    end
+    self
+  end
+  
 end
