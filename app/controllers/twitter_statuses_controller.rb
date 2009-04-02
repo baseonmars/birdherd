@@ -13,7 +13,12 @@ class TwitterStatusesController < ApplicationController
   
   def create
     @user = @current_user
-    @twitter_user = @user.twitter_users.find(params[:twitter_user_id])
+    begin
+      @twitter_user = @user.twitter_users.find(params[:twitter_user_id])
+    rescue
+      render :text => "You are not permitted to post statuses as an account you don't own", :status => 401
+      return
+    end
     @status = @twitter_user.statuses.new(params[:twitter_status])
     if @status.save
       flash[:notice] = "Status posted!"
@@ -30,16 +35,14 @@ class TwitterStatusesController < ApplicationController
   end
   
   def reply
-    @status = TwitterStatus.find(params[:twitter_status_id])
+    @status = TwitterStatus.find(params[:status_id])
     begin
-      @twitter_user = @current_user.twitter_users.find(params[:twitter_user_id])
+      @twitter_user = @current_user.twitter_users.find(params[:account_id])
       @reply = @status.reply
     rescue
       flash[:notice] = "You don't have the right to reply"
       redirect_to '/'
       return
     end
-
-  
   end
 end

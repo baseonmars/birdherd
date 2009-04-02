@@ -4,16 +4,15 @@ ActionController::Routing::Routes.draw do |map|
   map.resource :dashboard, :controller => "users"
   map.resource :user do |user|
     user.resources :twitter_users, :as => 'accounts'
-  end
+  end  
   map.resources :twitter_users do |twitter_user|
-    twitter_user.resources :twitter_statuses, :as => 'statuses' do |status|
-      status.reply 'reply', :controller => 'twitter_statuses', :action => 'reply'
-    end
+    twitter_user.resources :twitter_statuses, :as => 'statuses'
   end
   map.resources :twitter_statuses,:as => 'statuses' do |status|
   end
   map.resource :user_session
-  map.connect 'logout' , :controller => 'user_sessions', :action => 'destroy' 
+  map.connect 'logout' , :controller => 'user_sessions', :action => 'destroy'
+  map.status_reply '/accounts/:account_id/statuses/:status_id/reply', :controller => 'twitter_statuses', :action =>'reply'
   map.root :controller => "user_sessions", :action => "new"
   # Sample of regular route:
   #   map.connect 'products/:id', :controller => 'catalog', :action => 'view'
