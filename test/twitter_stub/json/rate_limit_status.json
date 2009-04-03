@@ -1,7 +1,0 @@
-// http://username:password@twitter.com/account/rate_limit_status
-{
-    "remaining_hits": 80,
-    "hourly_limit": 100,
-    "reset_time": "Fri Apr 03 18:43:07 +0000 2009",
-    "reset_time_in_seconds": 1238784187
-}
