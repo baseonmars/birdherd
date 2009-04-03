@@ -1,0 +1,38 @@
+// http://username:password@twitter.com/replies.json
+[{
+    "in_reply_to_screen_name": "birdherd",
+    "user": {
+        "notifications": false,
+        "profile_background_tile": false,
+        "friends_count": 1,
+        "description": null,
+        "time_zone": null,
+        "utc_offset": null,
+        "favourites_count": 0,
+        "profile_background_color": "9ae4e8",
+        "profile_image_url": "http:\/\/static.twitter.com\/images\/default_profile_normal.png",
+        "following": false,
+        "profile_background_image_url": "http:\/\/static.twitter.com\/images\/themes\/theme1\/bg.gif",
+        "profile_text_color": "000000",
+        "url": null,
+        "screen_name": "birdherd",
+        "name": "Bird Herd",
+        "statuses_count": 9,
+        "protected": false,
+        "profile_link_color": "0000ff",
+        "created_at": "Thu Mar 19 07:48:51 +0000 2009",
+        "profile_sidebar_fill_color": "e0ff92",
+        "location": null,
+        "id": 25256654,
+        "profile_sidebar_border_color": "87bc44",
+        "followers_count": 1
+    },
+    "text": "@birdherd fsldkfjsldfjlsfjklsjk",
+    "truncated": false,
+    "in_reply_to_status_id": null,
+    "in_reply_to_user_id": 25256654,
+    "created_at": "Tue Mar 31 10:29:03 +0000 2009",
+    "favorited": false,
+    "id": 1423566806,
+    "source": "web"
+}]

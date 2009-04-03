@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<direct-messages type="array">
+<direct_message>
+  <id>85312528</id>
+  <sender_id>7733932</sender_id>
+  <text>what ya doing on saturday anyways?</text>
+  <recipient_id>25256654</recipient_id>
+  <created_at>Fri Apr 03 18:35:00 +0000 2009</created_at>
+  <sender_screen_name>baseonmars</sender_screen_name>
+  <recipient_screen_name>birdherd</recipient_screen_name>
+  <sender>
+    <id>7733932</id>
+    <name>Dan Etherington</name>
+    <screen_name>baseonmars</screen_name>
+    <location>London, UK</location>
+    <description>various potterings and codez from a web dev working at moonfruit/sitemaker</description>
+    <profile_image_url>http://s3.amazonaws.com/twitter_production/profile_images/68794315/dan_normal.jpg</profile_image_url>
+    <url>http://baseonmars.co.uk</url>
+    <protected>false</protected>
+    <followers_count>61</followers_count>
+    <profile_background_color>1E1E1E</profile_background_color>
+    <profile_text_color>676767</profile_text_color>
+    <profile_link_color>D20000</profile_link_color>
+    <profile_sidebar_fill_color>FAF6DA</profile_sidebar_fill_color>
+    <profile_sidebar_border_color>F0F0F0</profile_sidebar_border_color>
+    <friends_count>67</friends_count>
+    <created_at>Thu Jul 26 10:57:35 +0000 2007</created_at>
+    <favourites_count>5</favourites_count>
+    <utc_offset>0</utc_offset>
+    <time_zone>London</time_zone>
+    <profile_background_image_url>http://s3.amazonaws.com/twitter_production/profile_background_images/2522543/BOM-twitter-background.png</profile_background_image_url>
+    <profile_background_tile>false</profile_background_tile>
+    <statuses_count>898</statuses_count>
+    <notifications>false</notifications>
+    <following>true</following>
+  </sender>
+  <recipient>
+    <id>25256654</id>
+    <name>Bird Herd</name>
+    <screen_name>birdherd</screen_name>
+    <location></location>
+    <description></description>
+    <profile_image_url>http://s3.amazonaws.com/twitter_production/profile_images/120266467/images_normal.jpeg</profile_image_url>
+    <url></url>
+    <protected>false</protected>
+    <followers_count>1</followers_count>
+    <profile_background_color>8B542B</profile_background_color>
+    <profile_text_color>333333</profile_text_color>
+    <profile_link_color>9D582E</profile_link_color>
+    <profile_sidebar_fill_color>EADEAA</profile_sidebar_fill_color>
+    <profile_sidebar_border_color>D9B17E</profile_sidebar_border_color>
+    <friends_count>1</friends_count>
+    <created_at>Thu Mar 19 07:48:51 +0000 2009</created_at>
+    <favourites_count>0</favourites_count>
+    <utc_offset></utc_offset>
+    <time_zone></time_zone>
+    <profile_background_image_url>http://static.twitter.com/images/themes/theme8/bg.gif</profile_background_image_url>
+    <profile_background_tile>false</profile_background_tile>
+    <statuses_count>9</statuses_count>
+    <notifications>false</notifications>
+    <following>false</following>
+  </recipient>
+</direct_message>
+</direct-messages>
