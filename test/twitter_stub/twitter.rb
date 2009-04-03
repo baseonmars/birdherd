@@ -12,11 +12,11 @@ module Twitter
 
     TWITTER_API_XML = 'twitter_stub/xml'
         
-    def response(path,options={})
+    def response(path="",options={})
       res = StubResponse.new(200)
       return if path == '/'
       # pretty sure this could look nicer
-      File.open("#{Dir.pwd}/test/#{TWITTER_API_XML}/#{path.gsub!("/",'-').gsub("\?",'')}",'r') do |body|
+      File.open("#{Dir.pwd}/test/#{TWITTER_API_XML}/#{path.gsub("/",'-').gsub(/\??/,'')}",'r') do |body|
         res.body = body.read
       end
       res
