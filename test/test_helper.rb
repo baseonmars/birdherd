@@ -1,5 +1,6 @@
 ENV["RAILS_ENV"] = "test"
 require File.expand_path(File.dirname(__FILE__) + "/../config/environment")
+require 'twitter_stub/twitter'
 require 'test_help'
 require 'shoulda'
 require 'factory_girl'
@@ -38,4 +39,9 @@ class ActiveSupport::TestCase
   # fixtures :all
 
   # Add more helper methods to be used by all tests here...
+  setup do 
+  
+  end
+
 end
+
