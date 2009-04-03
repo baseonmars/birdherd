@@ -1,0 +1,7 @@
+<div class="message-list">
+	<h2><%= h title %></h2>
+	<% statuses.each do |tweet| %>
+	<p><strong><%= tweet.poster.screen_name %>:</strong> <%= tweet.text %></p>
+	<p><%= link_to "Reply", status_reply_path(account, tweet.id) %>
+	<% end -%>
+</div>

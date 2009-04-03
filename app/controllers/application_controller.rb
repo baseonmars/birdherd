@@ -54,6 +54,7 @@ class ApplicationController < ActionController::Base
       @twitter_client ||= Twitter::Base.new(account.screen_name, account.password)
     end
 
+# TODO DRY up the blocks in get_methods, can't work out syntax
     def get_timeline(account, type=:friends)
       timeline = twitter_client(account).timeline(type).map do |api_status|
         status = TwitterStatus.find_or_create_by_id(api_status.id)
@@ -77,4 +78,17 @@ class ApplicationController < ActionController::Base
         status
       end
     end
+    
+    def get_direct_messages(account)
+      timeline = twitter_client(account).direct_messages.map do |api_dm|
+        status = TwitterStatus.find_or_create_by_id(api_dm.id)
+        status.update_from_twitter(api_dm)
+        poster = TwitterUser.find_or_create_by_id(api_dm.sender_id)
+        poster.screen_name = api_dm.sender_screen_name
+        status.poster = poster
+        status.save
+        status
+      end
+    end
+      
 end

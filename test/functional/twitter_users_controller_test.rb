@@ -54,6 +54,29 @@ class TwitterUsersControllerTest < ActionController::TestCase
       get :show, :id => @account.id
       assert !assigns('timeline').first.poster.nil?
     end
+    
+    context "viewing their dashboard" do
+      setup do
+        get :show, :id => @account.id
+      end
+      should "see a timeline of tweets" do
+        assert assigns(:timeline)
+      end
+      
+      should "see all their replies" do
+        assert assigns(:replies)
+      end
+      
+      should "see direct messages sent to them" do
+        assert assigns(:direct_messages)
+      end
+      
+      should "be have a new status ready to post" do
+        assert assigns(:status)
+      end
+    end
+    
+      
   end
 
   context "logged in with no accounts" do
@@ -84,5 +107,5 @@ class TwitterUsersControllerTest < ActionController::TestCase
       get :index
       assert_redirected_to new_user_session_path
     end
-  end  
+  end
 end

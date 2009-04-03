@@ -30,6 +30,8 @@ class TwitterUsersController < ApplicationController
     if @account.owned_by? @user
       @timeline = get_timeline(@account)
       @replies = get_replies(@account)
+      @direct_messages = get_direct_messages(@account)
+      @status = @account.statuses.new
     end
   end
   

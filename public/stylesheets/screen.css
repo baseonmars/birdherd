@@ -1,0 +1,22 @@
+body {
+	font-family: sans-serif;
+	font-size: 62.5%;
+}
+
+.message-list {
+	display: inline-block;
+	width: 22%;
+	margin: 0 1%;
+	vertical-align: top;
+	overflow: hidden;
+}
+
+.message-list p {
+	overflow: hidden;
+	font-size: 1em;
+}
+
+.profile-image {
+	float: left;
+	margin: 0.5em 8px 8px 0;
+}

@@ -1,26 +1,20 @@
 <%= h @account.screen_name %>
-<ul>
-<% @account.statuses.each do |status| -%>
-<li><%= h status.text %><%= link_to 'reply', status_reply_path(@account,status) %></li>
-<% end -%>
-</ul>
+<p>
+	<strong><%=h @user.login %></strong> (<%= link_to 'Edit', edit_dashboard_path %>)
+</p>
 
-<% if @timeline -%>
-<h2>Timeline</h2>
-<ul>
-	<% @timeline.each do |status| -%>
-	<li><%= h status.poster.screen_name unless status.poster.nil? %> <%= h status.text %></li>
+<div id="post-status">
+<%= render :partial => 'twitter_statuses/brief_form', :locals => {:status => @status, :twitter_account => @account} %>
+</div>
+
+<%= render :partial => 'status_list', :locals => { :statuses => @timeline, :account => @account,	:title => "#{@account.screen_name}'s Timeline" } %>
+
+<%= render :partial => 'status_list', :locals => { :statuses => @replies, :account => @account, 
+	:title => "Replies" } %>
+
+<div id="direct_messages" class="message-list">
+	<h2>Direct messages</h2>
+	<% @direct_messages.each do |tweet| %>
+	<p><strong><%= tweet.poster.screen_name %>:</strong> <%= tweet.text %></p>
 	<% end -%>
-</ul>
-<% end -%>
-
-<% if @replies -%>
-<h2>Replies</h2>
-<ul>
-	<% @replies.each do |reply| -%>
-	<li><%= reply.poster.screen_name unless reply.poster.nil? %> <%= h reply.text %></li>
-	<% end-%>
-</ul>
-<% end -%>
-
-<%= link_to 'Show statuses', twitter_user_twitter_statuses_path(@account) %>
+</div>
