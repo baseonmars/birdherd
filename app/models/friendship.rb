@@ -1,4 +1,4 @@
 class Friendship < ActiveRecord::Base
-  belongs_to :twitter_user
-  belongs_to :friend, :class_name => 'TwitterUser', :foreign_key => 'friend_id'
+  belongs_to :friend, :class_name => 'TwitterUser'
+  belongs_to :follower, :class_name => 'TwitterUser'
 end

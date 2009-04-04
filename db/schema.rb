@@ -12,7 +12,7 @@
 ActiveRecord::Schema.define(:version => 20090404000903) do
 
   create_table "friendships", :force => true do |t|
-    t.integer "twitter_user_id"
+    t.integer "follower_id"
     t.integer "friend_id"
   end
 
