@@ -55,14 +55,17 @@ class ApplicationController < ActionController::Base
 
 # TODO DRY up the blocks in get_methods, can't work out syntax
     def get_timeline(account, type=:friends)
-      timeline = twitter_client(account.screen_name, account.password).timeline(type).map do |api_status|
-        status = TwitterStatus.find_or_create_by_id(api_status.id)
-        status.update_from_twitter(api_status)
-        poster = TwitterUser.find_or_create_by_id(api_status.user.id)
-        poster.update_from_twitter(api_status.user).save
-        status.poster = poster
-        status.save
-        status
+      if account.friends_timeline_sync_time.nil? || account.friends_timeline_sync_time < 5.minute.ago
+        account.update_attribute(:friends_timeline_sync_time, Time.now)
+        timeline = twitter_client(account.screen_name, account.password).timeline(type).map do |api_status|
+          status = TwitterStatus.find_or_create_by_id(api_status.id)
+          status.update_from_twitter(api_status)
+          poster = TwitterUser.find_or_create_by_id(api_status.user.id)
+          poster.update_from_twitter(api_status.user).save
+          status.poster = poster
+          status.save
+          status
+        end
       end
       account.friends_timeline
     end

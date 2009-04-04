@@ -7,6 +7,8 @@
 <%= render :partial => 'twitter_statuses/brief_form', :locals => {:status => @status, :twitter_account => @account} %>
 </div>
 
+<p>Friends timeline last synced <%= h @account.friends_timeline_sync_time %></p>
+
 <%= render :partial => 'status_list', :locals => { :statuses => @timeline, :account => @account,	:title => "#{@account.screen_name}'s Timeline" } %>
 
 <%= render :partial => 'status_list', :locals => { :statuses => @replies, :account => @account, 
