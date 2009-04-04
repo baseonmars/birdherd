@@ -6,9 +6,16 @@ class TwitterUserTest < ActiveSupport::TestCase
     setup do
       @twitter_user = Factory(:twitter_user)
     end
+    
+    should_have_and_belong_to_many :users
+    should_have_many :statuses, :friends
 
     should "update its attributes from an api user" do
       @twitter_user.update_from_twitter Factory.build(:api_user)
+    end
+
+    should "have friends" do
+      assert @twitter_user.respond_to?(:friends)
     end
 
     context "owned by a user" do
