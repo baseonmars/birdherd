@@ -16,7 +16,7 @@ module Twitter
       res = StubResponse.new(200)
       return if path == '/'
       # pretty sure this could look nicer
-      File.open("#{Dir.pwd}/test/#{TWITTER_API_XML}/#{path.gsub("/",'-').gsub(/\??/,'')}",'r') do |body|
+      File.open("#{Dir.pwd}/test/#{TWITTER_API_XML}/#{path.gsub("/",'-').gsub(/\??/,'').gsub(/_\d+/, '')}",'r') do |body|
         res.body = body.read
       end
       res

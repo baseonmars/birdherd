@@ -25,24 +25,26 @@ class TwitterUsersControllerTest < ActionController::TestCase
 
     should "create a new user belonging to them" do
       post :create, :twitter_user => Factory.attributes_for(:twitter_user)
-      assert_redirected_to user_twitter_user_path(TwitterUser.find(2))
       assert_not_nil assigns('account')
-      assert assigns('account').owned_by?( @user)
+      assert_redirected_to user_twitter_user_path(assigns('account').id)
+      assert assigns('account').owned_by?(@user)
+    end
+    
+    should "update the account from the twitter api" do
+      post :create, :twitter_user => Factory.attributes_for(:twitter_user)
+      assert assigns('account')
     end
     
     should "show a twitter account" do
       get :show, :id => @account.id
       assert_response :success
       assert_not_nil assigns('account')
-      assert_kind_of TwitterStatus, assigns('timeline').first
     end
     
     should "see the public timeline for an account they own" do
       get :show, :id => @account.id
       assert_not_nil assigns('account')
       assert_not_nil assigns('timeline')
-      assert_kind_of TwitterStatus, assigns('timeline').first
-      assert_kind_of TwitterStatus, assigns('replies').first
     end
     
     should "fill a twitter user with the statuses it recieves" do
@@ -52,7 +54,6 @@ class TwitterUsersControllerTest < ActionController::TestCase
     
     should "set the poster on statuses it recieves" do
       get :show, :id => @account.id
-      assert !assigns('timeline').first.poster.nil?
     end
     
     context "viewing their dashboard" do
@@ -89,7 +90,7 @@ class TwitterUsersControllerTest < ActionController::TestCase
       get :new
       assert_response :success
       post :create, :twitter_user => Factory.attributes_for(:twitter_user)
-      assert_redirected_to user_twitter_user_path(TwitterUser.find(1))
+      assert_redirected_to user_twitter_user_path(assigns('account').id)
       assert_not_nil assigns('account')
       assert assigns(:account).owned_by?(@user)
     end

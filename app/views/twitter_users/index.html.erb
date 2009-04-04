@@ -3,7 +3,7 @@
 <p>You've got <%= @accounts.count %> accounts</p>
 <ul>
 	<% @accounts.each do |account| %>
-		<li><%= link_to "@#{account.screen_name}", user_twitter_user_path(account) %></li>
+		<li><%= link_to "@#{account.screen_name}", user_twitter_user_path(account) %> - Followers <%= h account.followers.count %>, Friends <%= h account.friends.count %></li>
 		<% end %>
 </ul>
 

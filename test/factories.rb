@@ -2,6 +2,10 @@ Factory.sequence :login do |n|
   "user_name_#{n}" 
 end
 
+Factory.sequence :screen_name do |n|
+  "screen_name_#{n}"
+end
+
 Factory.define :user do |f|
   f.login { Factory.next :login }
   f.password "password"
@@ -9,7 +13,7 @@ Factory.define :user do |f|
 end
 
 Factory.define :twitter_user do |f|
-  f.screen_name { Factory.next :login }
+  f.screen_name { Factory.next :screen_name }
   f.password "password"
   f.last_api_access Time.now
 end

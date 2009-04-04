@@ -24,8 +24,10 @@ class TwitterUserTest < ActiveSupport::TestCase
 
     context "with a friend, but no followers" do
       setup do
-        @friend = Factory(:twitter_user)
+        @friend = Factory(:twitter_user, :id => '7733932')
         @twitter_user.friends << @friend
+        @friend.statuses << Factory(:twitter_status)
+        @twitter_user.statuses << Factory(:twitter_status)
       end
       
       should "have one friend" do
@@ -43,6 +45,20 @@ class TwitterUserTest < ActiveSupport::TestCase
       should "be a follower of the friend" do
         assert @friend.followers.include?(@twitter_user)
       end
+      
+      should "get timeline of friends statuses" do
+        assert @twitter_user.respond_to?(:friends_timeline)
+        assert_equal @twitter_user.friends_timeline.length, 2
+      end
+      
+      should "includes friends statuses in friends timeline" do
+        assert @friend.statuses.all? { |status| @twitter_user.friends_timeline.include? status }
+      end
+      
+      should "includes own statuses in friends timeline" do
+        assert @twitter_user.statuses.all? { |status| @twitter_user.friends_timeline.include? status }
+      end
+
     end
     
     context "with 2 friend and one follower" do

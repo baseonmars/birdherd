@@ -13,9 +13,12 @@ class TwitterUsersController < ApplicationController
   
   def create
     @user = @current_user
-    @account = @user.twitter_users.new(params[:twitter_user])
+    post_user = params[:twitter_user]
+    @account = build_twitter_user(post_user[:screen_name], post_user[:password])#@user.twitter_users.new(params[:twitter_user])
+    # @user.twitter_users << @account
     @account.users << @user
-    if @account.save && @user.save
+    if @user.save && @account.save
+      sync_friends(@account)
       flash[:notice] = "Twitter Account Created!"
       redirect_to user_twitter_user_url(@account.id)
     else
@@ -34,5 +37,5 @@ class TwitterUsersController < ApplicationController
       @status = @account.statuses.new
     end
   end
-  
+
 end

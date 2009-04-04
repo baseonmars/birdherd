@@ -49,14 +49,13 @@ class ApplicationController < ActionController::Base
       session[:return_to] = nil
     end
     
-    def twitter_client(account)
-      account.update_attributes(:last_api_access => Time.now)
-      @twitter_client ||= Twitter::Base.new(account.screen_name, account.password)
+    def twitter_client(screen_name, password)
+      @twitter_client ||= Twitter::Base.new(screen_name, password)
     end
 
 # TODO DRY up the blocks in get_methods, can't work out syntax
     def get_timeline(account, type=:friends)
-      timeline = twitter_client(account).timeline(type).map do |api_status|
+      timeline = twitter_client(account.screen_name, account.password).timeline(type).map do |api_status|
         status = TwitterStatus.find_or_create_by_id(api_status.id)
         status.update_from_twitter(api_status)
         poster = TwitterUser.find_or_create_by_id(api_status.user.id)
@@ -65,10 +64,11 @@ class ApplicationController < ActionController::Base
         status.save
         status
       end
+      account.friends_timeline
     end
     
     def get_replies(account)
-      timeline = twitter_client(account).replies.map do |api_status|
+      timeline = twitter_client(account.screen_name, account.password).replies.map do |api_status|
         status = TwitterStatus.find_or_create_by_id(api_status.id)
         status.update_from_twitter(api_status)
         poster = TwitterUser.find_or_create_by_id(api_status.user.id)
@@ -80,7 +80,7 @@ class ApplicationController < ActionController::Base
     end
     
     def get_direct_messages(account)
-      timeline = twitter_client(account).direct_messages.map do |api_dm|
+      timeline = twitter_client(account.screen_name, account.password).direct_messages.map do |api_dm|
         status = TwitterStatus.find_or_create_by_id(api_dm.id)
         status.update_from_twitter(api_dm)
         poster = TwitterUser.find_or_create_by_id(api_dm.sender_id)
@@ -89,6 +89,23 @@ class ApplicationController < ActionController::Base
         status.save
         status
       end
+    end
+    
+    def sync_friends(account)
+      friends = twitter_client(account.screen_name, account.password).friends.map do |api_friend|
+        friend = TwitterUser.find_or_create_by_id(api_friend.id)
+        friend.update_from_twitter(api_friend)
+        friend
+      end
+
+      account.friends << friends.reject do |friend|
+        account.friends.include?(friend)
+      end
+      account.save
+    end
+    
+    def build_twitter_user(screen_name, password)
+      TwitterUser.new(:password => password).update_from_twitter( twitter_client(screen_name, password).user(screen_name) )
     end
       
 end

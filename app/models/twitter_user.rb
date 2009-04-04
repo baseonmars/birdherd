@@ -24,5 +24,12 @@ class TwitterUser < ActiveRecord::Base
     end
     self
   end
+  
+  def friends_timeline
+    friends_statuses = friends.inject([]) do |acc,friend|
+      acc + friend.statuses
+    end 
+    friends_statuses + statuses
+  end
 
 end
