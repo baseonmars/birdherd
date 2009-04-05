@@ -71,19 +71,24 @@ class ApplicationController < ActionController::Base
     end
     
     def get_replies(account)
-      timeline = twitter_client(account.screen_name, account.password).replies.map do |api_status|
-        status = TwitterStatus.find_or_create_by_id(api_status.id)
-        status.update_from_twitter(api_status)
-        poster = TwitterUser.find_or_create_by_id(api_status.user.id)
-        poster.update_from_twitter(api_status.user).save
-        status.poster = poster
-        status.save
-        status
+      if account.replies_sync_time.nil? || account.replies_sync_time < 5.minutes.ago
+        account.update_attribute(:replies_sync_time, Time.now)
+        timeline = twitter_client(account.screen_name, account.password).replies.map do |api_status|
+          status = TwitterStatus.find_or_create_by_id(api_status.id)
+          status.update_from_twitter(api_status)
+          poster = TwitterUser.find_or_create_by_id(api_status.user.id)
+          poster.update_from_twitter(api_status.user).save
+          status.poster = poster
+          status.save
+          status
+        end
       end
+      account.replies
     end
     
     def get_direct_messages(account)
-      timeline = twitter_client(account.screen_name, account.password).direct_messages.map do |api_dm|
+      if account.replies_sync_time.nil? || account.replies_sync_time < 5.minutes.ago
+      @timeline = twitter_client(account.screen_name, account.password).direct_messages.map do |api_dm|
         status = TwitterStatus.find_or_create_by_id(api_dm.id)
         status.update_from_twitter(api_dm)
         poster = TwitterUser.find_or_create_by_id(api_dm.sender_id)
@@ -92,6 +97,8 @@ class ApplicationController < ActionController::Base
         status.save
         status
       end
+    end
+      account.direct_messages
     end
     
     def sync_friends(account)

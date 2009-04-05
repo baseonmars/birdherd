@@ -12,5 +12,6 @@ class TwitterStatusTest < ActiveSupport::TestCase
       assert @status.id, @twitter_status.id
       assert @status.text, @twitter_status.text
     end
+    
   end
 end

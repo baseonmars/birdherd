@@ -1,6 +1,7 @@
 class TwitterUser < ActiveRecord::Base
   has_and_belongs_to_many :users
   has_many :statuses, :class_name => "TwitterStatus", :foreign_key => "poster_id"
+  has_many :replies , :class_name => 'TwitterStatus', :foreign_key => 'in_reply_to_user_id'
   
   has_many :follower_friendships, :class_name => 'Friendship', :foreign_key => 'follower_id'
   has_many :followers, :class_name => 'TwitterUser', :through => :friend_friendships, :source => :follower

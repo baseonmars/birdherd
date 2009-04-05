@@ -58,6 +58,10 @@ class TwitterUserTest < ActiveSupport::TestCase
       should "includes own statuses in friends timeline" do
         assert @twitter_user.statuses.all? { |status| @twitter_user.friends_timeline.include? status }
       end
+      
+      should "has many replies" do
+        assert @twitter_user.respond_to?(:replies)
+      end
 
     end
     

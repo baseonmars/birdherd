@@ -52,24 +52,47 @@ class TwitterUsersControllerTest < ActionController::TestCase
       assert assigns('timeline').length, TwitterStatus.count
     end
     
-    should "update the friends timeline sync date " do
-      start_time = Time.now
-      get :show, :id => @account.id
-      assert assigns('account').friends_timeline_sync_time > start_time
-    end
-    
-    should "not sync friends timeline if synced in last 5 minutes" do
-      get :show, :id => @account.id
-      last_sync = assigns('account').friends_timeline_sync_time
-      pretend_now_is(3.minutes.from_now) do
+    context "when getting statuses" do
+      setup do
+        @start_time = Time.now
         get :show, :id => @account.id
-        assert_equal assigns('account').friends_timeline_sync_time.to_s, last_sync.to_s
       end
+
+      should "update the friends timeline sync time" do
+        assert assigns('account').friends_timeline_sync_time > @start_time
+      end
+
+      should "not sync friends timeline if synced in last 5 minutes" do
+        last_sync = assigns('account').friends_timeline_sync_time
+        pretend_now_is(3.minutes.from_now) do
+          get :show, :id => @account.id
+          assert_equal assigns('account').friends_timeline_sync_time.to_s, last_sync.to_s
+        end
+      end
+
+      should "update the replies sync time" do
+        assert assigns('account').replies_sync_time
+      end
+
+      should "not sync replies if synced in last 5 minutes" do
+        last_sync = assigns('account').replies_sync_time
+        pretend_now_is(3.minutes.from_now) do
+          get :show, :id => @account.id
+          assert_equal assigns('account').replies_sync_time.to_s, last_sync.to_s
+        end
+      end
+
+      should "updated the direct messages sync time" do
+        assigns assigns('account').direct_messages_sync_time
+      end
+
+      should "set the poster on statuses it recieves" do
+        get :show, :id => @account.id
+      end
+      
     end
     
-    should "set the poster on statuses it recieves" do
-      get :show, :id => @account.id
-    end
+    
     
     context "viewing their dashboard" do
       setup do
