@@ -1,11 +1,11 @@
 class TwitterUser < ActiveRecord::Base
   has_and_belongs_to_many :users
   has_many :statuses, :class_name => "TwitterStatus", :foreign_key => "poster_id"
-  has_many :replies , :class_name => 'TwitterStatus', :foreign_key => 'in_reply_to_user_id'
+  has_many :replies , :class_name => 'TwitterStatus', :foreign_key => 'in_reply_to_user_id', :order => 'created_at DESC'
   
-  has_many :sent_direct_messages, :class_name     => 'TwitterDirectMessage', :foreign_key => 'sender_id'
-  has_many :recieved_direct_messages, :class_name => 'TwitterDirectMessage', :foreign_key => 'recipient_id'
-  has_many :direct_messages, :class_name          => 'TwitterDirectMessage', :finder_sql  => 'SELECT * from twitter_direct_messages WHERE sender_id = #{id} OR recipient_id = #{id}'
+  has_many :sent_direct_messages, :class_name     => 'TwitterDirectMessage', :foreign_key => 'sender_id', :order => 'created_at DESC'
+  has_many :recieved_direct_messages, :class_name => 'TwitterDirectMessage', :foreign_key => 'recipient_id', :order => 'created_at DESC'
+  has_many :direct_messages, :class_name          => 'TwitterDirectMessage', :finder_sql  => 'SELECT * from twitter_direct_messages WHERE sender_id = #{id} OR recipient_id = #{id} ORDER BY created_at DESC'
 
   has_many :follower_friendships, :class_name => 'Friendship',  :foreign_key => 'follower_id'
   has_many :followers, :class_name            => 'TwitterUser', :through     => :friend_friendships, :source => :follower
@@ -35,7 +35,7 @@ class TwitterUser < ActiveRecord::Base
     friends_statuses = friends.inject([]) do |acc,friend|
       acc + friend.statuses
     end 
-    friends_statuses + statuses
+    (friends_statuses + statuses).sort { |a,b| b.created_at <=> a.created_at }
   end
   
 end
