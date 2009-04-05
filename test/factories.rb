@@ -15,13 +15,11 @@ end
 Factory.define :twitter_user do |f|
   f.screen_name { Factory.next :screen_name }
   f.password "password"
-  f.last_api_access Time.now
 end
 
 Factory.define :real_twitter_user, :class => 'twitter_user' do |f|
   f.screen_name 'birdherd'
   f.password 'karm4dude'
-  f.last_api_access Time.now
 end
 
 Factory.define :twitter_status do |f|

@@ -104,10 +104,6 @@ class TwitterUserTest < ActiveSupport::TestCase
         new_user = Factory(:twitter_user)
         assert !new_user.owned_by?(@user)
       end
-
-      should "return when it was last updated from the api" do
-        assert_kind_of Time, @twitter_user.last_api_access
-      end
     end
   end
 end
