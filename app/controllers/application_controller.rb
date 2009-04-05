@@ -100,7 +100,7 @@ class ApplicationController < ActionController::Base
           dm
         end
       end
-      account.recieved_direct_messages
+      account.direct_messages
     end
     
     def sync_friends(account)
