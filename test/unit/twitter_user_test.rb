@@ -8,7 +8,7 @@ class TwitterUserTest < ActiveSupport::TestCase
     end
 
     should_have_and_belong_to_many :users
-    should_have_many :statuses, :friends
+    should_have_many :statuses, :friends, :replies, :sent_direct_messages, :recieved_direct_messages
 
     should "update its attributes from an api user" do
       @twitter_user.update_from_twitter Factory.build(:api_user)
@@ -107,6 +107,27 @@ class TwitterUserTest < ActiveSupport::TestCase
       should "return false if owned by no one" do
         new_user = Factory(:twitter_user)
         assert !new_user.owned_by?(@user)
+      end
+    end
+    
+    context "with 1 sent and 1 recieved direct message" do
+      setup do
+        @other_user = Factory(:twitter_user)
+        @sent_message = Factory(:twitter_direct_message, :sender => @twitter_user, :recipient => @other_user)
+        @recieved_message = Factory(:twitter_direct_message, :sender => @other_user, :recipient => @twitter_user)
+        @twitter_user.reload
+      end
+      
+      should "have one sent direct message" do
+        assert_equal @twitter_user.sent_direct_messages.count, 1
+      end
+      
+      should "have one recieved direct message" do
+        assert_equal @twitter_user.recieved_direct_messages.count, 1
+      end
+      
+      should "have two direct messages" do
+        assert_equal @twitter_user.direct_messages.count, 2
       end
     end
   end

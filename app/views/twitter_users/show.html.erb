@@ -11,12 +11,11 @@
 
 <%= render :partial => 'status_list', :locals => { :statuses => @timeline, :account => @account,	:title => "#{@account.screen_name}'s Timeline" } %>
 
-<%= render :partial => 'status_list', :locals => { :statuses => @replies, :account => @account, 
-	:title => "Replies" } %>
+<%= render :partial => 'status_list', :locals => { :statuses => @replies, :account => @account, :title => "Replies" } %>
 
 <div id="direct_messages" class="message-list">
 	<h2>Direct messages</h2>
 	<% @direct_messages.each do |tweet| %>
-	<p><strong><%= tweet.poster.screen_name %>:</strong> <%= tweet.text %></p>
+	<p><strong><%= tweet.sender.screen_name %>:</strong> <%= tweet.text %></p>
 	<% end -%>
 </div>

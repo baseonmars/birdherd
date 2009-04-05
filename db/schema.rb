@@ -9,11 +9,19 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20090405192814) do
+ActiveRecord::Schema.define(:version => 20090405194345) do
 
   create_table "friendships", :force => true do |t|
     t.integer "follower_id"
     t.integer "friend_id"
+  end
+
+  create_table "twitter_direct_messages", :force => true do |t|
+    t.integer  "sender_id"
+    t.integer  "recipient_id"
+    t.string   "text"
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "twitter_statuses", :force => true do |t|

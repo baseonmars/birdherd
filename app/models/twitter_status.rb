@@ -1,6 +1,6 @@
 class TwitterStatus < ActiveRecord::Base
   belongs_to :poster, :class_name => "TwitterUser", :foreign_key => "poster_id"
-  belongs_to :replie, :class_name => "TwitterUser", :foreign_key => "in_reply_to_user_id"
+  belongs_to :recipient, :class_name => "TwitterUser", :foreign_key => "in_reply_to_user_id"
   
   def reply
     TwitterStatus.new

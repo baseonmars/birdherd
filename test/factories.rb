@@ -6,6 +6,10 @@ Factory.sequence :screen_name do |n|
   "screen_name_#{n}"
 end
 
+Factory.sequence :api_user_id do |n|
+  "123456#{n}"
+end
+
 Factory.define :user do |f|
   f.login { Factory.next :login }
   f.password "password"
@@ -15,6 +19,22 @@ end
 Factory.define :twitter_user do |f|
   f.screen_name { Factory.next :screen_name }
   f.password "password"
+end
+
+Factory.define :twitter_direct_message do |f|
+  f.sender {|sender| sender.association(:twitter_user) }
+  f.text 'this is a direct message'
+  f.recipient {|recipient| recipient.association(:twitter_user) }
+  f.created_at 15.minutes.ago
+end
+
+Factory.define :api_direct_message, :class => Twitter::DirectMessage, :default_strategy => :build do |f|
+  f.sender_id { Factory.next :api_user_id}
+  f.text 'this is a api direct message'
+  f.recipient_id { Factory.next :api_user_id}
+  f.created_at 10.minutes.ago
+  f.sender_screen_name { Factory.next :screen_name }
+  f.recipient_screen_name { Factory.next :screen_name }
 end
 
 Factory.define :real_twitter_user, :class => 'twitter_user' do |f|
