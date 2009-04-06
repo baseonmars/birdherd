@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20090405194345) do
+ActiveRecord::Schema.define(:version => 20090406192756) do
 
   create_table "friendships", :force => true do |t|
     t.integer "follower_id"
@@ -30,6 +30,8 @@ ActiveRecord::Schema.define(:version => 20090405194345) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "in_reply_to_user_id"
+    t.integer  "in_reply_status_id"
+    t.integer  "in_reply_to_status_id"
   end
 
   create_table "twitter_users", :force => true do |t|
