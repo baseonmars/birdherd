@@ -1,6 +1,6 @@
 <%= h @account.screen_name %>
 <p>
-	<strong><%=h @user.login %></strong> (<%= link_to 'Edit', edit_dashboard_path %>)
+	<strong><%=h @current_user.login %></strong> (<%= link_to 'Edit', edit_dashboard_path %>)
 </p>
 
 <div id="post-status">

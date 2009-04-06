@@ -1,5 +1,9 @@
 class TwitterUsersController < ApplicationController
   before_filter :require_user
+  before_filter :get_account, :only => :show
+  before_filter :update_timeline, :only => :show
+  before_filter :update_replies, :only=> :show
+  before_filter :update_direct_messages, :only => :show
   
   def index
     @user = @current_user
@@ -14,11 +18,16 @@ class TwitterUsersController < ApplicationController
   def create
     @user = @current_user
     post_user = params[:twitter_user]
-    @account = build_twitter_user(post_user[:screen_name], post_user[:password])#@user.twitter_users.new(params[:twitter_user])
-    # @user.twitter_users << @account
+    @account = TwitterUser.find_by_screen_name(post_user[:screen_name])
+    if @account
+      @account.update_attribute(:password, post_user[:password])
+    else
+      @account = build_twitter_user(post_user[:screen_name], post_user[:password])
+    end
     @account.users << @user
     if @user.save && @account.save
       sync_friends(@account)
+      sync_followers(@account)
       flash[:notice] = "Twitter Account Created!"
       redirect_to user_twitter_user_url(@account.id)
     else
@@ -28,14 +37,30 @@ class TwitterUsersController < ApplicationController
   end
   
   def show
-    @user = @current_user
-    @account = @user.twitter_users.find(params[:id], :include => :users)
-    if @account.owned_by? @user
-      @timeline = get_timeline(@account)
-      @replies = get_replies(@account)
-      @direct_messages = get_direct_messages(@account)
+    if @account && @account.owned_by?(@current_user)
+      @timeline = @account.friends_timeline
+      @replies = @account.replies
+      @direct_messages = @account.direct_messages
       @status = @account.statuses.new
     end
+  end
+  
+  private
+  
+  def get_account
+    @account = @current_user.twitter_users.find(params[:id], :include => [:users, :replies, :recieved_direct_messages, :sent_direct_messages])
+  end
+  
+  def update_timeline
+    get_timeline(@account) unless @account.nil?
+  end
+  
+  def update_replies
+    get_replies(@account) unless @account.nil?
+  end
+  
+  def update_direct_messages
+    get_direct_messages(@account) unless @account.nil?
   end
 
 end

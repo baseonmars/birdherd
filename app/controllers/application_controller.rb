@@ -97,6 +97,8 @@ class ApplicationController < ActionController::Base
           dm.recipient = TwitterUser.find_or_create_by_id(api_dm.recipient_id)
           dm.recipient.screen_name = api_dm.recipient_screen_name
           dm.save
+          dm.sender.save
+          dm.recipient.save
           dm
         end
       end
@@ -107,15 +109,24 @@ class ApplicationController < ActionController::Base
       friends = twitter_client(account.screen_name, account.password).friends.map do |api_friend|
         friend = TwitterUser.find_or_create_by_id(api_friend.id)
         friend.update_from_twitter(api_friend)
+        friend.save
         friend
       end
-
-      account.friends << friends.reject do |friend|
-        account.friends.include?(friend)
-      end
+      account.friends = friends
       account.save
     end
     
+    def sync_followers(account)
+      followers = twitter_client(account.screen_name, account.password).followers.map do |api_follower|
+        follower = TwitterUser.find_or_create_by_id(api_follower.id)
+        follower.update_from_twitter(api_follower)
+        follower.save
+        follower
+      end
+      account.followers = followers
+      account.save
+    end
+
     def build_twitter_user(screen_name, password)
       TwitterUser.new(:password => password).update_from_twitter( twitter_client(screen_name, password).user(screen_name) )
     end
