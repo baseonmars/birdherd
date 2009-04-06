@@ -1,5 +1,6 @@
 class TwitterUsersController < ApplicationController
   before_filter :require_user
+  before_filter :errors
   before_filter :get_account, :only => :show
   before_filter :update_timeline, :only => :show
   before_filter :update_replies, :only=> :show
@@ -48,19 +49,35 @@ class TwitterUsersController < ApplicationController
   private
   
   def get_account
-    @account = @current_user.twitter_users.find(params[:id], :include => [:users, :replies, :recieved_direct_messages, :sent_direct_messages])
+    begin
+      @account = @current_user.twitter_users.find(params[:id], :include => [:users, :replies, :recieved_direct_messages, :sent_direct_messages])
+    rescue
+      @account = nil
+    end
   end
   
   def update_timeline
-    get_timeline(@account) unless @account.nil?
+    begin
+      get_timeline(@account) unless @account.nil?
+    rescue
+      @errors << "couldn't update timeline"
+    end
   end
   
   def update_replies
-    get_replies(@account) unless @account.nil?
+    begin
+      get_replies(@account) unless @account.nil?
+    rescue
+      @errors << "couldn't update replies"
+    end
   end
   
   def update_direct_messages
-    get_direct_messages(@account) unless @account.nil?
+    begin
+      get_direct_messages(@account) unless @account.nil?
+    rescue
+      @errors << "couldn't update direct_messages"
+    end
   end
 
 end

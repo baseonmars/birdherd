@@ -13,5 +13,10 @@ class TwitterStatusTest < ActiveSupport::TestCase
       assert @status.text, @twitter_status.text
     end
     
+    should "produce a reply with it's in_reply_to_status set" do
+      reply = @status.reply
+      assert_equal reply.in_reply_to_status_id, @status.id
+    end
+    
   end
 end

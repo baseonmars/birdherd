@@ -57,14 +57,13 @@ class ApplicationController < ActionController::Base
     def get_timeline(account, type=:friends)
       if account.friends_timeline_sync_time.nil? || account.friends_timeline_sync_time < 5.minute.ago
         account.update_attribute(:friends_timeline_sync_time, Time.now)
-        timeline = twitter_client(account.screen_name, account.password).timeline(type).map do |api_status|
+        twitter_client(account.screen_name, account.password).timeline(type).each do |api_status|
           status = TwitterStatus.find_or_create_by_id(api_status.id)
           status.update_from_twitter(api_status)
           poster = TwitterUser.find_or_create_by_id(api_status.user.id)
           poster.update_from_twitter(api_status.user).save
           status.poster = poster
           status.save
-          status
         end
       end
       account.friends_timeline
@@ -73,14 +72,13 @@ class ApplicationController < ActionController::Base
     def get_replies(account)
       if account.replies_sync_time.nil? || account.replies_sync_time < 5.minutes.ago
         account.update_attribute(:replies_sync_time, Time.now)
-        timeline = twitter_client(account.screen_name, account.password).replies.map do |api_status|
+        twitter_client(account.screen_name, account.password).replies.each do |api_status|
           status = TwitterStatus.find_or_create_by_id(api_status.id)
           status.update_from_twitter(api_status)
           poster = TwitterUser.find_or_create_by_id(api_status.user.id)
           poster.update_from_twitter(api_status.user).save
           status.poster = poster
           status.save
-          status
         end
       end
       account.replies
@@ -89,7 +87,7 @@ class ApplicationController < ActionController::Base
     def get_direct_messages(account)
       if account.direct_messages_sync_time.nil? || account.direct_messages_sync_time < 5.minutes.ago
         account.update_attribute(:direct_messages_sync_time, Time.now)
-        timeline = twitter_client(account.screen_name, account.password).direct_messages.map do |api_dm|
+        twitter_client(account.screen_name, account.password).direct_messages.each do |api_dm|
           dm = TwitterDirectMessage.find_or_create_by_id(api_dm.id)
           dm.update_from_twitter(api_dm)
           dm.sender = TwitterUser.find_or_create_by_id(api_dm.sender_id)
@@ -99,20 +97,18 @@ class ApplicationController < ActionController::Base
           dm.save
           dm.sender.save
           dm.recipient.save
-          dm
         end
       end
       account.direct_messages
     end
     
     def sync_friends(account)
-      friends = twitter_client(account.screen_name, account.password).friends.map do |api_friend|
+      account.friends = twitter_client(account.screen_name, account.password).friends.map do |api_friend|
         friend = TwitterUser.find_or_create_by_id(api_friend.id)
         friend.update_from_twitter(api_friend)
         friend.save
         friend
       end
-      account.friends = friends
       account.save
     end
     
@@ -129,6 +125,17 @@ class ApplicationController < ActionController::Base
 
     def build_twitter_user(screen_name, password)
       TwitterUser.new(:password => password).update_from_twitter( twitter_client(screen_name, password).user(screen_name) )
+    end
+    
+    def post_status(account, status)
+      status = TwitterStatus.new
+      status.update_from_twitter twitter_client(account.screen_name, account.password).post(status.text, 
+      :in_reply_to_status_id => status.in_reply_to_status_id, 
+      :source => 'birdherd' );
+    end
+    
+    def errors
+      @errors = []
     end
       
 end
