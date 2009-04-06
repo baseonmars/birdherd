@@ -55,22 +55,23 @@ class ApplicationController < ActionController::Base
     end
 
 # TODO DRY up the blocks in get_methods, can't work out syntax
-    def get_timeline(account, type=:friends)
+    def sync_friends_timeline(account, type=:friends)
       if account.friends_timeline_sync_time.nil? || account.friends_timeline_sync_time < 2.5.minute.ago
-        account.update_attribute(:friends_timeline_sync_time, Time.now)
+        account.update_attribute(:friends_timeline_sync_time, Time.now)        
         twitter_client(account.screen_name, account.password).timeline(type).each do |api_status|
-          status = TwitterStatus.find_or_create_by_id(api_status.id)
-          status.update_from_twitter(api_status)
-          poster = TwitterUser.find_or_create_by_id(api_status.user.id)
-          poster.update_from_twitter(api_status.user).save
-          status.poster = poster
-          status.save
+            status = TwitterStatus.find_or_create_by_id(api_status.id)
+            status.update_from_twitter(api_status)
+            poster = TwitterUser.find_or_create_by_id(api_status.user.id)
+            poster.update_from_twitter(api_status.user).save
+            status.poster = poster
+            status.save
         end
+
       end
       account.friends_timeline
     end
     
-    def get_replies(account)
+    def sync_replies(account)
       if account.replies_sync_time.nil? || account.replies_sync_time < 2.5.minutes.ago
         account.update_attribute(:replies_sync_time, Time.now)
         twitter_client(account.screen_name, account.password).replies.each do |api_status|
@@ -81,11 +82,12 @@ class ApplicationController < ActionController::Base
           status.poster = poster
           status.save
         end
+
       end
       account.replies
     end
     
-    def get_direct_messages(account)
+    def sync_direct_messages(account)
       if account.direct_messages_sync_time.nil? || account.direct_messages_sync_time < 2.5.minutes.ago
         account.update_attribute(:direct_messages_sync_time, Time.now)
         recieved = twitter_client(account.screen_name, account.password).direct_messages
@@ -99,10 +101,7 @@ class ApplicationController < ActionController::Base
           dm.recipient = TwitterUser.find_or_create_by_id(api_dm.recipient_id)
           dm.recipient.screen_name = api_dm.recipient_screen_name
           dm.save
-          dm.sender.save
-          dm.recipient.save
         end
-        
       end
       account.direct_messages
     end

@@ -57,7 +57,7 @@ class TwitterUsersController < ApplicationController
   
   def update_timeline
     begin
-      get_timeline(@account) unless @account.nil?
+      sync_friends_timeline(@account) unless @account.nil?
     rescue
       flash[:warning] ||= []
       flash[:warning] << "couldn't sync timeline: #{$!}"
@@ -66,7 +66,7 @@ class TwitterUsersController < ApplicationController
   
   def update_replies
     begin
-      get_replies(@account) unless @account.nil?
+      sync_replies(@account) unless @account.nil?
     rescue
       flash[:warning] ||= []
       flash[:warning] << "couldn't sync replies: #{$!}"
@@ -75,7 +75,7 @@ class TwitterUsersController < ApplicationController
   
   def update_direct_messages
     begin
-      get_direct_messages(@account) unless @account.nil?
+      sync_direct_messages(@account) unless @account.nil?
     rescue
       flash[:warning] ||= []
       flash[:warning] << "couldn't sync direct_messages: #{$!}"
