@@ -4,7 +4,7 @@ class TwitterStatus < ActiveRecord::Base
   has_many :replies, :class_name => "TwitterStatus", :foreign_key => 'in_reply_to_status_id'
   
   def reply
-    replies.new
+    replies.new(:text => "@#{poster.screen_name} ")
   end
   
   def update_from_twitter(api_status)

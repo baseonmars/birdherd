@@ -67,7 +67,7 @@ class TwitterStatusesControllerTest < ActionController::TestCase
         reply = assigns(:reply)
         reply.text = 'this is a reply'
         post :create, :twitter_user_id => @twitter_user.id, :status => reply
-        assert_redirected_to twitter_user_twitter_status_path(@twitter_user.id, assigns(:response))
+        assert_redirected_to user_twitter_user_path(@twitter_user)
       end
       
       should "be able to reply to a status of an account they don't 'own'" do
@@ -75,7 +75,7 @@ class TwitterStatusesControllerTest < ActionController::TestCase
         reply = assigns(:reply)
         reply.text = 'this is a reply'
         post :create, :twitter_user_id => @twitter_user.id, :status => reply
-        assert_redirected_to twitter_user_twitter_status_path(@twitter_user.id, assigns(:response))
+        assert_redirected_to user_twitter_user_path(@twitter_user)
       end
       
       should "not be able to create a post belonging to an account they don't own" do

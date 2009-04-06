@@ -62,9 +62,9 @@ class TwitterUsersControllerTest < ActionController::TestCase
         assert assigns('account').friends_timeline_sync_time > @start_time
       end
 
-      should "not sync friends timeline if synced in last 5 minutes" do
+      should "not sync friends timeline if synced in last 2.5 minutes" do
         last_sync = assigns('account').friends_timeline_sync_time
-        pretend_now_is(3.minutes.from_now) do
+        pretend_now_is(2.3.minutes.from_now) do
           get :show, :id => @account.id
           assert_equal assigns('account').friends_timeline_sync_time.to_s, last_sync.to_s
         end
@@ -74,9 +74,9 @@ class TwitterUsersControllerTest < ActionController::TestCase
         assert assigns('account').replies_sync_time
       end
 
-      should "not sync replies if synced in last 5 minutes" do
+      should "not sync replies if synced in last 2.5 minutes" do
         last_sync = assigns('account').replies_sync_time
-        pretend_now_is(3.minutes.from_now) do
+        pretend_now_is(2.3.minutes.from_now) do
           get :show, :id => @account.id
           assert_equal assigns('account').replies_sync_time.to_s, last_sync.to_s
         end

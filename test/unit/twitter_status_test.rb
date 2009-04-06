@@ -18,5 +18,10 @@ class TwitterStatusTest < ActiveSupport::TestCase
       assert_equal reply.in_reply_to_status_id, @status.id
     end
     
+    should "set the reply text with its screen name" do
+      reply = @status.reply
+      assert_match /^@#{@status.poster.screen_name}/, reply.text
+    end
+    
   end
 end

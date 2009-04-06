@@ -1,6 +1,433 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <direct-messages type="array">
 <direct_message>
+  <id>87498946</id>
+  <sender_id>25256654</sender_id>
+  <text>hi</text>
+  <recipient_id>7733932</recipient_id>
+  <created_at>Mon Apr 06 22:27:32 +0000 2009</created_at>
+  <sender_screen_name>birdherd</sender_screen_name>
+  <recipient_screen_name>baseonmars</recipient_screen_name>
+  <sender>
+    <id>25256654</id>
+    <name>Bird Herd</name>
+    <screen_name>birdherd</screen_name>
+    <location></location>
+    <description></description>
+    <profile_image_url>http://s3.amazonaws.com/twitter_production/profile_images/120266467/images_normal.jpeg</profile_image_url>
+    <url></url>
+    <protected>false</protected>
+    <followers_count>1</followers_count>
+    <profile_background_color>8B542B</profile_background_color>
+    <profile_text_color>333333</profile_text_color>
+    <profile_link_color>9D582E</profile_link_color>
+    <profile_sidebar_fill_color>EADEAA</profile_sidebar_fill_color>
+    <profile_sidebar_border_color>D9B17E</profile_sidebar_border_color>
+    <friends_count>1</friends_count>
+    <created_at>Thu Mar 19 07:48:51 +0000 2009</created_at>
+    <favourites_count>0</favourites_count>
+    <utc_offset></utc_offset>
+    <time_zone></time_zone>
+    <profile_background_image_url>http://static.twitter.com/images/themes/theme8/bg.gif</profile_background_image_url>
+    <profile_background_tile>false</profile_background_tile>
+    <statuses_count>17</statuses_count>
+    <notifications>false</notifications>
+    <following>true</following>
+  </sender>
+  <recipient>
+    <id>7733932</id>
+    <name>Dan Etherington</name>
+    <screen_name>baseonmars</screen_name>
+    <location>London, UK</location>
+    <description>various potterings and codez from a web dev working at moonfruit/sitemaker</description>
+    <profile_image_url>https://s3.amazonaws.com/twitter_production/profile_images/68794315/dan_normal.jpg</profile_image_url>
+    <url>http://baseonmars.co.uk</url>
+    <protected>false</protected>
+    <followers_count>60</followers_count>
+    <profile_background_color>1E1E1E</profile_background_color>
+    <profile_text_color>676767</profile_text_color>
+    <profile_link_color>D20000</profile_link_color>
+    <profile_sidebar_fill_color>FAF6DA</profile_sidebar_fill_color>
+    <profile_sidebar_border_color>F0F0F0</profile_sidebar_border_color>
+    <friends_count>67</friends_count>
+    <created_at>Thu Jul 26 10:57:35 +0000 2007</created_at>
+    <favourites_count>5</favourites_count>
+    <utc_offset>0</utc_offset>
+    <time_zone>London</time_zone>
+    <profile_background_image_url>http://s3.amazonaws.com/twitter_production/profile_background_images/2522543/BOM-twitter-background.png</profile_background_image_url>
+    <profile_background_tile>false</profile_background_tile>
+    <statuses_count>911</statuses_count>
+    <notifications>false</notifications>
+    <following>false</following>
+  </recipient>
+</direct_message>
+<direct_message>
+  <id>87498088</id>
+  <sender_id>25256654</sender_id>
+  <text>what's going down?</text>
+  <recipient_id>7733932</recipient_id>
+  <created_at>Mon Apr 06 22:26:46 +0000 2009</created_at>
+  <sender_screen_name>birdherd</sender_screen_name>
+  <recipient_screen_name>baseonmars</recipient_screen_name>
+  <sender>
+    <id>25256654</id>
+    <name>Bird Herd</name>
+    <screen_name>birdherd</screen_name>
+    <location></location>
+    <description></description>
+    <profile_image_url>http://s3.amazonaws.com/twitter_production/profile_images/120266467/images_normal.jpeg</profile_image_url>
+    <url></url>
+    <protected>false</protected>
+    <followers_count>1</followers_count>
+    <profile_background_color>8B542B</profile_background_color>
+    <profile_text_color>333333</profile_text_color>
+    <profile_link_color>9D582E</profile_link_color>
+    <profile_sidebar_fill_color>EADEAA</profile_sidebar_fill_color>
+    <profile_sidebar_border_color>D9B17E</profile_sidebar_border_color>
+    <friends_count>1</friends_count>
+    <created_at>Thu Mar 19 07:48:51 +0000 2009</created_at>
+    <favourites_count>0</favourites_count>
+    <utc_offset></utc_offset>
+    <time_zone></time_zone>
+    <profile_background_image_url>http://static.twitter.com/images/themes/theme8/bg.gif</profile_background_image_url>
+    <profile_background_tile>false</profile_background_tile>
+    <statuses_count>17</statuses_count>
+    <notifications>false</notifications>
+    <following>true</following>
+  </sender>
+  <recipient>
+    <id>7733932</id>
+    <name>Dan Etherington</name>
+    <screen_name>baseonmars</screen_name>
+    <location>London, UK</location>
+    <description>various potterings and codez from a web dev working at moonfruit/sitemaker</description>
+    <profile_image_url>https://s3.amazonaws.com/twitter_production/profile_images/68794315/dan_normal.jpg</profile_image_url>
+    <url>http://baseonmars.co.uk</url>
+    <protected>false</protected>
+    <followers_count>60</followers_count>
+    <profile_background_color>1E1E1E</profile_background_color>
+    <profile_text_color>676767</profile_text_color>
+    <profile_link_color>D20000</profile_link_color>
+    <profile_sidebar_fill_color>FAF6DA</profile_sidebar_fill_color>
+    <profile_sidebar_border_color>F0F0F0</profile_sidebar_border_color>
+    <friends_count>67</friends_count>
+    <created_at>Thu Jul 26 10:57:35 +0000 2007</created_at>
+    <favourites_count>5</favourites_count>
+    <utc_offset>0</utc_offset>
+    <time_zone>London</time_zone>
+    <profile_background_image_url>http://s3.amazonaws.com/twitter_production/profile_background_images/2522543/BOM-twitter-background.png</profile_background_image_url>
+    <profile_background_tile>false</profile_background_tile>
+    <statuses_count>911</statuses_count>
+    <notifications>false</notifications>
+    <following>false</following>
+  </recipient>
+</direct_message>
+<direct_message>
+  <id>87464914</id>
+  <sender_id>25256654</sender_id>
+  <text>hi</text>
+  <recipient_id>7733932</recipient_id>
+  <created_at>Mon Apr 06 21:43:01 +0000 2009</created_at>
+  <sender_screen_name>birdherd</sender_screen_name>
+  <recipient_screen_name>baseonmars</recipient_screen_name>
+  <sender>
+    <id>25256654</id>
+    <name>Bird Herd</name>
+    <screen_name>birdherd</screen_name>
+    <location></location>
+    <description></description>
+    <profile_image_url>http://s3.amazonaws.com/twitter_production/profile_images/120266467/images_normal.jpeg</profile_image_url>
+    <url></url>
+    <protected>false</protected>
+    <followers_count>1</followers_count>
+    <profile_background_color>8B542B</profile_background_color>
+    <profile_text_color>333333</profile_text_color>
+    <profile_link_color>9D582E</profile_link_color>
+    <profile_sidebar_fill_color>EADEAA</profile_sidebar_fill_color>
+    <profile_sidebar_border_color>D9B17E</profile_sidebar_border_color>
+    <friends_count>1</friends_count>
+    <created_at>Thu Mar 19 07:48:51 +0000 2009</created_at>
+    <favourites_count>0</favourites_count>
+    <utc_offset></utc_offset>
+    <time_zone></time_zone>
+    <profile_background_image_url>http://static.twitter.com/images/themes/theme8/bg.gif</profile_background_image_url>
+    <profile_background_tile>false</profile_background_tile>
+    <statuses_count>15</statuses_count>
+    <notifications>false</notifications>
+    <following>true</following>
+  </sender>
+  <recipient>
+    <id>7733932</id>
+    <name>Dan Etherington</name>
+    <screen_name>baseonmars</screen_name>
+    <location>London, UK</location>
+    <description>various potterings and codez from a web dev working at moonfruit/sitemaker</description>
+    <profile_image_url>https://s3.amazonaws.com/twitter_production/profile_images/68794315/dan_normal.jpg</profile_image_url>
+    <url>http://baseonmars.co.uk</url>
+    <protected>false</protected>
+    <followers_count>60</followers_count>
+    <profile_background_color>1E1E1E</profile_background_color>
+    <profile_text_color>676767</profile_text_color>
+    <profile_link_color>D20000</profile_link_color>
+    <profile_sidebar_fill_color>FAF6DA</profile_sidebar_fill_color>
+    <profile_sidebar_border_color>F0F0F0</profile_sidebar_border_color>
+    <friends_count>67</friends_count>
+    <created_at>Thu Jul 26 10:57:35 +0000 2007</created_at>
+    <favourites_count>5</favourites_count>
+    <utc_offset>0</utc_offset>
+    <time_zone>London</time_zone>
+    <profile_background_image_url>http://s3.amazonaws.com/twitter_production/profile_background_images/2522543/BOM-twitter-background.png</profile_background_image_url>
+    <profile_background_tile>false</profile_background_tile>
+    <statuses_count>911</statuses_count>
+    <notifications>false</notifications>
+    <following>false</following>
+  </recipient>
+</direct_message>
+<direct_message>
+  <id>87464296</id>
+  <sender_id>25256654</sender_id>
+  <text>&quot;yo yo yo, whats up&quot;</text>
+  <recipient_id>7733932</recipient_id>
+  <created_at>Mon Apr 06 21:42:05 +0000 2009</created_at>
+  <sender_screen_name>birdherd</sender_screen_name>
+  <recipient_screen_name>baseonmars</recipient_screen_name>
+  <sender>
+    <id>25256654</id>
+    <name>Bird Herd</name>
+    <screen_name>birdherd</screen_name>
+    <location></location>
+    <description></description>
+    <profile_image_url>http://s3.amazonaws.com/twitter_production/profile_images/120266467/images_normal.jpeg</profile_image_url>
+    <url></url>
+    <protected>false</protected>
+    <followers_count>1</followers_count>
+    <profile_background_color>8B542B</profile_background_color>
+    <profile_text_color>333333</profile_text_color>
+    <profile_link_color>9D582E</profile_link_color>
+    <profile_sidebar_fill_color>EADEAA</profile_sidebar_fill_color>
+    <profile_sidebar_border_color>D9B17E</profile_sidebar_border_color>
+    <friends_count>1</friends_count>
+    <created_at>Thu Mar 19 07:48:51 +0000 2009</created_at>
+    <favourites_count>0</favourites_count>
+    <utc_offset></utc_offset>
+    <time_zone></time_zone>
+    <profile_background_image_url>http://static.twitter.com/images/themes/theme8/bg.gif</profile_background_image_url>
+    <profile_background_tile>false</profile_background_tile>
+    <statuses_count>17</statuses_count>
+    <notifications>false</notifications>
+    <following>true</following>
+  </sender>
+  <recipient>
+    <id>7733932</id>
+    <name>Dan Etherington</name>
+    <screen_name>baseonmars</screen_name>
+    <location>London, UK</location>
+    <description>various potterings and codez from a web dev working at moonfruit/sitemaker</description>
+    <profile_image_url>https://s3.amazonaws.com/twitter_production/profile_images/68794315/dan_normal.jpg</profile_image_url>
+    <url>http://baseonmars.co.uk</url>
+    <protected>false</protected>
+    <followers_count>60</followers_count>
+    <profile_background_color>1E1E1E</profile_background_color>
+    <profile_text_color>676767</profile_text_color>
+    <profile_link_color>D20000</profile_link_color>
+    <profile_sidebar_fill_color>FAF6DA</profile_sidebar_fill_color>
+    <profile_sidebar_border_color>F0F0F0</profile_sidebar_border_color>
+    <friends_count>67</friends_count>
+    <created_at>Thu Jul 26 10:57:35 +0000 2007</created_at>
+    <favourites_count>5</favourites_count>
+    <utc_offset>0</utc_offset>
+    <time_zone>London</time_zone>
+    <profile_background_image_url>http://s3.amazonaws.com/twitter_production/profile_background_images/2522543/BOM-twitter-background.png</profile_background_image_url>
+    <profile_background_tile>false</profile_background_tile>
+    <statuses_count>911</statuses_count>
+    <notifications>false</notifications>
+    <following>false</following>
+  </recipient>
+</direct_message>
+<direct_message>
+  <id>87464239</id>
+  <sender_id>25256654</sender_id>
+  <text>&quot;yo yo yo, whats up&quot;</text>
+  <recipient_id>7733932</recipient_id>
+  <created_at>Mon Apr 06 21:41:59 +0000 2009</created_at>
+  <sender_screen_name>birdherd</sender_screen_name>
+  <recipient_screen_name>baseonmars</recipient_screen_name>
+  <sender>
+    <id>25256654</id>
+    <name>Bird Herd</name>
+    <screen_name>birdherd</screen_name>
+    <location></location>
+    <description></description>
+    <profile_image_url>http://s3.amazonaws.com/twitter_production/profile_images/120266467/images_normal.jpeg</profile_image_url>
+    <url></url>
+    <protected>false</protected>
+    <followers_count>1</followers_count>
+    <profile_background_color>8B542B</profile_background_color>
+    <profile_text_color>333333</profile_text_color>
+    <profile_link_color>9D582E</profile_link_color>
+    <profile_sidebar_fill_color>EADEAA</profile_sidebar_fill_color>
+    <profile_sidebar_border_color>D9B17E</profile_sidebar_border_color>
+    <friends_count>1</friends_count>
+    <created_at>Thu Mar 19 07:48:51 +0000 2009</created_at>
+    <favourites_count>0</favourites_count>
+    <utc_offset></utc_offset>
+    <time_zone></time_zone>
+    <profile_background_image_url>http://static.twitter.com/images/themes/theme8/bg.gif</profile_background_image_url>
+    <profile_background_tile>false</profile_background_tile>
+    <statuses_count>17</statuses_count>
+    <notifications>false</notifications>
+    <following>true</following>
+  </sender>
+  <recipient>
+    <id>7733932</id>
+    <name>Dan Etherington</name>
+    <screen_name>baseonmars</screen_name>
+    <location>London, UK</location>
+    <description>various potterings and codez from a web dev working at moonfruit/sitemaker</description>
+    <profile_image_url>https://s3.amazonaws.com/twitter_production/profile_images/68794315/dan_normal.jpg</profile_image_url>
+    <url>http://baseonmars.co.uk</url>
+    <protected>false</protected>
+    <followers_count>60</followers_count>
+    <profile_background_color>1E1E1E</profile_background_color>
+    <profile_text_color>676767</profile_text_color>
+    <profile_link_color>D20000</profile_link_color>
+    <profile_sidebar_fill_color>FAF6DA</profile_sidebar_fill_color>
+    <profile_sidebar_border_color>F0F0F0</profile_sidebar_border_color>
+    <friends_count>67</friends_count>
+    <created_at>Thu Jul 26 10:57:35 +0000 2007</created_at>
+    <favourites_count>5</favourites_count>
+    <utc_offset>0</utc_offset>
+    <time_zone>London</time_zone>
+    <profile_background_image_url>http://s3.amazonaws.com/twitter_production/profile_background_images/2522543/BOM-twitter-background.png</profile_background_image_url>
+    <profile_background_tile>false</profile_background_tile>
+    <statuses_count>911</statuses_count>
+    <notifications>false</notifications>
+    <following>false</following>
+  </recipient>
+</direct_message>
+<direct_message>
+  <id>87456259</id>
+  <sender_id>25256654</sender_id>
+  <text>is it working</text>
+  <recipient_id>7733932</recipient_id>
+  <created_at>Mon Apr 06 21:30:17 +0000 2009</created_at>
+  <sender_screen_name>birdherd</sender_screen_name>
+  <recipient_screen_name>baseonmars</recipient_screen_name>
+  <sender>
+    <id>25256654</id>
+    <name>Bird Herd</name>
+    <screen_name>birdherd</screen_name>
+    <location></location>
+    <description></description>
+    <profile_image_url>http://s3.amazonaws.com/twitter_production/profile_images/120266467/images_normal.jpeg</profile_image_url>
+    <url></url>
+    <protected>false</protected>
+    <followers_count>1</followers_count>
+    <profile_background_color>8B542B</profile_background_color>
+    <profile_text_color>333333</profile_text_color>
+    <profile_link_color>9D582E</profile_link_color>
+    <profile_sidebar_fill_color>EADEAA</profile_sidebar_fill_color>
+    <profile_sidebar_border_color>D9B17E</profile_sidebar_border_color>
+    <friends_count>1</friends_count>
+    <created_at>Thu Mar 19 07:48:51 +0000 2009</created_at>
+    <favourites_count>0</favourites_count>
+    <utc_offset></utc_offset>
+    <time_zone></time_zone>
+    <profile_background_image_url>http://static.twitter.com/images/themes/theme8/bg.gif</profile_background_image_url>
+    <profile_background_tile>false</profile_background_tile>
+    <statuses_count>15</statuses_count>
+    <notifications>false</notifications>
+    <following>false</following>
+  </sender>
+  <recipient>
+    <id>7733932</id>
+    <name>Dan Etherington</name>
+    <screen_name>baseonmars</screen_name>
+    <location>London, UK</location>
+    <description>various potterings and codez from a web dev working at moonfruit/sitemaker</description>
+    <profile_image_url>https://s3.amazonaws.com/twitter_production/profile_images/68794315/dan_normal.jpg</profile_image_url>
+    <url>http://baseonmars.co.uk</url>
+    <protected>false</protected>
+    <followers_count>60</followers_count>
+    <profile_background_color>1E1E1E</profile_background_color>
+    <profile_text_color>676767</profile_text_color>
+    <profile_link_color>D20000</profile_link_color>
+    <profile_sidebar_fill_color>FAF6DA</profile_sidebar_fill_color>
+    <profile_sidebar_border_color>F0F0F0</profile_sidebar_border_color>
+    <friends_count>67</friends_count>
+    <created_at>Thu Jul 26 10:57:35 +0000 2007</created_at>
+    <favourites_count>5</favourites_count>
+    <utc_offset>0</utc_offset>
+    <time_zone>London</time_zone>
+    <profile_background_image_url>http://static.twitter.com/images/themes/theme1/bg.gif</profile_background_image_url>
+    <profile_background_tile>false</profile_background_tile>
+    <statuses_count>911</statuses_count>
+    <notifications>false</notifications>
+    <following>true</following>
+  </recipient>
+</direct_message>
+<direct_message>
+  <id>87450786</id>
+  <sender_id>25256654</sender_id>
+  <text>hello</text>
+  <recipient_id>7733932</recipient_id>
+  <created_at>Mon Apr 06 21:21:47 +0000 2009</created_at>
+  <sender_screen_name>birdherd</sender_screen_name>
+  <recipient_screen_name>baseonmars</recipient_screen_name>
+  <sender>
+    <id>25256654</id>
+    <name>Bird Herd</name>
+    <screen_name>birdherd</screen_name>
+    <location></location>
+    <description></description>
+    <profile_image_url>http://s3.amazonaws.com/twitter_production/profile_images/120266467/images_normal.jpeg</profile_image_url>
+    <url></url>
+    <protected>false</protected>
+    <followers_count>1</followers_count>
+    <profile_background_color>8B542B</profile_background_color>
+    <profile_text_color>333333</profile_text_color>
+    <profile_link_color>9D582E</profile_link_color>
+    <profile_sidebar_fill_color>EADEAA</profile_sidebar_fill_color>
+    <profile_sidebar_border_color>D9B17E</profile_sidebar_border_color>
+    <friends_count>1</friends_count>
+    <created_at>Thu Mar 19 07:48:51 +0000 2009</created_at>
+    <favourites_count>0</favourites_count>
+    <utc_offset></utc_offset>
+    <time_zone></time_zone>
+    <profile_background_image_url>http://static.twitter.com/images/themes/theme8/bg.gif</profile_background_image_url>
+    <profile_background_tile>false</profile_background_tile>
+    <statuses_count>17</statuses_count>
+    <notifications>false</notifications>
+    <following>true</following>
+  </sender>
+  <recipient>
+    <id>7733932</id>
+    <name>Dan Etherington</name>
+    <screen_name>baseonmars</screen_name>
+    <location>London, UK</location>
+    <description>various potterings and codez from a web dev working at moonfruit/sitemaker</description>
+    <profile_image_url>https://s3.amazonaws.com/twitter_production/profile_images/68794315/dan_normal.jpg</profile_image_url>
+    <url>http://baseonmars.co.uk</url>
+    <protected>false</protected>
+    <followers_count>60</followers_count>
+    <profile_background_color>1E1E1E</profile_background_color>
+    <profile_text_color>676767</profile_text_color>
+    <profile_link_color>D20000</profile_link_color>
+    <profile_sidebar_fill_color>FAF6DA</profile_sidebar_fill_color>
+    <profile_sidebar_border_color>F0F0F0</profile_sidebar_border_color>
+    <friends_count>67</friends_count>
+    <created_at>Thu Jul 26 10:57:35 +0000 2007</created_at>
+    <favourites_count>5</favourites_count>
+    <utc_offset>0</utc_offset>
+    <time_zone>London</time_zone>
+    <profile_background_image_url>http://s3.amazonaws.com/twitter_production/profile_background_images/2522543/BOM-twitter-background.png</profile_background_image_url>
+    <profile_background_tile>false</profile_background_tile>
+    <statuses_count>911</statuses_count>
+    <notifications>false</notifications>
+    <following>false</following>
+  </recipient>
+</direct_message>
+<direct_message>
   <id>85314231</id>
   <sender_id>25256654</sender_id>
   <text>actually yeah, that's defo what's happening. CODE!</text>
@@ -30,7 +457,7 @@
     <time_zone></time_zone>
     <profile_background_image_url>http://static.twitter.com/images/themes/theme8/bg.gif</profile_background_image_url>
     <profile_background_tile>false</profile_background_tile>
-    <statuses_count>9</statuses_count>
+    <statuses_count>17</statuses_count>
     <notifications>false</notifications>
     <following>true</following>
   </sender>
@@ -43,7 +470,7 @@
     <profile_image_url>https://s3.amazonaws.com/twitter_production/profile_images/68794315/dan_normal.jpg</profile_image_url>
     <url>http://baseonmars.co.uk</url>
     <protected>false</protected>
-    <followers_count>61</followers_count>
+    <followers_count>60</followers_count>
     <profile_background_color>1E1E1E</profile_background_color>
     <profile_text_color>676767</profile_text_color>
     <profile_link_color>D20000</profile_link_color>
@@ -56,7 +483,7 @@
     <time_zone>London</time_zone>
     <profile_background_image_url>http://s3.amazonaws.com/twitter_production/profile_background_images/2522543/BOM-twitter-background.png</profile_background_image_url>
     <profile_background_tile>false</profile_background_tile>
-    <statuses_count>898</statuses_count>
+    <statuses_count>911</statuses_count>
     <notifications>false</notifications>
     <following>false</following>
   </recipient>
@@ -91,7 +518,7 @@
     <time_zone></time_zone>
     <profile_background_image_url>http://static.twitter.com/images/themes/theme8/bg.gif</profile_background_image_url>
     <profile_background_tile>false</profile_background_tile>
-    <statuses_count>9</statuses_count>
+    <statuses_count>17</statuses_count>
     <notifications>false</notifications>
     <following>true</following>
   </sender>
@@ -104,7 +531,7 @@
     <profile_image_url>https://s3.amazonaws.com/twitter_production/profile_images/68794315/dan_normal.jpg</profile_image_url>
     <url>http://baseonmars.co.uk</url>
     <protected>false</protected>
-    <followers_count>61</followers_count>
+    <followers_count>60</followers_count>
     <profile_background_color>1E1E1E</profile_background_color>
     <profile_text_color>676767</profile_text_color>
     <profile_link_color>D20000</profile_link_color>
@@ -117,7 +544,7 @@
     <time_zone>London</time_zone>
     <profile_background_image_url>http://s3.amazonaws.com/twitter_production/profile_background_images/2522543/BOM-twitter-background.png</profile_background_image_url>
     <profile_background_tile>false</profile_background_tile>
-    <statuses_count>898</statuses_count>
+    <statuses_count>911</statuses_count>
     <notifications>false</notifications>
     <following>false</following>
   </recipient>

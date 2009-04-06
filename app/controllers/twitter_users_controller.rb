@@ -1,6 +1,5 @@
 class TwitterUsersController < ApplicationController
   before_filter :require_user
-  before_filter :errors
   before_filter :get_account, :only => :show
   before_filter :update_timeline, :only => :show
   before_filter :update_replies, :only=> :show
@@ -60,7 +59,7 @@ class TwitterUsersController < ApplicationController
     begin
       get_timeline(@account) unless @account.nil?
     rescue
-      @errors << "couldn't update timeline"
+      @errors << "couldn't sync timeline"
     end
   end
   
@@ -68,7 +67,7 @@ class TwitterUsersController < ApplicationController
     begin
       get_replies(@account) unless @account.nil?
     rescue
-      @errors << "couldn't update replies"
+      @errors << "couldn't sync replies"
     end
   end
   
@@ -76,7 +75,7 @@ class TwitterUsersController < ApplicationController
     begin
       get_direct_messages(@account) unless @account.nil?
     rescue
-      @errors << "couldn't update direct_messages"
+      @errors << "couldn't sync direct_messages"
     end
   end
 

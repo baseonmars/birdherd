@@ -26,8 +26,8 @@ class TwitterUserTest < ActiveSupport::TestCase
       setup do
         @friend = Factory(:twitter_user, :id => '7733932')
         @twitter_user.friends << @friend
-        @friend.statuses << Factory(:twitter_status)
-        @twitter_user.statuses << Factory(:twitter_status)
+        Factory(:twitter_status, :poster => @friend)
+        Factory(:twitter_status, :poster => @twitter_user)
       end
       
       should "have one friend" do

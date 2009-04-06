@@ -26,7 +26,7 @@
 <% end %>
 
 <p style="color: green"><%= flash[:notice] %></p>
-<p style="color: red"><%= h @errors.join(', ') %></p>
+<p style="color: red"><%= flash[:warning] %> <%= h @errors.join(', ') %></p>
 
 <%= yield  %>
 

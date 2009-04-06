@@ -44,6 +44,7 @@ end
 
 Factory.define :twitter_status do |f|
   f.text "Lorem ipsum dolor sit amet, consectetur adipisicing elit"
+  f.poster { |poster| poster.association(:twitter_user) }
 end
 
 Factory.define :api_status, :class => Twitter::Status do |f|

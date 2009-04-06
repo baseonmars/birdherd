@@ -10,6 +10,7 @@ class ApplicationController < ActionController::Base
   # Scrub sensitive parameters from your log
   filter_parameter_logging :password
   helper_method :current_user_session, :current_user, :get_twitter
+  before_filter :errors #array of error message strings
   
   private
     def current_user_session
@@ -55,7 +56,7 @@ class ApplicationController < ActionController::Base
 
 # TODO DRY up the blocks in get_methods, can't work out syntax
     def get_timeline(account, type=:friends)
-      if account.friends_timeline_sync_time.nil? || account.friends_timeline_sync_time < 5.minute.ago
+      if account.friends_timeline_sync_time.nil? || account.friends_timeline_sync_time < 2.5.minute.ago
         account.update_attribute(:friends_timeline_sync_time, Time.now)
         twitter_client(account.screen_name, account.password).timeline(type).each do |api_status|
           status = TwitterStatus.find_or_create_by_id(api_status.id)
@@ -70,7 +71,7 @@ class ApplicationController < ActionController::Base
     end
     
     def get_replies(account)
-      if account.replies_sync_time.nil? || account.replies_sync_time < 5.minutes.ago
+      if account.replies_sync_time.nil? || account.replies_sync_time < 2.5.minutes.ago
         account.update_attribute(:replies_sync_time, Time.now)
         twitter_client(account.screen_name, account.password).replies.each do |api_status|
           status = TwitterStatus.find_or_create_by_id(api_status.id)
@@ -85,9 +86,12 @@ class ApplicationController < ActionController::Base
     end
     
     def get_direct_messages(account)
-      if account.direct_messages_sync_time.nil? || account.direct_messages_sync_time < 5.minutes.ago
+      if account.direct_messages_sync_time.nil? || account.direct_messages_sync_time < 2.5.minutes.ago
         account.update_attribute(:direct_messages_sync_time, Time.now)
-        twitter_client(account.screen_name, account.password).direct_messages.each do |api_dm|
+        recieved = twitter_client(account.screen_name, account.password).direct_messages
+        sent = twitter_client(account.screen_name, account.password).sent_messages
+        all = recieved + sent
+        all.each do |api_dm|
           dm = TwitterDirectMessage.find_or_create_by_id(api_dm.id)
           dm.update_from_twitter(api_dm)
           dm.sender = TwitterUser.find_or_create_by_id(api_dm.sender_id)
@@ -98,6 +102,7 @@ class ApplicationController < ActionController::Base
           dm.sender.save
           dm.recipient.save
         end
+        
       end
       account.direct_messages
     end
@@ -128,10 +133,10 @@ class ApplicationController < ActionController::Base
     end
     
     def post_status(account, status)
-      status = TwitterStatus.new
-      status.update_from_twitter twitter_client(account.screen_name, account.password).post(status.text, 
-      :in_reply_to_status_id => status.in_reply_to_status_id, 
-      :source => 'birdherd' );
+      response = twitter_client(account.screen_name, account.password).post( status.text, :in_reply_to_status_id => status.in_reply_to_status_id, :source => 'birdherd' )
+      status = account.statuses.find_or_create_by_id(response.id)
+      status.update_from_twitter(response)
+      status
     end
     
     def errors
