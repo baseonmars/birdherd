@@ -1,7 +1,4 @@
-<%= h @account.screen_name %>
-<p>
-	<strong><%=h @current_user.login %></strong> (<%= link_to 'Edit', edit_dashboard_path %>)
-</p>
+<h2><%= h @account.screen_name %></h2>
 
 <div id="post-status">
 <%= render :partial => 'twitter_statuses/brief_form', :locals => {:status => @status, :twitter_account => @account} %>

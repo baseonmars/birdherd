@@ -2,6 +2,6 @@
 	<h2><%= h title %></h2>
 	<% statuses.each do |tweet| %>
 	<p><strong><%= tweet.poster.screen_name %>:</strong> <%= tweet.text %></p>
-	<p><%= link_to "Reply", status_reply_path(account, tweet.id) %>
+	<p class="reply-link"><%= link_to "Reply", status_reply_path(account, tweet.id) %>
 	<% end -%>
 </div>
