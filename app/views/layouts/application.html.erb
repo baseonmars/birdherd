@@ -20,9 +20,10 @@
 <% else %>
   <%= link_to "My Account", dashboard_path %> |
   <%= link_to "Logout", user_session_path, :method => :delete, :confirm => "Are you sure you want to logout?" %>
+	<p>logged in as: <strong><%=h @current_user.login %></strong> (<%= link_to 'Edit', edit_dashboard_path %>)</p>
 <% end %>
 
-<p>logged in as: <strong><%=h @current_user.login %></strong> (<%= link_to 'Edit', edit_dashboard_path %>)</p>
+
 
 <p style="color: green"><%= flash[:notice] %></p>
 <p style="color: red"><%= flash[:warning] %> <%= h @errors.join(', ') %></p>

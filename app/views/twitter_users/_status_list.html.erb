@@ -1,7 +1,9 @@
 <div class="message-list">
 	<h2><%= h title %></h2>
 	<% statuses.each do |tweet| %>
-	<p><strong><%= tweet.poster.screen_name %>:</strong> <%= tweet.text %></p>
+	<p>
+		<%= image_tag tweet.poster.profile_image_url, :class => 'profile-image' unless tweet.poster.profile_image_url.blank? %>
+		<strong><%= tweet.poster.screen_name %>:</strong> <%= tweet.text %></p>
 	<p class="reply-link"><%= link_to "Reply", status_reply_path(account, tweet.id) %>
 	<% end -%>
 </div>
