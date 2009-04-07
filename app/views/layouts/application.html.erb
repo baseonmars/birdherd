@@ -13,7 +13,7 @@
 <h1>Birdherd</h1>
 <!-- <%= pluralize User.logged_in.count, "user" %> currently logged in--><!-- This based on last_request_at, if they were active < 10 minutes they are logged in -->
 
-<%= link_to "Twitter Accounts", user_twitter_users_path %> | <%= link_to 'My Account', dashboard_path %> |
+<%= link_to "Twitter Accounts", user_twitter_users_path %> |
 <% if !current_user %>
   <%= link_to "Register", new_dashboard_path %> |
   <%= link_to "Log In", new_user_session_path %> |
