@@ -2,7 +2,7 @@ class TwitterUsersController < ApplicationController
   before_filter :require_user
   before_filter :get_account, :only => :show
   before_filter :update_timeline, :only => :show
-  before_filter :update_replies, :only=> :show
+  before_filter :update_replies, :only => :show
   before_filter :update_direct_messages, :only => :show
   
   def index
