@@ -61,9 +61,8 @@ class ApplicationController < ActionController::Base
         twitter_client(account.screen_name, account.password).timeline(type).each do |api_status|
             status = TwitterStatus.find_or_create_by_id(api_status.id)
             status.update_from_twitter(api_status)
-            poster = TwitterUser.find_or_create_by_id(api_status.user.id)
-            poster.update_from_twitter(api_status.user).save
-            status.poster = poster
+            status.poster = TwitterUser.find_or_create_by_id(api_status.user.id)
+            status.poster.update_from_twitter(api_status.user)
             status.save
         end
 
@@ -74,56 +73,61 @@ class ApplicationController < ActionController::Base
     def sync_replies(account)
       if account.replies_sync_time.nil? || account.replies_sync_time < 2.5.minutes.ago
         account.update_attribute(:replies_sync_time, Time.now)
-        twitter_client(account.screen_name, account.password).replies.each do |api_status|
+       account.replies << twitter_client(account.screen_name, account.password).replies.map do |api_status|
           status = TwitterStatus.find_or_create_by_id(api_status.id)
           status.update_from_twitter(api_status)
           poster = TwitterUser.find_or_create_by_id(api_status.user.id)
-          poster.update_from_twitter(api_status.user).save
+          poster.update_from_twitter(api_status.user)
           status.poster = poster
-          status.save
+          status
         end
-
+        account.save
       end
-      account.replies
+      
     end
     
     def sync_direct_messages(account)
       if account.direct_messages_sync_time.nil? || account.direct_messages_sync_time < 2.5.minutes.ago
         account.update_attribute(:direct_messages_sync_time, Time.now)
+        
         recieved = twitter_client(account.screen_name, account.password).direct_messages
         sent = twitter_client(account.screen_name, account.password).sent_messages
+        
         all = recieved + sent
-        all.each do |api_dm|
+        
+        all.map do |api_dm|
           dm = TwitterDirectMessage.find_or_create_by_id(api_dm.id)
           dm.update_from_twitter(api_dm)
-          dm.sender = TwitterUser.find_or_create_by_id(api_dm.sender_id)
+          dm.sender = TwitterUser.find_by_id(api_dm.sender_id)
+          unless dm.sender
+            dm.sender = TwitterUser.new(:id => api_dm.sender_id)
+          end
           dm.sender.screen_name = api_dm.sender_screen_name
-          dm.recipient = TwitterUser.find_or_create_by_id(api_dm.recipient_id)
+          dm.recipient = TwitterUser.find_by_id(api_dm.recipient_id)
+          unless dm.recipient
+            dm.recipient = TwitterUser.new(:id => api_dm.recipient_id)
+          end
           dm.recipient.screen_name = api_dm.recipient_screen_name
           dm.save
         end
       end
-      account.direct_messages
     end
     
     def sync_friends(account)
-      account.friends = twitter_client(account.screen_name, account.password).friends.map do |api_friend|
+      account.friends << twitter_client(account.screen_name, account.password).friends.map do |api_friend|
         friend = TwitterUser.find_or_create_by_id(api_friend.id)
         friend.update_from_twitter(api_friend)
-        friend.save
         friend
       end
       account.save
     end
     
     def sync_followers(account)
-      followers = twitter_client(account.screen_name, account.password).followers.map do |api_follower|
+      account.followers << twitter_client(account.screen_name, account.password).followers.map do |api_follower|
         follower = TwitterUser.find_or_create_by_id(api_follower.id)
         follower.update_from_twitter(api_follower)
-        follower.save
         follower
       end
-      account.followers = followers
       account.save
     end
 
@@ -132,10 +136,10 @@ class ApplicationController < ActionController::Base
       tu = Twitter::User.new_from_xml(xml)
       account = TwitterUser.find_by_screen_name(screen_name)
       if account.nil?
-        account = TwitterUser.new(:password => password)
+        account = TwitterUser.new
       end
+      account.password = password
       account.update_from_twitter(tu)
-      account
     end
     
     def post_status(account, status)
