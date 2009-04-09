@@ -156,8 +156,8 @@ class TwitterUsersControllerTest < ActionController::TestCase
     end
     
     should "claim an existing user that doesn't have a password" do
-      Factory(:twitter_user, :screen_name => 'taken', :password => 'nil')
-      post :create, :twitter_user => {:screen_name => "taken", :password => 'password'}
+      Factory(:twitter_user, :screen_name => 'birdherd', :password => 'nil', :id => 7)
+      post :create, :twitter_user => {:screen_name => "birdherd", :password => 'password'}
       assert_redirected_to user_twitter_user_path(assigns('account').id)
       assert_equal assigns('account').password, 'password'
     end

@@ -62,7 +62,7 @@ class ApplicationController < ActionController::Base
             status = TwitterStatus.find_or_create_by_id(api_status.id)
             status.update_from_twitter(api_status)
             status.poster = TwitterUser.find_or_create_by_id(api_status.user.id)
-            status.poster.update_from_twitter(api_status.user)
+            status.poster.update_from_twitter(api_status.user).save
             status.save
         end
 
@@ -76,9 +76,8 @@ class ApplicationController < ActionController::Base
        account.replies << twitter_client(account.screen_name, account.password).replies.map do |api_status|
           status = TwitterStatus.find_or_create_by_id(api_status.id)
           status.update_from_twitter(api_status)
-          poster = TwitterUser.find_or_create_by_id(api_status.user.id)
-          poster.update_from_twitter(api_status.user)
-          status.poster = poster
+          status.poster = TwitterUser.find_or_create_by_id(api_status.user.id)
+          status.poster.update_from_twitter(api_status.user).save
           status
         end
         account.save
@@ -108,6 +107,7 @@ class ApplicationController < ActionController::Base
             dm.recipient = TwitterUser.new(:id => api_dm.recipient_id)
           end
           dm.recipient.screen_name = api_dm.recipient_screen_name
+          dm.recipient.save
           dm.save
         end
       end
