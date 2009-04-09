@@ -128,7 +128,14 @@ class ApplicationController < ActionController::Base
     end
 
     def build_twitter_user(screen_name, password)
-      TwitterUser.new(:password => password).update_from_twitter( twitter_client(screen_name, password).user(screen_name) )
+      xml = twitter_client(screen_name, password).verify_credentials
+      tu = Twitter::User.new_from_xml(xml)
+      account = TwitterUser.find_by_screen_name(screen_name)
+      if account.nil?
+        account = TwitterUser.new(:password => password)
+      end
+      account.update_from_twitter(tu)
+      account
     end
     
     def post_status(account, status)
