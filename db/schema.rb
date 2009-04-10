@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20090407085737) do
+ActiveRecord::Schema.define(:version => 20090410145117) do
 
   create_table "friendships", :force => true do |t|
     t.integer "follower_id"
@@ -34,7 +34,6 @@ ActiveRecord::Schema.define(:version => 20090407085737) do
   end
 
   create_table "twitter_users", :force => true do |t|
-    t.string   "password"
     t.string   "screen_name"
     t.datetime "created_at"
     t.datetime "updated_at"
@@ -42,6 +41,8 @@ ActiveRecord::Schema.define(:version => 20090407085737) do
     t.datetime "replies_sync_time"
     t.datetime "direct_messages_sync_time"
     t.string   "profile_image_url"
+    t.string   "access_token"
+    t.string   "access_secret"
   end
 
   create_table "twitter_users_users", :id => false, :force => true do |t|
