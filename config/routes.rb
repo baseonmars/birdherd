@@ -12,6 +12,7 @@ ActionController::Routing::Routes.draw do |map|
   end
   map.resource :user_session
   map.connect 'logout' , :controller => 'user_sessions', :action => 'destroy'
+  map.connect '/oauth_callback', :controller => 'twitter_users', :action => 'callback'
   map.status_reply '/accounts/:account_id/statuses/:status_id/reply', :controller => 'twitter_statuses', :action =>'reply'
   map.root :controller => "user_sessions", :action => "new"
   # Sample of regular route:

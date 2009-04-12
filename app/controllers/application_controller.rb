@@ -49,10 +49,6 @@ class ApplicationController < ActionController::Base
       redirect_to(session[:return_to] || default)
       session[:return_to] = nil
     end
-    
-    def twitter_client(screen_name, password)
-      @twitter_client ||= Twitter::Base.new(screen_name, password)
-    end
 
 # TODO DRY up the blocks in get_methods, can't work out syntax
     def sync_friends_timeline(account, type=:friends)
@@ -111,24 +107,6 @@ class ApplicationController < ActionController::Base
           dm.save
         end
       end
-    end
-    
-    def sync_friends(account)
-      account.friends << twitter_client(account.screen_name, account.password).friends.map do |api_friend|
-        friend = TwitterUser.find_or_create_by_id(api_friend.id)
-        friend.update_from_twitter(api_friend)
-        friend
-      end
-      account.save
-    end
-    
-    def sync_followers(account)
-      account.followers << twitter_client(account.screen_name, account.password).followers.map do |api_follower|
-        follower = TwitterUser.find_or_create_by_id(api_follower.id)
-        follower.update_from_twitter(api_follower)
-        follower
-      end
-      account.save
     end
 
     def build_twitter_user(screen_name, password)

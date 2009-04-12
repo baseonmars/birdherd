@@ -1,9 +1,6 @@
 class TwitterUsersController < ApplicationController
   before_filter :require_user
   before_filter :get_account, :only => :show
-  before_filter :update_timeline, :only => :show
-  before_filter :update_replies, :only => :show
-  before_filter :update_direct_messages, :only => :show
   
   def index
     @user = @current_user
@@ -16,17 +13,12 @@ class TwitterUsersController < ApplicationController
   end
   
   def create
-    post_user = params[:twitter_user]
-    @account = build_twitter_user(post_user[:screen_name], post_user[:password])
-    if @current_user.twitter_users << @account
-      sync_friends(@account)
-      sync_followers(@account)    
-      flash[:notice] = "Twitter Account Created!"
-      redirect_to user_twitter_user_url(@account.id)
-    else
-      flash[:notice] = "@#{@account.screen_name} has already been taken."
-      render :action => :new
-    end
+    @request_token = oauth_client.request_token
+    session[:request_token] = @request_token.token
+    session[:request_token_secret] = @request_token.secret
+    # Send to twitter.com to authorize
+    redirect_to @request_token.authorize_url
+    return
   end
   
   def show
@@ -38,8 +30,54 @@ class TwitterUsersController < ApplicationController
     end
   end
   
+  def callback
+    
+    # Exchange the request token for an access token.
+    begin
+      access_token, access_secret = oauth_client.authorize_from_request( session[:request_token],
+      session[:request_token_secret])
+
+      oauth_client.authorize_from_access(access_token, access_secret)
+      client = Twitter::Base.new(oauth_client) 
+    rescue
+      flash[:notice] = "Authentication failed"
+      redirect_to :action => :new
+      return
+    end
+    
+    user = verify_credentials(client)
+
+    # We have an authorized user, save the information to the database.
+    @account = TwitterUser.find_or_initialize_by_id(user.id)
+    
+    if @account.owned_by?(@current_user)
+      flash[:notice] = "Account not added. You already have access to #{@account.screen_name}"
+      redirect_to user_twitter_users_path and return   
+    end
+
+    @account.attributes = { :screen_name => user.screen_name, 
+      :access_token => access_token, 
+      :access_secret => access_secret }
+
+    #sync followers and followers
+
+    if @account.save 
+      @current_user.twitter_users << @account      
+      sync_followers(@account.reload)
+      sync_friends(@account.reload)
+
+      # Redirect to account list page
+      flash[:notice] = "Twitter account #{@account.screen_name} authorised"
+      redirect_to user_twitter_users_path and return
+    else
+      # The user might have rejected this application. Or there was some other error during the request.
+      flash[:notice] = "Authentication failed"
+      redirect_to :action => :new and return
+    end
+
+  end
+
   private
-  
   def get_account
     begin
       @account = @current_user.twitter_users.find(params[:id], :include => [:users, :replies, :recieved_direct_messages, :sent_direct_messages])
@@ -48,31 +86,30 @@ class TwitterUsersController < ApplicationController
     end
   end
   
-  def update_timeline
-    begin
-      sync_friends_timeline(@account) unless @account.nil?
-    rescue
-      flash[:warning] ||= []
-      flash[:warning] << "couldn't sync timeline: #{$!}"
-    end
+  def oauth_client
+    @oauth ||= @oauth = Twitter::OAuth.new('gEn3FWqYxpDq4lQdjzA', 'gGR18W7oPFptkDBgjbMnM22hprv1KYZ2rMYZviXsZg')
   end
   
-  def update_replies
-    begin
-      sync_replies(@account) unless @account.nil?
-    rescue
-      flash[:warning] ||= []
-      flash[:warning] << "couldn't sync replies: #{$!}"
-    end
+  def twitter_api(account)
+    oauth_client.authorize_from_access(account.access_token, account.access_secret)
+    Twitter::Base.new(oauth_client) 
   end
   
-  def update_direct_messages
-    begin
-      sync_direct_messages(@account) unless @account.nil?
-    rescue
-      flash[:warning] ||= []
-      flash[:warning] << "couldn't sync direct_messages: #{$!}"
+  def verify_credentials(client)
+    user = client.verify_credentials
+    unless user.screen_name
+      flash[:notice] = "Twitter Authentication failed, was your password correct?"
+      redirect_to :action => :new and return
     end
+    user
   end
-
+  
+  def sync_followers(account)
+    account.update_relationships(:followers, twitter_api(account).followers)
+  end
+  
+  def sync_friends(account)
+    account.update_relationships(:friends, twitter_api(account).friends)
+  end
+  
 end

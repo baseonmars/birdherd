@@ -12,20 +12,25 @@ class TwitterUser < ActiveRecord::Base
   has_many :friend_friendships, :class_name   => 'Friendship',  :foreign_key => 'friend_id'  
   has_many :friends, :class_name              => 'TwitterUser', :through     => :follower_friendships, :source => :friend
   
-  
-  
   def owned_by?(user)
-    @users.include? user unless @users.nil?
+    users.include? user unless users.nil?
   end
 
   def update_from_twitter(api_user)
-    api_user.instance_variables.each do |attrib|
-      if attrib.nil? || attrib == '@status'
-        next
+   api_user.each { |k,v| self.send("#{k}=", v) if self.respond_to?(k) }
+   self
+  end
+  
+  def update_relationships(type, api_users)
+    api_users.each do |f|
+      begin
+        user = TwitterUser.find(f.id)
+      rescue
+        user = self.send(type).build
       end
-      attrib.gsub!(/^@/,'')
-      if self.respond_to?(attrib)
-        self.send("#{attrib}=", api_user.send(attrib))
+
+      unless self.send(type).include?(user)
+        self.send(type) << user.update_from_twitter(f)
       end
     end
     self
