@@ -24,12 +24,9 @@ class TwitterUser < ActiveRecord::Base
   def update_relationships(type, api_users)
     users = []
     api_users.each do |f|
-
       user = TwitterUser.find_or_initialize_by_id(f.id)
-      
-      unless self.send(type).include?(user)
-        users << user.update_from_twitter(f)
-      end
+      user.update_from_twitter(f) if user.new_record?
+      users << user unless self.send(type).include?(user)
     end
     self.send(type) << users
     self

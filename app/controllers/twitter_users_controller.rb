@@ -68,8 +68,8 @@ class TwitterUsersController < ApplicationController
     if @account.save 
       @current_user.twitter_users << @account      
 
-      sync_followers(@account)
-      sync_friends(@account)
+      sync_relationships(:followers, @account)
+      sync_relationships(:friends, @account)
 
       # Redirect to account list page
       flash[:notice] = "Twitter account #{@account.screen_name} authorised"
@@ -109,47 +109,49 @@ class TwitterUsersController < ApplicationController
     user
   end
   
-  def sync_followers(account)
-    account.update_relationships(:followers, twitter_api(account).followers)
-  end
-  
-  def sync_friends(account)
-    account.update_relationships(:friends, twitter_api(account).friends)
+  def sync_relationships(type, account)
+    page = 1
+    twitter_users = twitter_api(account).send(type, :page => page)
+    while twitter_users.length.remainder(100) == 0
+      page++
+      twitter_users << twitter_api(account).send(type, :page => page)
+    end
+    account.update_relationships(type, twitter_users)
   end
   
   def sync_statuses(type, account)
     if account.send("#{type}_sync_time").nil? || account.send("#{type}_sync_time") < 2.5.minutes.ago
       account.update_attribute("#{type}_sync_time", Time.now)
-    end
-    
-    statuses = twitter_api(account).send(type)
-    statuses.each do |api_status|
-        status = TwitterStatus.find_or_initialize_by_id(api_status.id)
-        status.update_from_twitter(api_status)
-        status.poster = TwitterUser.find_or_initialize_by_id(api_status.user.id)
-        status.poster.update_from_twitter(api_status.user).save
-        status.save
+      statuses = twitter_api(account).send(type)
+       statuses.each do |api_status|
+           status = TwitterStatus.find_or_initialize_by_id(api_status.id)
+           status.update_from_twitter(api_status)
+           status.poster = update_twitter_user(api_status.user)
+           status.save
+       end
     end
   end
   
   def sync_dms(account)
     if account.direct_messages_sync_time.nil? || account.direct_messages_sync_time < 2.5.minutes.ago
       account.update_attribute(:direct_messages_sync_time, Time.now)
+      recieved = twitter_api(account).direct_messages
+      sent = twitter_api(account).direct_messages_sent
+
+      dms = sent + recieved
+      dms.each do |api_dm|
+        dm = TwitterDirectMessage.find_or_initialize_by_id(api_dm.id)
+        dm.update_from_twitter(api_dm)
+        dm.sender = update_twitter_user(api_dm.sender)
+        dm.recipient = update_twitter_user(api_dm.recipient)
+        dm.save
+      end
     end
-    
-    recieved = twitter_api(account).direct_messages
-    sent = twitter_api(account).direct_messages_sent
-    
-    dms = sent + recieved
-    dms.each do |api_dm|
-      dm = TwitterDirectMessage.find_or_initialize_by_id(api_dm.id)
-      dm.update_from_twitter(api_dm)
-      dm.sender = TwitterUser.find_or_initialize_by_id(api_dm.sender.id)
-      dm.sender.update_from_twitter(api_dm.sender)
-      dm.recipient = TwitterUser.find_or_initialize_by_id(api_dm.recipient.id)
-      dm.recipient.update_from_twitter(api_dm.recipient)
-      dm.save
-    end
+  end
+  
+  def update_twitter_user(api_user)
+    twitter_user = TwitterUser.find_or_initialize_by_id(api_user.id)
+    twitter_user.update_from_twitter(api_user)
   end
   
 end
