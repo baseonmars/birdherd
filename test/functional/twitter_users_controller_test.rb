@@ -7,7 +7,7 @@ class TwitterUsersControllerTest < ActionController::TestCase
       activate_authlogic
       UserSession.create Factory.build(:user)
       @user = User.find(1)
-      @account = Factory :real_twitter_user, :users => [@user], :id => 25256654
+      @account = Factory :real_twitter_user, :users => [@user]
       @account.save
       friend = Factory :twitter_user, :screen_name => 'baseonmars', :id => 2
       @account.friends << friend
@@ -35,43 +35,40 @@ class TwitterUsersControllerTest < ActionController::TestCase
     should "update the account from the twitter api" do
       post :create, :twitter_user => Factory.attributes_for(:twitter_user)
       post :callback
+      assert_no_match /^Account not added/, flash[:notice]
       assert @user.twitter_users.find_by_screen_name('birdherd')
     end
-    #     
-    #     should "show a twitter account" do
-    #       get :show, :id => @account.id
-    #       assert_response :success
-    #       assert_not_nil assigns('account')
-    #     end
-    #     
-    #     should "see the public timeline for an account they own" do
-    #       get :show, :id => @account.id
-    #       assert_not_nil assigns('account')
-    #       assert_not_nil assigns('timeline')
-    #     end
-    #     
-    #     should "fill a twitter user with the statuses it recieves" do
-    #       get :show, :id => @account.id
-    #       assert assigns('timeline').length, TwitterStatus.count
-    #     end
-    #     
-    #     context "when getting statuses" do
-    #       setup do
-    #         @start_time = Time.now
-    #         get :show, :id => @account.id
-    #       end
-    # 
-    #       should "update the friends timeline sync time" do
-    #         assert assigns('account').friends_timeline_sync_time > @start_time
-    #       end
-    #       
-    #       should "not sync friends timeline if synced in last 2.5 minutes" do
-    #         last_sync = assigns('account').friends_timeline_sync_time
-    #         pretend_now_is(2.3.minutes.from_now) do
-    #           get :show, :id => @account.id
-    #           assert_equal assigns('account').friends_timeline_sync_time.to_s, last_sync.to_s
-    #         end
-    #       end
+
+    should "show a twitter account" do
+      get :show, :id => @account.id
+      assert_response :success
+      assert_not_nil assigns('account')
+    end
+
+    should "see the public timeline for an account they own" do
+      get :show, :id => @account.id
+      assert_not_nil assigns('account')
+      assert_not_nil assigns('timeline')
+    end
+
+    context "when getting statuses" do
+      setup do
+        @start_time = Time.now
+        get :show, :id => @account.id
+        assert_response :success
+      end
+    
+      should "update the friends timeline sync time" do
+        assert assigns('account').friends_timeline_sync_time > @start_time
+      end
+          
+      should "not sync friends timeline if synced in last 2.5 minutes" do
+        last_sync = assigns('account').friends_timeline_sync_time
+        pretend_now_is(2.3.minutes.from_now) do
+          get :show, :id => @account.id
+          assert_equal assigns('account').friends_timeline_sync_time.to_s, last_sync.to_s
+        end
+      end
     # 
     #       should "update the replies sync time" do
     #         assert assigns('account').replies_sync_time
@@ -105,7 +102,7 @@ class TwitterUsersControllerTest < ActionController::TestCase
     #         get :show, :id => @account.id
     #       end
     #       
-    #     end
+        end
     #     
     #     
     #     

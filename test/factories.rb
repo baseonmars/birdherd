@@ -28,7 +28,7 @@ Factory.define :twitter_direct_message do |f|
 end
 
 Factory.define :real_twitter_user, :class => 'twitter_user' do |f|
-  f.screen_name 'birdherd'
+  f.screen_name { Factory.next :screen_name }
 end
 
 Factory.define :twitter_status do |f|

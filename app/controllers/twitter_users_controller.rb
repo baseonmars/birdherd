@@ -22,6 +22,9 @@ class TwitterUsersController < ApplicationController
   end
   
   def show
+    
+    sync_friends_timeline(@account)
+    
     if @account && @account.owned_by?(@current_user)
       @timeline = @account.friends_timeline
       @replies = @account.replies
@@ -111,6 +114,13 @@ class TwitterUsersController < ApplicationController
   
   def sync_friends(account)
     account.update_relationships(:friends, twitter_api(account).friends)
+  end
+  
+  def sync_friends_timeline(account)
+    if account.friends_timeline_sync_time.nil? || account.friends_timeline_sync_time < 2.5.minutes.ago
+      account.update_attribute(:friends_timeline_sync_time, Time.now)
+    end
+    
   end
   
 end
