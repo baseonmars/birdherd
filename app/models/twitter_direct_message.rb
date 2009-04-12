@@ -3,15 +3,9 @@ class TwitterDirectMessage < ActiveRecord::Base
   belongs_to :recipient, :class_name => 'TwitterUser', :foreign_key => 'recipient_id'
   
   def update_from_twitter(api_dm)
-    api_dm.instance_variables.each do |attrib|
-      if attrib.nil? || ['@sender_screen_name', '@recipient_screen_name'].include?(attrib)
-        next
-      end
-      attrib.gsub!(/^@/,'')
-      if self.respond_to?(attrib)
-        self.send("#{attrib}=", api_dm.send(attrib))
-      end
-    end
-    self
+   api_dm.each { |k,v| 
+     next if ['sender','recipient'].include?(k)
+     self.send("#{k}=", v) if self.respond_to?(k) }
+   self
   end
 end

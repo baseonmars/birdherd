@@ -7,9 +7,9 @@ class TwitterUsersControllerTest < ActionController::TestCase
       activate_authlogic
       UserSession.create Factory.build(:user)
       @user = User.find(1)
-      @account = Factory :real_twitter_user, :users => [@user]
+      @account = Factory :real_twitter_user, :users => [@user], :screen_name => 'birdherd', :id => 25256654
       @account.save
-      friend = Factory :twitter_user, :screen_name => 'baseonmars', :id => 2
+      friend = Factory :twitter_user, :screen_name => 'baseonmars', :id => 7733932
       @account.friends << friend
       @user.reload
     end
@@ -38,6 +38,13 @@ class TwitterUsersControllerTest < ActionController::TestCase
       assert_no_match /^Account not added/, flash[:notice]
       assert @user.twitter_users.find_by_screen_name('birdherd')
     end
+    
+    should "updates the accounts friends and followers from the api" do
+      post :create, :twitter => Factory.attributes_for(:twitter_user)
+      post :callback
+      assert_equal 1, assigns(:account).followers.count
+      assert_equal 1, assigns(:account).friends.count
+    end
 
     should "show a twitter account" do
       get :show, :id => @account.id
@@ -59,7 +66,10 @@ class TwitterUsersControllerTest < ActionController::TestCase
       end
     
       should "update the friends timeline sync time" do
-        assert assigns('account').friends_timeline_sync_time > @start_time
+        assert_not_nil assigns('account').friends_timeline_sync_time
+        assert assigns('account').friends_timeline_sync_time = @start_time
+        assert_response :success
+        
       end
           
       should "not sync friends timeline if synced in last 2.5 minutes" do
@@ -69,40 +79,41 @@ class TwitterUsersControllerTest < ActionController::TestCase
           assert_equal assigns('account').friends_timeline_sync_time.to_s, last_sync.to_s
         end
       end
-    # 
-    #       should "update the replies sync time" do
-    #         assert assigns('account').replies_sync_time
-    #       end
-    #             
-    #       should "update the replies on the twitter user" do
-    #         assert_equal assigns('account').replies.count, 1
-    #       end
-    #       
-    #       should "update the direct messages on the twitter user" do
-    #         assert_equal assigns('account').direct_messages.count, 10
-    #       end
-    #             
-    #       should "update the friends timeline on the twitter user" do
-    #         assert_equal assigns('account').friends_timeline.length, 20
-    #       end
-    # 
-    #       should "not sync replies if synced in last 2.5 minutes" do
-    #         last_sync = assigns('account').replies_sync_time
-    #         pretend_now_is(2.3.minutes.from_now) do
-    #           get :show, :id => @account.id
-    #           assert_equal assigns('account').replies_sync_time.to_s, last_sync.to_s
-    #         end
-    #       end
-    # 
-    #       should "updated the direct messages sync time" do
-    #         assigns assigns('account').direct_messages_sync_time
-    #       end
-    # 
-    #       should "set the poster on statuses it recieves" do
-    #         get :show, :id => @account.id
-    #       end
-    #       
+
+      should "update the replies sync time" do
+        assert assigns('account').replies_sync_time
+      end
+
+      should "update the replies on the twitter user" do
+        assert_equal assigns('account').replies.count, 4
+        assert_equal assigns('replies').length, 4
+      end
+
+      should "update the direct messages on the twitter user" do
+        assert_equal assigns('account').direct_messages.count, 15
+      end
+
+      should "update the friends timeline on the twitter user" do
+        assert assigns('account').friends_timeline.length > 0
+      end
+
+      should "not sync replies if synced in last 2.5 minutes" do
+        last_sync = assigns('account').replies_sync_time
+        pretend_now_is(2.3.minutes.from_now) do
+          get :show, :id => @account.id
+          assert_equal assigns('account').replies_sync_time.to_s, last_sync.to_s
         end
+      end
+
+      should "updated the direct messages sync time" do
+        assigns assigns('account').direct_messages_sync_time
+      end
+      # 
+      #       should "set the poster on statuses it recieves" do
+      #         get :show, :id => @account.id
+      #       end
+      #       
+    end
     #     
     #     
     #     

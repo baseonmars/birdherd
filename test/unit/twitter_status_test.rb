@@ -5,13 +5,13 @@ class TwitterStatusTest < ActiveSupport::TestCase
     setup do
       @status = Factory(:twitter_status, :id => "4")
     end
-    # 
-    # should "have it's attributes updated from a Twitter::Status" do
-    #   @twitter_status = Factory.build(:api_status)
-    #   @status.update_from_twitter(@twitter_status)
-    #   assert @status.id, @twitter_status.id
-    #   assert @status.text, @twitter_status.text
-    # end
+
+    should "have it's attributes updated from a Twitter::Status" do
+      @twitter_status = Factory.build(:api_status, :id => 354525234)
+      @status.update_from_twitter(@twitter_status)
+      assert @status.id, @twitter_status.id
+      assert @status.text, @twitter_status.text
+    end
     
     should "produce a reply with it's in_reply_to_status set" do
       reply = @status.reply
@@ -22,6 +22,8 @@ class TwitterStatusTest < ActiveSupport::TestCase
       reply = @status.reply
       assert_match /^@#{@status.poster.screen_name}/, reply.text
     end
-    
+
+
+
   end
 end

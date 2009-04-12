@@ -21,11 +21,12 @@ class TwitterUsersController < ApplicationController
     return
   end
   
-  def show
-    
-    sync_friends_timeline(@account)
-    
+  def show  
     if @account && @account.owned_by?(@current_user)
+      sync_statuses(:friends_timeline, @account)
+      sync_statuses(:replies, @account)
+      sync_dms(@account)
+      @account.reload
       @timeline = @account.friends_timeline
       @replies = @account.replies
       @direct_messages = @account.direct_messages
@@ -116,11 +117,39 @@ class TwitterUsersController < ApplicationController
     account.update_relationships(:friends, twitter_api(account).friends)
   end
   
-  def sync_friends_timeline(account)
-    if account.friends_timeline_sync_time.nil? || account.friends_timeline_sync_time < 2.5.minutes.ago
-      account.update_attribute(:friends_timeline_sync_time, Time.now)
+  def sync_statuses(type, account)
+    if account.send("#{type}_sync_time").nil? || account.send("#{type}_sync_time") < 2.5.minutes.ago
+      account.update_attribute("#{type}_sync_time", Time.now)
     end
     
+    statuses = twitter_api(account).send(type)
+    statuses.each do |api_status|
+        status = TwitterStatus.find_or_initialize_by_id(api_status.id)
+        status.update_from_twitter(api_status)
+        status.poster = TwitterUser.find_or_initialize_by_id(api_status.user.id)
+        status.poster.update_from_twitter(api_status.user).save
+        status.save
+    end
+  end
+  
+  def sync_dms(account)
+    if account.direct_messages_sync_time.nil? || account.direct_messages_sync_time < 2.5.minutes.ago
+      account.update_attribute(:direct_messages_sync_time, Time.now)
+    end
+    
+    recieved = twitter_api(account).direct_messages
+    sent = twitter_api(account).direct_messages_sent
+    
+    dms = sent + recieved
+    dms.each do |api_dm|
+      dm = TwitterDirectMessage.find_or_initialize_by_id(api_dm.id)
+      dm.update_from_twitter(api_dm)
+      dm.sender = TwitterUser.find_or_initialize_by_id(api_dm.sender.id)
+      dm.sender.update_from_twitter(api_dm.sender)
+      dm.recipient = TwitterUser.find_or_initialize_by_id(api_dm.recipient.id)
+      dm.recipient.update_from_twitter(api_dm.recipient)
+      dm.save
+    end
   end
   
 end

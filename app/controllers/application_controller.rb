@@ -50,21 +50,6 @@ class ApplicationController < ActionController::Base
       session[:return_to] = nil
     end
 
-# TODO DRY up the blocks in get_methods, can't work out syntax
-    def sync_friends_timeline(account, type=:friends)
-      if account.friends_timeline_sync_time.nil? || account.friends_timeline_sync_time < 2.5.minute.ago
-        account.update_attribute(:friends_timeline_sync_time, Time.now)        
-        twitter_client(account.screen_name, account.password).timeline(type).each do |api_status|
-            status = TwitterStatus.find_or_create_by_id(api_status.id)
-            status.update_from_twitter(api_status)
-            status.poster = TwitterUser.find_or_create_by_id(api_status.user.id)
-            status.poster.update_from_twitter(api_status.user).save
-            status.save
-        end
-
-      end
-      account.friends_timeline
-    end
     
     def sync_replies(account)
       if account.replies_sync_time.nil? || account.replies_sync_time < 2.5.minutes.ago

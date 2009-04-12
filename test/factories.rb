@@ -39,3 +39,8 @@ end
 Factory.define :api_user, :class => Mash do |f|
   f.screen_name { Factory.next :screen_name }
 end
+
+Factory.define :api_status, :class => Mash do |f|
+  f.text "Lorem ipsum dolor sit amet, consectetur adipisicing"
+  f.user {|user| user.association :api_user}
+end
