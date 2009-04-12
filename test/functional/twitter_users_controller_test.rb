@@ -25,18 +25,18 @@ class TwitterUsersControllerTest < ActionController::TestCase
       assert_response :success
     end
 
-    # should "create a new user belonging to them" do
-    #      post :create, :twitter_user => Factory.attributes_for(:twitter_user)
-    #      assert_not_nil assigns('account')
-    #      assert_redirected_to user_twitter_user_path(assigns('account').id)
-    #      assert assigns('account').users.include?(assigns('current_user'))
-    #    end
-    
-    # should "update the account from the twitter api" do
-    #       post :create, :twitter_user => Factory.attributes_for(:twitter_user)
-    #       assert assigns('account')
-    #       assert_equal assigns('account').id, 7
-    #     end
+    should "create a new user belonging to them" do
+      post :create, :twitter_user => Factory.attributes_for(:twitter_user)
+      assert_redirected_to 'http://twitter.com/authorize'
+      post :callback
+      assert_redirected_to user_twitter_users_path
+    end
+
+    should "update the account from the twitter api" do
+      post :create, :twitter_user => Factory.attributes_for(:twitter_user)
+      post :callback
+      assert @user.twitter_users.find_by_screen_name('birdherd')
+    end
     #     
     #     should "show a twitter account" do
     #       get :show, :id => @account.id

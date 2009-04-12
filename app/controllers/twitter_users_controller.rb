@@ -63,8 +63,9 @@ class TwitterUsersController < ApplicationController
 
     if @account.save 
       @current_user.twitter_users << @account      
-      sync_followers(@account.reload)
-      sync_friends(@account.reload)
+
+      sync_followers(@account)
+      sync_friends(@account)
 
       # Redirect to account list page
       flash[:notice] = "Twitter account #{@account.screen_name} authorised"

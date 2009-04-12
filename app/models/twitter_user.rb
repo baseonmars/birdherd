@@ -22,6 +22,7 @@ class TwitterUser < ActiveRecord::Base
   end
   
   def update_relationships(type, api_users)
+    users = []
     api_users.each do |f|
       begin
         user = TwitterUser.find(f.id)
@@ -30,9 +31,10 @@ class TwitterUser < ActiveRecord::Base
       end
 
       unless self.send(type).include?(user)
-        self.send(type) << user.update_from_twitter(f)
+        users << user.update_from_twitter(f)
       end
     end
+    self.send(type) << users
     self
   end
   
