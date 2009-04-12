@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class TwitterUsersControllerTest < ActionController::TestCase  
+class TwitterUsersControllerTest < ActionController::TestCase
 
   context "Logged in with one account" do
     setup do
@@ -38,7 +38,7 @@ class TwitterUsersControllerTest < ActionController::TestCase
       assert_no_match /^Account not added/, flash[:notice]
       assert @user.twitter_users.find_by_screen_name('birdherd')
     end
-    
+
     should "updates the accounts friends and followers from the api" do
       post :create, :twitter => Factory.attributes_for(:twitter_user)
       post :callback
@@ -64,14 +64,14 @@ class TwitterUsersControllerTest < ActionController::TestCase
         get :show, :id => @account.id
         assert_response :success
       end
-    
+
       should "update the friends timeline sync time" do
         assert_not_nil assigns('account').friends_timeline_sync_time
         assert assigns('account').friends_timeline_sync_time = @start_time
         assert_response :success
-        
+
       end
-          
+
       should "not sync friends timeline if synced in last 2.5 minutes" do
         last_sync = assigns('account').friends_timeline_sync_time
         pretend_now_is(2.3.minutes.from_now) do
@@ -108,15 +108,15 @@ class TwitterUsersControllerTest < ActionController::TestCase
       should "updated the direct messages sync time" do
         assigns assigns('account').direct_messages_sync_time
       end
-      # 
+      #
       #       should "set the poster on statuses it recieves" do
       #         get :show, :id => @account.id
       #       end
-      #       
+      #
     end
-    #     
-    #     
-    #     
+    #
+    #
+    #
     #     context "viewing their dashboard" do
     #       setup do
     #         get :show, :id => @account.id
@@ -124,28 +124,28 @@ class TwitterUsersControllerTest < ActionController::TestCase
     #       should "see a timeline of tweets" do
     #         assert assigns(:timeline)
     #       end
-    #       
+    #
     #       should "see all their replies" do
     #         assert assigns(:replies)
     #       end
-    #       
+    #
     #       should "see direct messages sent to them" do
     #         assert assigns(:direct_messages)
     #       end
-    #       
+    #
     #       should "be have a new status ready to post" do
     #         assert assigns(:status)
     #       end
     #     end
-    #       
+    #
     #   end
-    # 
+    #
     #   context "logged in with no accounts" do
     #     setup do
     #       activate_authlogic
     #       UserSession.create Factory.build(:user)
     #     end
-    #     
+    #
     #     should "create a new user" do
     #       get :new
     #       assert_response :success
@@ -154,7 +154,7 @@ class TwitterUsersControllerTest < ActionController::TestCase
     #       assert_not_nil assigns('account')
     #       assert assigns(:account).users.include?(assigns('current_user'))
     #     end
-    #     
+    #
     #     should "update the account from the twitter api" do
     #       post :create, :twitter_user => Factory.attributes_for(:twitter_user)
     #       assert assigns('account')
@@ -162,7 +162,7 @@ class TwitterUsersControllerTest < ActionController::TestCase
     #       assert_equal assigns('account').password, 'password'
     #       assert_equal assigns('current_user').twitter_users.first, assigns('account')
     #     end
-    #     
+    #
     #     should "claim an existing user that doesn't have a password" do
     #       Factory(:twitter_user, :screen_name => 'birdherd', :password => 'nil', :id => 7)
     #       post :create, :twitter_user => {:screen_name => "birdherd", :password => 'password'}
@@ -170,15 +170,15 @@ class TwitterUsersControllerTest < ActionController::TestCase
     #       assert_equal assigns('account').password, 'password'
     #     end
     #   end
-    #   
+    #
     #   context "not logged in" do
     #     should "not be able to create a new user" do
     #       get :new
-    #       assert_redirected_to new_user_session_path 
+    #       assert_redirected_to new_user_session_path
     #       post :create, :twitter_user => Factory.attributes_for(:twitter_user)
-    #       assert_redirected_to new_user_session_path 
+    #       assert_redirected_to new_user_session_path
     #     end
-    # 
+    #
     #     should "not be able to list twitter accounts" do
     #       get :index
     #       assert_redirected_to new_user_session_path

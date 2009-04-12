@@ -35,7 +35,7 @@ class UsersControllerTest < ActionController::TestCase
       UserSession.create Factory.build(:user)
       @user = User.find(1)
     end
-    
+
     should "be able to view their dashbaord" do
       get :show
       assert_response :success
@@ -43,7 +43,7 @@ class UsersControllerTest < ActionController::TestCase
       assert_not_nil assigns('user')
       assert_equal assigns('user'), @user
     end
-    
+
     should "be able to edit their account" do
       get :edit
       assert_response :success
@@ -51,14 +51,14 @@ class UsersControllerTest < ActionController::TestCase
       assert_not_nil assigns('user')
       assert_equal assigns('user'), @user
     end
-    
+
     should "be able to update their account" do
-        get :update, :user => {:login => 'jimbob'}
-        assert_response :redirect
-        assert_template :show
-        assert_equal assigns('user').login, 'jimbob'
+      get :update, :user => {:login => 'jimbob'}
+      assert_response :redirect
+      assert_template :show
+      assert_equal assigns('user').login, 'jimbob'
     end
-    
+
   end
 
 end

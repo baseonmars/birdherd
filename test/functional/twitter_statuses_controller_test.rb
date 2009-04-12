@@ -28,7 +28,7 @@ class TwitterStatusesControllerTest < ActionController::TestCase
     #   post :create, :twitter_user_id => twitter_user.id, :status => Factory.build(:twitter_status, :poster => twitter_user)
     #   assert_redirected_to new_user_session_path
     # end
-    # 
+    #
     # should "require a login to reply to a status" do
     #   twitter_user = Factory(:twitter_user)
     #   post :create, :twitter_user_id => twitter_user.id, :status => Factory.build(:twitter_status, :poster => twitter_user)
@@ -69,7 +69,7 @@ class TwitterStatusesControllerTest < ActionController::TestCase
       #   post :create, :twitter_user_id => @twitter_user.id, :status => reply
       #   assert_redirected_to user_twitter_user_path(@twitter_user)
       # end
-      # 
+      #
       # should "be able to reply to a status of an account they don't 'own'" do
       #   get :reply, :account_id => @twitter_user.id, :status_id => @status.id
       #   reply = assigns(:reply)
@@ -77,7 +77,7 @@ class TwitterStatusesControllerTest < ActionController::TestCase
       #   post :create, :twitter_user_id => @twitter_user.id, :status => reply
       #   assert_redirected_to user_twitter_user_path(@twitter_user)
       # end
-      # 
+      #
       # should "not be able to create a post belonging to an account they don't own" do
       #   new_post = Factory(:twitter_status, :poster => @original_poster)
       #   get :create, :twitter_user_id => @original_poster.id, :status => new_post

@@ -12,16 +12,16 @@ class TwitterUserTest < ActiveSupport::TestCase
 
     should "update its attributes from an api user" do
       api_user = Factory.build(:api_user)
-      @twitter_user.update_from_twitter api_user 
+      @twitter_user.update_from_twitter api_user
       assert_equal @twitter_user.screen_name, api_user.screen_name
     end
-    
+
     should "update it's followers from api users" do
       api_users = [Factory.build(:api_user), Factory.build(:api_user), Factory.build(:api_user)]
       @twitter_user.update_relationships(:followers, api_users)
       assert_equal @twitter_user.followers.count, api_users.length
     end
-    
+
     should "update it's friends from api users" do
       api_users = [Factory.build(:api_user), Factory.build(:api_user), Factory.build(:api_user)]
       @twitter_user.update_relationships(:friends, api_users)
@@ -33,15 +33,13 @@ class TwitterUserTest < ActiveSupport::TestCase
         @api_users = [Factory.build(:api_user, :id => 5), Factory.build(:api_user, :id => 6), Factory.build(:api_user, :id => 7)]
         @twitter_user.update_relationships(:followers, @api_users)
       end
-      
+
       should "be able to sync friends which include followers" do
         api_users = @api_users + [Factory.build(:api_user, :id => 8)]
         @twitter_user.update_relationships(:friends, api_users)
         assert_equal @twitter_user.friends.count, api_users.length
-      end 
-      
+      end
     end
-    
 
     should "have friends" do
       assert @twitter_user.respond_to?(:friends)
@@ -58,42 +56,41 @@ class TwitterUserTest < ActiveSupport::TestCase
         Factory(:twitter_status, :poster => @friend)
         Factory(:twitter_status, :poster => @twitter_user)
       end
-      
+
       should "have one friend" do
         assert !@friend.nil?
         assert @twitter_user.friends.count, 1
         assert_kind_of TwitterUser, @twitter_user.friends.first
         assert_equal @twitter_user.friends.first, @friend
       end
-      
+
       should "have no followers" do
         assert @twitter_user.followers.count, 0
         assert_equal @twitter_user.followers.first, nil
       end
-      
+
       should "be a follower of the friend" do
         assert @friend.followers.include?(@twitter_user)
       end
-      
+
       should "get timeline of friends statuses" do
         assert @twitter_user.respond_to?(:friends_timeline)
         assert_equal @twitter_user.friends_timeline.length, 2
       end
-      
+
       should "includes friends statuses in friends timeline" do
         assert @friend.statuses.all? { |status| @twitter_user.friends_timeline.include? status }
       end
-      
+
       should "includes own statuses in friends timeline" do
         assert @twitter_user.statuses.all? { |status| @twitter_user.friends_timeline.include? status }
       end
-      
+
       should "has many replies" do
         assert @twitter_user.respond_to?(:replies)
       end
-
     end
-    
+
     context "with 2 friend and one follower" do
       setup do
         @friend1, @friend2 = Factory(:twitter_user), Factory(:twitter_user)
@@ -101,16 +98,16 @@ class TwitterUserTest < ActiveSupport::TestCase
         @twitter_user.friends << [@friend1, @friend2]
         @follower.friends << @twitter_user
       end
-      
+
       should "should have 2 friends" do
         assert_equal @twitter_user.friends.count, 2
       end
-      
+
       should "have 1 follower" do
         assert_equal @twitter_user.followers.count, 1
       end
     end
-    
+
     context "owned by a user" do
       setup do
         @user = Factory(:user)
@@ -127,7 +124,7 @@ class TwitterUserTest < ActiveSupport::TestCase
       #        setup do
       #          @twitter_user.update_from_twitter Factory.build(:api_user, :id => 23423423)
       #        end
-      # 
+      #
       #        should "still be owned by it's previous owner" do
       #          assert @twitter_user.owned_by?(@user)
       #        end
@@ -138,7 +135,7 @@ class TwitterUserTest < ActiveSupport::TestCase
         assert !new_user.owned_by?(@user)
       end
     end
-    
+
     context "with 1 sent and 1 recieved direct message" do
       setup do
         @other_user = Factory(:twitter_user)
@@ -146,15 +143,15 @@ class TwitterUserTest < ActiveSupport::TestCase
         @recieved_message = Factory(:twitter_direct_message, :sender => @other_user, :recipient => @twitter_user)
         @twitter_user.reload
       end
-      
+
       should "have one sent direct message" do
         assert_equal @twitter_user.sent_direct_messages.count, 1
       end
-      
+
       should "have one recieved direct message" do
         assert_equal @twitter_user.recieved_direct_messages.count, 1
       end
-      
+
       should "have two direct messages" do
         assert_equal @twitter_user.direct_messages.count, 2
       end
