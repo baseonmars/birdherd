@@ -77,7 +77,6 @@ class TwitterStatusesControllerTest < ActionController::TestCase
         post :create, :twitter_user_id => @twitter_user.id, :twitter_status => reply.attributes
         assert_redirected_to user_twitter_user_path(@twitter_user)
         assert flash[:warning].nil?, "flash not empty #{flash.inspect}"
-        
       end
 
       should "not be able to create a post belonging to an account they don't own" do

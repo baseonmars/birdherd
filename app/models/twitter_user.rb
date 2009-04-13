@@ -12,6 +12,8 @@ class TwitterUser < ActiveRecord::Base
   has_many :friend_friendships, :class_name   => 'Friendship',  :foreign_key => 'friend_id'
   has_many :friends, :class_name              => 'TwitterUser', :through     => :follower_friendships, :source => :friend
 
+  has_and_belongs_to_many :searches
+  
   def owned_by?(user)
     users.include? user unless users.nil?
   end
