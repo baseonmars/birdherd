@@ -12,7 +12,7 @@
 
 <div id="direct_messages" class="message-list">
 	<h2>Direct messages</h2>
-	<% @direct_messages.each do |tweet| %>
-	<p><strong><%= tweet.sender.screen_name %>:</strong> <%= tweet.text %></p>
+	<% @direct_messages.each do |dm| %>
+	<p><strong><%= dm.sender.screen_name %> > <%= dm.recipient.screen_name %>:</strong> <%= dm.text %></p>
 	<% end -%>
 </div>

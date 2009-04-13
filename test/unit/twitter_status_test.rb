@@ -5,6 +5,10 @@ class TwitterStatusTest < ActiveSupport::TestCase
     setup do
       @status = Factory(:twitter_status, :id => "4")
     end
+    
+    should_belong_to :poster
+    should_belong_to :recipient
+    should_have_many :replies
 
     should "have it's attributes updated from a Twitter::Status" do
       @twitter_status = Factory.build(:api_status, :id => 354525234)

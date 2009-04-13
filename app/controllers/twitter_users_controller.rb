@@ -108,43 +108,4 @@ class TwitterUsersController < ApplicationController
     account.update_relationships(type, twitter_users)
   end
 
-  def sync_statuses(type, account)
-    if account.send("#{type}_sync_time").nil? || account.send("#{type}_sync_time") < 2.5.minutes.ago
-      account.update_attribute("#{type}_sync_time", Time.now)
-      
-      options  = account.send("#{type}_last_id").nil? ? {} : {:since_id => account.send("#{type}_last_id")}
-      statuses = twitter_api(account).send( type, options )
-
-      statuses.each do |api_status|
-        status = TwitterStatus.find_or_initialize_by_id(api_status.id)
-        status.update_from_twitter(api_status) if status.new_record?
-        status.poster = update_twitter_user(api_status.user)
-        status.save
-      end
-      account.update_attribute("#{type}_last_id", statuses.first.id) unless statuses.empty?
-    end
-  end
-
-  def sync_dms(account)
-    if account.direct_messages_sync_time.nil? || account.direct_messages_sync_time < 2.5.minutes.ago
-      account.update_attribute(:direct_messages_sync_time, Time.now)
-      
-      r_options = account.recieved_dms_last_id.nil? ? {} : {:since_id => account.recieved_dms_last_id}
-      s_options = account.sent_dms_last_id.nil? ? {} : {:since_id => account.sent_dms_last_id}
-      recieved  = twitter_api(account).direct_messages( r_options ) || []
-      sent      = twitter_api(account).direct_messages_sent( s_options ) || []
-      dms       = sent + recieved
-
-      dms.each do |api_dm|
-        dm = TwitterDirectMessage.find_or_initialize_by_id(api_dm.id)
-        dm.update_from_twitter(api_dm) if dm.new_record?
-        dm.sender = update_twitter_user(api_dm.sender)
-        dm.recipient = update_twitter_user(api_dm.recipient)
-        dm.save
-      end
-      account.update_attribute(:sent_dms_last_id, sent.first.id) unless sent.empty?
-      account.update_attribute(:recieved_dms_last_id, recieved.first.id) unless recieved.empty?
-    end
-  end
-
 end
