@@ -49,12 +49,20 @@ class ApplicationController < ActionController::Base
     redirect_to(session[:return_to] || default)
     session[:return_to] = nil
   end
+  
+  def oauth_client
+    @oauth ||= @oauth = Twitter::OAuth.new('gEn3FWqYxpDq4lQdjzA', 'gGR18W7oPFptkDBgjbMnM22hprv1KYZ2rMYZviXsZg')
+  end
 
-  def post_status(account, status)
-    response = twitter_client(account.screen_name, account.password).post( status.text, :in_reply_to_status_id => status.in_reply_to_status_id, :source => 'birdherd' )
-    status = account.statuses.find_or_create_by_id(response.id)
-    status.update_from_twitter(response)
-    status
+  def twitter_api(account)
+    oauth_client.authorize_from_access(account.access_token, account.access_secret)
+    Twitter::Base.new(oauth_client)
+  end
+  
+  def update_twitter_user(api_user)
+    twitter_user = TwitterUser.find_or_initialize_by_id(api_user.id)
+    twitter_user.update_from_twitter(api_user) if twitter_user.new_record?
+    twitter_user
   end
 
   def errors

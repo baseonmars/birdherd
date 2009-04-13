@@ -15,6 +15,13 @@ class TwitterUserTest < ActiveSupport::TestCase
       @twitter_user.update_from_twitter api_user
       assert_equal @twitter_user.screen_name, api_user.screen_name
     end
+    
+    should "keep track of the last id it pulled for timeline, reply and dm's" do
+      assert_respond_to @twitter_user, :friends_timeline_last_id
+      assert_respond_to @twitter_user, :replies_last_id
+      assert_respond_to @twitter_user, :sent_dms_last_id
+      assert_respond_to @twitter_user, :recieved_dms_last_id
+    end
 
     should "update it's followers from api users" do
       api_users = [Factory.build(:api_user), Factory.build(:api_user), Factory.build(:api_user)]

@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20090410145117) do
+ActiveRecord::Schema.define(:version => 20090413144429) do
 
   create_table "friendships", :force => true do |t|
     t.integer "follower_id"
@@ -43,6 +43,10 @@ ActiveRecord::Schema.define(:version => 20090410145117) do
     t.string   "profile_image_url"
     t.string   "access_token"
     t.string   "access_secret"
+    t.integer  "friends_timeline_last_id"
+    t.integer  "replies_last_id"
+    t.integer  "sent_dms_last_id"
+    t.integer  "recieved_dms_last_id"
   end
 
   create_table "twitter_users_users", :id => false, :force => true do |t|

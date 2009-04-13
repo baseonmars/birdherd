@@ -22,11 +22,11 @@ class TwitterStatusesController < ApplicationController
     begin
       status = twitter_user.statuses.new(params[:twitter_status])
       raise "can't post dm's to self" if status.text =~ /^d #{twitter_user.screen_name}/
-      @response = post_status(twitter_user, status)
-      logger.debug { "response is #{@response.inspect}" }
-      @response.save
+      response = post_status(twitter_user, status)
+      logger.debug { "response is #{response.inspect}" }
+      response.save
       flash[:notice] = "Posted!"
-      redirect_to user_twitter_user_url(twitter_user)
+      redirect_to user_twitter_user_url(twitter_user) and return
     rescue
       flash[:warning] = "could not post status: #{$!}"
       redirect_to user_twitter_user_url(twitter_user) and return
@@ -48,5 +48,14 @@ class TwitterStatusesController < ApplicationController
       redirect_to '/'
       return
     end
+  end
+  
+  private
+  def post_status(account, status)
+    response = twitter_api(account).update( status.text, :in_reply_to_status_id => status.in_reply_to_status_id, :source => 'birdherd' )
+    status = account.statuses.find_or_initialize_by_id(response.id)
+    status.update_from_twitter(response)
+    status.poster = update_twitter_user(response.user)
+    status
   end
 end
