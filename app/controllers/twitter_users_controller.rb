@@ -113,8 +113,8 @@ class TwitterUsersController < ApplicationController
     page = 1
     twitter_users = twitter_api(account).send(type, :page => page)
     while twitter_users.length.remainder(100) == 0
-      page++
-      twitter_users << twitter_api(account).send(type, :page => page)
+      page += 1
+      twitter_users.push *twitter_api(account).send(type, :page => page)
     end
     account.update_relationships(type, twitter_users)
   end
@@ -125,7 +125,7 @@ class TwitterUsersController < ApplicationController
       statuses = twitter_api(account).send(type)
       statuses.each do |api_status|
         status = TwitterStatus.find_or_initialize_by_id(api_status.id)
-        status.update_from_twitter(api_status)
+        status.update_from_twitter(api_status) if status.new_record?
         status.poster = update_twitter_user(api_status.user)
         status.save
       end
@@ -135,13 +135,12 @@ class TwitterUsersController < ApplicationController
   def sync_dms(account)
     if account.direct_messages_sync_time.nil? || account.direct_messages_sync_time < 2.5.minutes.ago
       account.update_attribute(:direct_messages_sync_time, Time.now)
-      recieved = twitter_api(account).direct_messages
-      sent = twitter_api(account).direct_messages_sent
-
+      recieved = twitter_api(account).direct_messages || []
+      sent = twitter_api(account).direct_messages_sent || []
       dms = sent + recieved
       dms.each do |api_dm|
         dm = TwitterDirectMessage.find_or_initialize_by_id(api_dm.id)
-        dm.update_from_twitter(api_dm)
+        dm.update_from_twitter(api_dm) if dm.new_record?
         dm.sender = update_twitter_user(api_dm.sender)
         dm.recipient = update_twitter_user(api_dm.recipient)
         dm.save
@@ -151,7 +150,8 @@ class TwitterUsersController < ApplicationController
 
   def update_twitter_user(api_user)
     twitter_user = TwitterUser.find_or_initialize_by_id(api_user.id)
-    twitter_user.update_from_twitter(api_user)
+    twitter_user.update_from_twitter(api_user) if twitter_user.new_record?
+    twitter_user
   end
 
 end
