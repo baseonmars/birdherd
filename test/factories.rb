@@ -44,3 +44,8 @@ Factory.define :api_status, :class => Mash do |f|
   f.text "Lorem ipsum dolor sit amet, consectetur adipisicing"
   f.user {|user| user.association :api_user}
 end
+
+Factory.define :search do |f|
+  f.tag_list "ham, egg, peas"
+  f.twitter_user { |user| user.association :twitter_user }
+end
