@@ -20,6 +20,7 @@ Rails::Initializer.run do |config|
 	config.gem "thoughtbot-factory_girl", :lib => "factory_girl", :source => "http://gems.github.com"
 	config.gem "twitter", :version => '0.5.2'
 	config.gem 'iridesco-time-warp', :lib => 'time_warp', :source => "http://gems.github.com"
+	config.gem "mbleigh-acts-as-taggable-on", :source => "http://gems.github.com", :lib => "acts-as-taggable-on"
 	config.gem 'oauth'
 	config.gem 'mocha'
 	config.gem 'fakeweb'

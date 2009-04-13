@@ -104,6 +104,11 @@ class ApplicationController < ActionController::Base
     end
   end
   
+  def sync_search(search)
+    Twitter::Search.new(search.tag_list).each do |status|
+
+    end
+  end
 
   def errors
     @errors = []

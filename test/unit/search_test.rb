@@ -1,5 +1,5 @@
 require 'test_helper'
 
 class SearchTest < ActiveSupport::TestCase
-  should_have_and_belong_to_many :twitter_users
+  should_belong_to :twitter_user
 end

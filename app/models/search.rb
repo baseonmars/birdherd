@@ -1,3 +1,7 @@
 class Search < ActiveRecord::Base
-  has_and_belongs_to_many :twitter_users
+  belongs_to :twitter_user
+  
+  def statuses
+    Status.find_tagged_with(tag_list, :match_all => true)
+  end
 end
