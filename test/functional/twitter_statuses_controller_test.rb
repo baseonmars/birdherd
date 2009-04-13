@@ -37,7 +37,6 @@ class TwitterStatusesControllerTest < ActionController::TestCase
   end
 
   context "a logged in user" do
-
     setup do
       activate_authlogic
       UserSession.create Factory.build(:user)
@@ -66,22 +65,31 @@ class TwitterStatusesControllerTest < ActionController::TestCase
         assert_kind_of TwitterStatus, assigns(:reply)
         reply = assigns(:reply)
         reply.text = 'this is a reply'
-        post :create, :twitter_user_id => @twitter_user.id, :status => reply
+        post :create, :twitter_user_id => @twitter_user.id, :twitter_status => reply.attributes
         assert_redirected_to user_twitter_user_path(@twitter_user)
+        assert flash[:warning].nil?, "flash not empty #{flash.inspect}"
       end
 
       should "be able to reply to a status of an account they don't 'own'" do
         get :reply, :account_id => @twitter_user.id, :status_id => @status.id
         reply = assigns(:reply)
         reply.text = 'this is a reply'
-        post :create, :twitter_user_id => @twitter_user.id, :status => reply
+        post :create, :twitter_user_id => @twitter_user.id, :twitter_status => reply.attributes
         assert_redirected_to user_twitter_user_path(@twitter_user)
+        assert flash[:warning].nil?, "flash not empty #{flash.inspect}"
+        
       end
 
       should "not be able to create a post belonging to an account they don't own" do
-        new_post = Factory(:twitter_status, :poster => @original_poster)
-        get :create, :twitter_user_id => @original_poster.id, :status => new_post
+        new_post = Factory.attributes_for(:twitter_status, :poster => @original_poster)
+        post :create, :twitter_user_id => @original_poster.id, :twitter_status => new_post
         assert_response 401
+      end
+      
+      should "be marked as the new statuses birdherd_user" do
+        new_post = Factory.attributes_for(:twitter_status, :poster => @original_poster)
+        post :create,:twitter_user_id => @twitter_user.id, :twitter_status => new_post
+        assert_equal TwitterStatus.last.birdherd_user, @user
       end
     end
 

@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20090413144429) do
+ActiveRecord::Schema.define(:version => 20090413171825) do
 
   create_table "friendships", :force => true do |t|
     t.integer "follower_id"
@@ -22,6 +22,7 @@ ActiveRecord::Schema.define(:version => 20090413144429) do
     t.string   "text"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "birdherd_user_id"
   end
 
   create_table "twitter_statuses", :force => true do |t|
@@ -31,6 +32,7 @@ ActiveRecord::Schema.define(:version => 20090413144429) do
     t.datetime "updated_at"
     t.integer  "in_reply_to_user_id"
     t.integer  "in_reply_to_status_id"
+    t.integer  "birdherd_user_id"
   end
 
   create_table "twitter_users", :force => true do |t|

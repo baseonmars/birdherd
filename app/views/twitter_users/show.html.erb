@@ -14,5 +14,6 @@
 	<h2>Direct messages</h2>
 	<% @direct_messages.each do |dm| %>
 	<p><strong><%= dm.sender.screen_name %> > <%= dm.recipient.screen_name %>:</strong> <%= dm.text %></p>
+	<p class="birdherd-user"><%= "posted by: #{h dm.birdherd_user.login}" unless dm.birdherd_user.nil?%></p>
 	<% end -%>
 </div>

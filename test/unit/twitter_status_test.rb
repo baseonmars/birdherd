@@ -9,6 +9,7 @@ class TwitterStatusTest < ActiveSupport::TestCase
     should_belong_to :poster
     should_belong_to :recipient
     should_have_many :replies
+    should_belong_to :birdherd_user
 
     should "have it's attributes updated from a Twitter::Status" do
       @twitter_status = Factory.build(:api_status, :id => 354525234)
