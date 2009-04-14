@@ -24,7 +24,7 @@ Rails::Initializer.run do |config|
 	config.gem 'oauth'
 	config.gem 'mocha'
 	config.gem 'fakeweb'
-	config.gem 'mbleigh-mash', :lib => 'mash', :source => 'http://gems.github.com'
+	config.gem 'mbleigh-mash', :lib => 'mash', :version => '0.0.6', :source => 'http://gems.github.com'
 
   # Only load the plugins named here, in the order given (default is alphabetical).
   # :all can be used as a placeholder for all plugins not explicitly named
