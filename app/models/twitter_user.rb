@@ -35,10 +35,12 @@ class TwitterUser < ActiveRecord::Base
   end
 
   def friends_timeline
-    friends_statuses = friends.inject([]) do |acc,friend|
+    f = friends.all(:include => {:statuses => [:poster, :replies]})
+    s = statuses.all(:include => [:poster, :replies])
+    friends_statuses = f.inject([]) do |acc,friend|
       acc + friend.statuses
     end
-    (friends_statuses + statuses).sort { |a,b| b.created_at <=> a.created_at }
+    (friends_statuses + s).sort { |a,b| b.created_at <=> a.created_at }
   end
 
 end

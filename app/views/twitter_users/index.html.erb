@@ -1,13 +1,13 @@
-<p>You've got <%= @accounts.count %> accounts</p>
+<p>You've got <%= @accounts.length %> accounts</p>
 
 <%= link_to 'Add account', new_user_twitter_user_path %>
 
 <ul>
 	<% @accounts.each do |account| %>
-		<li><%= link_to "@#{account.screen_name}", user_twitter_user_path(account) %> - Followers <%= h account.followers.count %>, Followering <%= h account.friends.count %></li>
+		<li><%= link_to "@#{account.screen_name}", user_twitter_user_path(account) %> - Followers <%= h account.followers.length %>, Followering <%= h account.friends.length %></li>
 		<% end %>
 </ul>
 
-<% if @accounts.count > 10 -%>
+<% if @accounts.length > 10 -%>
 	<%= link_to 'Add account', new_user_twitter_user_path %>
 <% end -%>

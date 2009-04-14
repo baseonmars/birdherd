@@ -26,16 +26,17 @@ class TwitterUsersController < ApplicationController
       sync_statuses(:friends_timeline, @account)
       sync_statuses(:replies, @account)
       sync_dms(@account)
+      
       @account.reload
+      
       @timeline = @account.friends_timeline
-      @replies = @account.replies
-      @direct_messages = @account.direct_messages
+      @replies = @account.replies(:include => [:replies, :poster])
+      @direct_messages = @account.direct_messages( :include => [:sender, :recipient] )
       @status = @account.statuses.new
     end
   end
 
   def callback
-
     # Exchange the request token for an access token.
     begin
       access_token, access_secret = oauth_client.authorize_from_request( session[:request_token],
@@ -65,7 +66,6 @@ class TwitterUsersController < ApplicationController
 
     if @account.save
       @current_user.twitter_users << @account
-
       sync_relationships(:followers, @account)
       sync_relationships(:friends, @account)
 

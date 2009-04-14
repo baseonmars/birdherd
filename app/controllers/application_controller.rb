@@ -49,7 +49,7 @@ class ApplicationController < ActionController::Base
     redirect_to(session[:return_to] || default)
     session[:return_to] = nil
   end
-  
+
   def oauth_client
     @oauth ||= @oauth = Twitter::OAuth.new('gEn3FWqYxpDq4lQdjzA', 'gGR18W7oPFptkDBgjbMnM22hprv1KYZ2rMYZviXsZg')
   end
@@ -58,17 +58,17 @@ class ApplicationController < ActionController::Base
     oauth_client.authorize_from_access(account.access_token, account.access_secret)
     Twitter::Base.new(oauth_client)
   end
-  
+
   def update_twitter_user(api_user)
     twitter_user = TwitterUser.find_or_initialize_by_id(api_user.id)
     twitter_user.update_from_twitter(api_user) if twitter_user.new_record?
     twitter_user
   end
-  
+
   def sync_statuses(type, account)
     if account.send("#{type}_sync_time").nil? || account.send("#{type}_sync_time") < 2.5.minutes.ago
       account.update_attribute("#{type}_sync_time", Time.now)
-      
+
       options  = account.send("#{type}_last_id").nil? ? {} : {:since_id => account.send("#{type}_last_id")}
       statuses = twitter_api(account).send( type, options )
 
@@ -85,7 +85,7 @@ class ApplicationController < ActionController::Base
   def sync_dms(account)
     if account.direct_messages_sync_time.nil? || account.direct_messages_sync_time < 2.5.minutes.ago
       account.update_attribute(:direct_messages_sync_time, Time.now)
-      
+
       r_options = account.recieved_dms_last_id.nil? ? {} : {:since_id => account.recieved_dms_last_id}
       s_options = account.sent_dms_last_id.nil? ? {} : {:since_id => account.sent_dms_last_id}
       recieved  = twitter_api(account).direct_messages( r_options ) || []
@@ -103,7 +103,7 @@ class ApplicationController < ActionController::Base
       account.update_attribute(:recieved_dms_last_id, recieved.first.id) unless recieved.empty?
     end
   end
-  
+
   def sync_search(search)
     Twitter::Search.new(search.tag_list).each do |status|
 
