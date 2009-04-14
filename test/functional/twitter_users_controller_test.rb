@@ -42,7 +42,7 @@ class TwitterUsersControllerTest < ActionController::TestCase
     should "updates the accounts friends and followers from the api" do
       post :create, :twitter => Factory.attributes_for(:twitter_user)
       post :callback
-      assert_equal 1, assigns(:account).followers.count
+      assert_equal 63, assigns(:account).followers.count
       assert_equal 1, assigns(:account).friends.count
     end
 
