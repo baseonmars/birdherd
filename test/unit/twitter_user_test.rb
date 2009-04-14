@@ -85,6 +85,10 @@ class TwitterUserTest < ActiveSupport::TestCase
         assert @twitter_user.respond_to?(:friends_timeline)
         assert_equal @twitter_user.friends_timeline.length, 2
       end
+      
+      should "allow timelime to be limited" do
+        assert_equal @twitter_user.friends_timeline(:limit => 1).length, 1
+      end
 
       should "includes friends statuses in friends timeline" do
         assert @friend.statuses.all? { |status| @twitter_user.friends_timeline.include? status }

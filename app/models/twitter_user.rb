@@ -34,13 +34,14 @@ class TwitterUser < ActiveRecord::Base
     self
   end
 
-  def friends_timeline
+  def friends_timeline(args={})
     f = friends.all(:include => {:statuses => [:poster, :replies]})
     s = statuses.all(:include => [:poster, :replies])
     friends_statuses = f.inject([]) do |acc,friend|
       acc + friend.statuses
     end
-    (friends_statuses + s).sort { |a,b| b.created_at <=> a.created_at }
+    limit = args[:limit] || 20
+    (friends_statuses + s).sort { |a,b| b.created_at <=> a.created_at }[0...limit]
   end
 
 end
