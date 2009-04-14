@@ -31,7 +31,7 @@ class TwitterUsersController < ApplicationController
       
       @timeline = @account.friends_timeline(:limit => 20)
       @replies = @account.replies(:include => [:replies, :poster], :limit => 20)
-      @direct_messages = @account.direct_messages( :include => [:sender, :recipient], :limit => 20)
+      @direct_messages = @account.direct_messages(:include => [:sender, :recipient])
       @status = @account.statuses.new
     end
   end
