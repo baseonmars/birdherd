@@ -14,6 +14,7 @@ class UserMailerTest < ActionMailer::TestCase
       @expected.date    = Time.now
       
       assert_equal @expected.encoded, UserMailer.create_welcome_email(@user).encoded
+      assert_match /#{SITE[:url]}/, UserMailer.create_welcome_email(@user).body
     end
   end
 end

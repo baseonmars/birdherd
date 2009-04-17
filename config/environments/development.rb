@@ -17,5 +17,6 @@ config.action_controller.perform_caching             = false
 config.action_mailer.raise_delivery_errors = true
 
 ActionMailer::Base.delivery_method = :sendmail
+
 SITE ||= {}
-SITE[:url] = 'http://thebirderd.com:3000'
+SITE[:url] = 'http://thebirdherd.com:3000'

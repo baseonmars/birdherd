@@ -48,11 +48,12 @@ Rails::Initializer.run do |config|
   SITE = {
     :email => 'team@thebirdherd.com',
     :team_signoff => 'The Birdherd Team',
-    :app_name => 'Birdherd'
+    :app_name => 'Birdherd',
+    :url => 'http://thebirdherd.com'
   }
-  
+
   SITE[:email_str] = "#{SITE[:app_name]} <#{SITE[:email]}>"
-  
+
   config.active_record.observers = :user_observer
   
 end
