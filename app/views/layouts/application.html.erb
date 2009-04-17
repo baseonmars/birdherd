@@ -21,11 +21,10 @@
 <% end -%>
 </ul>
 <% else %>
-  <li><%= link_to "My Account", user_path %></li>
+	<li class="first">Logged in as <strong><%= link_to current_user.login, edit_user_path %></strong></li>
 	<li><%= link_to "Twitter Accounts", user_twitter_users_path %></li>
   <li><%= link_to "Sign out", user_session_path, :method => :delete, :confirm => "Are you sure you want to logout?" %></li>
-</ul>	
-<p>logged in as: <strong><%=h current_user.login %></strong> (<%= link_to 'Edit', edit_user_path %>)</p>
+</ul>
 <% end %>
 
 

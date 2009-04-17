@@ -1,6 +1,12 @@
 <p>You've got <%= @accounts.length %> accounts</p>
 
-<%= link_to 'Add account', new_user_twitter_user_path %>
+<p>To get started you'll need to authorise an account with twitter. Click the
+button below and you'll be taken to twitter.com to authorise using lovely secure
+OAuth.</p>
+
+<% form_tag user_twitter_users_path do -%>
+	<%= submit_tag "Authorise", :disable_with => 'Submiting...' %>
+<% end -%>
 
 <ul>
 	<% @accounts.each do |account| %>
