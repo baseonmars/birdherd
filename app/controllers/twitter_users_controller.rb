@@ -71,7 +71,7 @@ class TwitterUsersController < ApplicationController
 
       # Redirect to account list page
       flash[:notice] = "Twitter account #{@account.screen_name} authorised"
-      redirect_to user_twitter_users_path and return
+      redirect_to user_twitter_user_path(@account) and return
     else
       # The user might have rejected this application. Or there was some other error during the request.
       flash[:notice] = "Authentication failed"

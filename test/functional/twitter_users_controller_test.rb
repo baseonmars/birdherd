@@ -29,7 +29,7 @@ class TwitterUsersControllerTest < ActionController::TestCase
       post :create, :twitter_user => Factory.attributes_for(:twitter_user)
       assert_redirected_to 'http://twitter.com/authorize'
       post :callback
-      assert_redirected_to user_twitter_users_path
+      assert_redirected_to user_twitter_user_path(assigns(:account))
     end
 
     should "update the account from the twitter api" do
@@ -131,6 +131,18 @@ class TwitterUsersControllerTest < ActionController::TestCase
       #         get :show, :id => @account.id
       #       end
       #
+    end    
+
+    context "when account is created" do
+
+      setup do
+        post :callback
+      end
+
+      should "be redirected to user_twitter_user_path" do
+        assert_redirected_to user_twitter_user_path(assigns(:account))
+      end
+
     end
     #
     #
@@ -201,5 +213,7 @@ class TwitterUsersControllerTest < ActionController::TestCase
     #       get :index
     #       assert_redirected_to new_user_session_path
     #     end
+  
   end
+  
 end
