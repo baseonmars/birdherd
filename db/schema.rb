@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20090413214342) do
+ActiveRecord::Schema.define(:version => 20090417185659) do
 
   create_table "friendships", :force => true do |t|
     t.integer "follower_id"
@@ -99,6 +99,7 @@ ActiveRecord::Schema.define(:version => 20090413214342) do
     t.string   "current_login_ip"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "email"
   end
 
 end

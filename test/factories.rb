@@ -14,6 +14,7 @@ Factory.define :user do |f|
   f.login { Factory.next :login }
   f.password "password"
   f.password_confirmation "password"
+  f.email "dan@example.com"
 end
 
 Factory.define :twitter_user do |f|

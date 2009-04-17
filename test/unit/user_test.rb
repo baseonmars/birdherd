@@ -19,6 +19,15 @@ class UserTest < ActiveSupport::TestCase
       dm = @user.direct_messages.build
       assert_equal dm.birdherd_user, @user
     end
+
+    should "have an email address" do
+      assert_respond_to @user, :email
+    end
+    
+    should "have reject invalid email address" do
+      @user.email = "sdjdfsjj&&&"
+      assert @user.errors
+    end
     
   end
 end

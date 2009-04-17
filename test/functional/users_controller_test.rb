@@ -22,7 +22,7 @@ class UsersControllerTest < ActionController::TestCase
     should "be able to register a new user" do
       get :new
       assert_response :success
-      post :create, :user => { :login => 'new', :password => 'password', :password_confirmation => 'password'}
+      post :create, :user => Factory.attributes_for(:user)
       assert_redirected_to dashboard_path
       assert_kind_of User, assigns('user')
     end
