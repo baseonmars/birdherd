@@ -80,3 +80,23 @@ a:hover { color: #fff; background-color:#000; }
 	padding: 0;
 	margin: -1em 0 1em 0;
 }
+
+/* Navigation
+---------------------*/
+
+#primary-nav {
+	margin: 0;
+	padding: 0;
+}
+
+#primary-nav li {
+	display: inline-block;
+	padding: 0 2px;
+	margin: 0;
+}
+
+#primary-nav li:after {
+	content: '|';
+	padding: 0;
+	marging: 0;
+}

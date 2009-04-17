@@ -1,7 +1,5 @@
 ActionController::Routing::Routes.draw do |map|
   # The priority is based upon order of creation: first created -> highest priority.
-
-  map.resource :dashboard, :controller => "users"
   map.resource :user do |user|
     user.resources :twitter_users, :as => 'accounts'
   end  

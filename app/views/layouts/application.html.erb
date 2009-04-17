@@ -12,15 +12,20 @@
 
 <h1>Birdherd</h1>
 <!-- <%= pluralize User.logged_in.count, "user" %> currently logged in--><!-- This based on last_request_at, if they were active < 10 minutes they are logged in -->
-
-<%= link_to "Twitter Accounts", user_twitter_users_path %> |
+<ul id="primary-nav">
 <% if !current_user %>
-  <%= link_to "Register", new_dashboard_path %> |
-  <%= link_to "Log In", new_user_session_path %> |
+<% unless controller.controller_name == 'users' && controller.action_name == 'new' -%>
+	<li><%= link_to "Sign up", new_user_path %></li>
+<% else -%>
+	<li><%= link_to "Sign in", new_user_session_path %></li>
+<% end -%>
+</ul>
 <% else %>
-  <%= link_to "My Account", dashboard_path %> |
-  <%= link_to "Logout", user_session_path, :method => :delete, :confirm => "Are you sure you want to logout?" %>
-	<p>logged in as: <strong><%=h current_user.login %></strong> (<%= link_to 'Edit', edit_dashboard_path %>)</p>
+  <li><%= link_to "My Account", user_path %></li>
+	<li><%= link_to "Twitter Accounts", user_twitter_users_path %></li>
+  <li><%= link_to "Sign out", user_session_path, :method => :delete, :confirm => "Are you sure you want to logout?" %></li>
+</ul>	
+<p>logged in as: <strong><%=h current_user.login %></strong> (<%= link_to 'Edit', edit_user_path %>)</p>
 <% end %>
 
 
