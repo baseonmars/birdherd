@@ -10,11 +10,15 @@ Factory.sequence :api_user_id do |n|
   "123456#{n}"
 end
 
+Factory.sequence :user_email do |n|
+  "user#{n}@example.com"
+end
+
 Factory.define :user do |f|
   f.login { Factory.next :login }
   f.password "password"
   f.password_confirmation "password"
-  f.email "dan@example.com"
+  f.email { Factory.next :user_email }
 end
 
 Factory.define :twitter_user do |f|
