@@ -2,7 +2,7 @@ class UserMailer < ActionMailer::Base
   
   def welcome_email(user)
     recipients    user.email
-    from          "#{SITE[:email_string]}>"
+    from          "#{SITE[:email_str]}"
     subject       "Welcome to #{SITE[:app_name]}"
     sent_on       Time.now
     body          :user => user

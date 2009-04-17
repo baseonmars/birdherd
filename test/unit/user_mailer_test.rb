@@ -7,7 +7,7 @@ class UserMailerTest < ActionMailer::TestCase
     end
     
     should "welcome a user" do
-      @expected.from    = "#{SITE[:email_string]}"
+      @expected.from    = "#{SITE[:email_str]}"
       @expected.to      = @user.email
       @expected.subject = "Welcome to Birdherd"
       @expected.body    = read_fixture('welcome_email')
