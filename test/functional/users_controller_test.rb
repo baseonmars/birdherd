@@ -23,7 +23,7 @@ class UsersControllerTest < ActionController::TestCase
       get :new
       assert_response :success
       post :create, :user => Factory.attributes_for(:user)
-      assert_redirected_to user_path
+      assert_redirected_to user_twitter_users_path
       assert_kind_of User, assigns('user')
     end
 
