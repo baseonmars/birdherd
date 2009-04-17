@@ -50,7 +50,9 @@ Rails::Initializer.run do |config|
     :team_signoff => 'The Birdherd Team',
     :app_name => 'Birdherd'
   }
-
+  
+  SITE[:email_str] = "#{SITE[:app_name]} <#{SITE[:email]}>"
+  
   config.active_record.observers = :user_observer
   
 end

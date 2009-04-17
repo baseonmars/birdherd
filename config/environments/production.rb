@@ -29,3 +29,5 @@ config.action_view.cache_template_loading            = true
 
 SITE ||= {}
 SITE[:url] = 'http://thebirderd.com'
+
+ActionMailer::Base.delivery_method = :sendmail
