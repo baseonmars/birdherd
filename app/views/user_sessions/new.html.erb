@@ -1,5 +1,5 @@
-<h1>Sign in</h1>
-
+<div id="signin-form" class="user-form">
+<h2>Sign in</h2>
 <% form_for @user_session, :url => user_session_path do |f| %>
   <%= f.error_messages %>
   <%= f.label :login %><br />
@@ -12,6 +12,15 @@
   <br />
   <%= f.submit "Sign in" %>
 <% end %>
+</div>
+<div class="user-form">
+<h2>Sign up</h2>
 
+<% form_for @user, :url => user_path do |f| %>
+  <%= f.error_messages %>
+  <%= render :partial => "/users/form", :object => f %>
+  <%= f.submit "Sign up" %>
+<% end %>
 
+</div>
 <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>

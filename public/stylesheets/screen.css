@@ -82,7 +82,7 @@ a:hover { color: #fff; background-color:#000; }
 }
 
 /* Navigation
----------------------*/
+------------------------*/
 
 #primary-nav {
 	margin: 0;
@@ -104,4 +104,34 @@ a:hover { color: #fff; background-color:#000; }
 
 #primary-nav .first:before {
 	content: '';
+}
+
+/* Sign in/up process
+------------------------*/
+
+.user-form {
+	width: 40%;
+	display: inline-block;
+	margin: 0;
+	padding: 4%;
+		vertical-align: top;
+}
+
+#signin-form {
+	text-align: right;
+}
+
+#signin-form h2 {
+	width: 50%;
+	display: inline-block;
+}
+
+#signin-form form {
+	display: inline-block;
+	width: 50%;
+}
+
+
+#signin-form * {
+	text-align: left;
 }
