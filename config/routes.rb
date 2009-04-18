@@ -12,7 +12,7 @@ ActionController::Routing::Routes.draw do |map|
   map.connect 'logout' , :controller => 'user_sessions', :action => 'destroy'
   map.connect '/oauth_callback', :controller => 'twitter_users', :action => 'callback'
   map.status_reply '/accounts/:account_id/statuses/:status_id/reply', :controller => 'twitter_statuses', :action =>'reply'
-  map.root :controller => "user_sessions", :action => "new"
+  map.root :controller => "twitter_users", :action => "index"
   # Sample of regular route:
   #   map.connect 'products/:id', :controller => 'catalog', :action => 'view'
   # Keep in mind you can assign values other than :controller and :action

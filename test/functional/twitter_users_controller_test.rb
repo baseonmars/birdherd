@@ -201,19 +201,21 @@ class TwitterUsersControllerTest < ActionController::TestCase
     #     end
     #   end
     #
-    #   context "not logged in" do
-    #     should "not be able to create a new user" do
-    #       get :new
-    #       assert_redirected_to new_user_session_path
-    #       post :create, :twitter_user => Factory.attributes_for(:twitter_user)
-    #       assert_redirected_to new_user_session_path
-    #     end
-    #
-    #     should "not be able to list twitter accounts" do
-    #       get :index
-    #       assert_redirected_to new_user_session_path
-    #     end
-  
   end
-  
+
+  context "not logged in" do
+    should "not be able to create a new user" do
+      get :new
+      assert_redirected_to new_user_session_path
+      post :create, :twitter_user => Factory.attributes_for(:twitter_user)
+      assert_redirected_to new_user_session_path
+    end
+
+    should "require a login to list twitter accounts" do
+      get :index
+      assert_redirected_to new_user_session_path
+    end
+end
+
+
 end
