@@ -11,7 +11,6 @@
 <body>
 
 <h1>Birdherd</h1>
-<!-- <%= pluralize User.logged_in.count, "user" %> currently logged in--><!-- This based on last_request_at, if they were active < 10 minutes they are logged in -->
 <ul id="primary-nav">
 <% if !current_user %>
 <% if controller.controller_name == 'users' && controller.action_name == 'new' -%>

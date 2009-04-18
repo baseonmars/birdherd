@@ -10,10 +10,14 @@
 
 <div id="direct_messages" class="message-list">
 	<h2>Direct messages</h2>
+	<ul>
 	<% @direct_messages.each do |dm| %>
-	<p><strong><%= dm.sender.screen_name %> > <%= dm.recipient.screen_name %>:</strong> <%= dm.text %></p>
-	<p class="birdherd-user"><%= "posted by: #{h dm.birdherd_user.login}" unless dm.birdherd_user.nil?%></p>
+	<li>
+		<p><strong><%= dm.sender.screen_name %> > <%= dm.recipient.screen_name %>:</strong> <%= dm.text %></p>
+		<p class="birdherd-user"><%= "posted by: #{h dm.birdherd_user.login}" unless dm.birdherd_user.nil?%></p>
+	</li>
 	<% end -%>
+	</ul>
 </div>
 
 <%= render :partial => 'status_list', :locals => { :statuses => @timeline, :account => @account,	:title => "#{@account.screen_name}'s Timeline" } %>
