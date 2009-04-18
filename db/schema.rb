@@ -23,11 +23,6 @@ ActiveRecord::Schema.define(:version => 20090417185659) do
     t.integer  "twitter_user_id"
   end
 
-  create_table "searches_twitter_users", :id => false, :force => true do |t|
-    t.integer "twitter_user_id"
-    t.integer "search_id"
-  end
-
   create_table "taggings", :force => true do |t|
     t.integer  "tag_id"
     t.integer  "taggable_id"

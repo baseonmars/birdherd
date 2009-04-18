@@ -7,7 +7,26 @@ module ApplicationHelper
   end
   
   def friendly_time(time)
-    time.strftime("%H:%M %a %B %Y")
+    
+    seconds_ago = Time.now - time
+    minutes_ago = (seconds_ago / 60).to_i
+
+    if time > 1.minutes.ago
+      return "a minute ago"
+    elsif time > 1.hours.ago
+      return "#{minutes_ago} minutes ago"
+    elsif time > Time.now.at_beginning_of_day
+      return time.strftime("%I:%M%p")
+    elsif time > 1.days.ago.at_beginning_of_day
+      return time.strftime("yesterday at %I:%M%p")
+    elsif time > 1.weeks.ago.at_beginning_of_day
+      return time.strftime("%A at %I:%M%p")
+    elsif time > Time.now.at_beginning_of_month
+      return time.strftime("%e %B")
+    else
+      return time.strftime("%e %B, %Y")
+    end
+    
   end
     
 end
