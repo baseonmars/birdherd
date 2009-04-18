@@ -6,8 +6,6 @@
 
 <p>Friends timeline last synced <%= h @account.friends_timeline_sync_time %></p>
 
-<%= render :partial => 'status_list', :locals => { :statuses => @timeline, :account => @account,	:title => "#{@account.screen_name}'s Timeline" } %>
-
 <%= render :partial => 'status_list', :locals => { :statuses => @replies, :account => @account, :title => "Replies" } %>
 
 <div id="direct_messages" class="message-list">
@@ -17,3 +15,8 @@
 	<p class="birdherd-user"><%= "posted by: #{h dm.birdherd_user.login}" unless dm.birdherd_user.nil?%></p>
 	<% end -%>
 </div>
+
+<%= render :partial => 'status_list', :locals => { :statuses => @timeline, :account => @account,	:title => "#{@account.screen_name}'s Timeline" } %>
+
+
+
