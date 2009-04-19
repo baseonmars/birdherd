@@ -18,13 +18,12 @@ Rails::Initializer.run do |config|
   config.gem "authlogic", :version => '>2.0.4'
   config.gem "thoughtbot-shoulda", :lib => "shoulda", :source => "http://gems.github.com", :version => '>2.9.1'
 	config.gem "thoughtbot-factory_girl", :lib => "factory_girl", :source => "http://gems.github.com"
-	config.gem "twitter", :version => '>0.6.0'
+	config.gem "twitter", :version => '>=0.6.6'
 	config.gem 'iridesco-time-warp', :lib => 'time_warp', :source => "http://gems.github.com"
 	config.gem "mbleigh-acts-as-taggable-on", :source => "http://gems.github.com", :lib => "acts-as-taggable-on"
 	config.gem 'oauth'
 	config.gem 'mocha'
 	config.gem 'fakeweb'
-	config.gem 'mbleigh-mash', :lib => 'mash', :version => '0.0.6', :source => 'http://gems.github.com'
 
   # Only load the plugins named here, in the order given (default is alphabetical).
   # :all can be used as a placeholder for all plugins not explicitly named
