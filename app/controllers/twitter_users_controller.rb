@@ -23,11 +23,11 @@ class TwitterUsersController < ApplicationController
 
   def show
     if @account && @account.owned_by?(@current_user)
-      sync_statuses(:friends_timeline, @account)
-      sync_statuses(:replies, @account)
-      sync_dms(@account)
-      
-      @account.reload
+      spawn do
+        sync_statuses(:friends_timeline, @account)
+        sync_statuses(:replies, @account)
+        sync_dms(@account)
+      end
       
       @timeline = @account.friends_timeline(:limit => 20)
       @replies = @account.replies(:include => [:replies, :poster], :limit => 20)
