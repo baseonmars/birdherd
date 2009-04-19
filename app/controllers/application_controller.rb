@@ -61,7 +61,9 @@ class ApplicationController < ActionController::Base
 
   def update_twitter_user(api_user)
     twitter_user = TwitterUser.find_or_initialize_by_id(api_user.id)
-    twitter_user.update_from_twitter(api_user) if twitter_user.new_record?
+    if (twitter_user.new_record? || api_user.screen_name != twitter_user.screen_name)
+      twitter_user.update_from_twitter(api_user).save
+    end
     twitter_user
   end
 
