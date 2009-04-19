@@ -40,12 +40,14 @@ module Twitter
       return m
     end
     
-     def self.get(base, path, status=nil)
-      mash(Crack::JSON.parse(fixture_file(path)))
+     def self.get(base, path, options={})
+       json = Crack::JSON.parse(fixture_file(path))
+       options[:mash].nil? || options[:mash] ? mash(json): json
     end
 
     def self.post(base, path, options={})
-      mash(Crack::JSON.parse(fixture_file(path)))
+      json = Crack::JSON.parse(fixture_file(path))
+      options[:mash].nil? || options[:mash] ? mash(json): json
     end
 
   end
