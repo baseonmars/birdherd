@@ -66,8 +66,8 @@ class TwitterUsersController < ApplicationController
 
     if @account.save
       @current_user.twitter_users << @account
-      sync_relationships(:followers, @account)
-      sync_relationships(:friends, @account)
+      sync_relationships(:follower, @account)
+      sync_relationships(:friend, @account)
 
       # Redirect to account list page
       flash[:notice] = "Twitter account #{@account.screen_name} authorised"
@@ -100,7 +100,7 @@ class TwitterUsersController < ApplicationController
 
   def sync_relationships(type, account)
     page = 1
-    twitter_user_ids = twitter_api(account).send(type, :page => page)
+    twitter_user_ids = twitter_api(account).send("#{type}_ids", :page => page)
     while twitter_user_ids.length.remainder(100) == 0
       page += 1
       twitter_user_ids.push *twitter_api(account).send("#{type}_ids", :page => page)

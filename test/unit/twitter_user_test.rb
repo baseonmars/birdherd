@@ -26,25 +26,25 @@ class TwitterUserTest < ActiveSupport::TestCase
 
     should "update it's followers from api users" do
       api_users = [Factory.build(:api_user), Factory.build(:api_user), Factory.build(:api_user)]
-      @twitter_user.update_relationships(:followers, api_users)
+      @twitter_user.update_relationships(:follower, api_users)
       assert_equal @twitter_user.followers.count, api_users.length
     end
 
     should "update it's friends from api users" do
       api_users = [Factory.build(:api_user), Factory.build(:api_user), Factory.build(:api_user)]
-      @twitter_user.update_relationships(:friends, api_users)
+      @twitter_user.update_relationships(:friend, api_users)
       assert_equal @twitter_user.friends.count, api_users.length
     end
 
     context "after syncing followers" do
       setup do
         @api_users = [Factory.build(:api_user, :id => 5), Factory.build(:api_user, :id => 6), Factory.build(:api_user, :id => 7)]
-        @twitter_user.update_relationships(:followers, @api_users)
+        @twitter_user.update_relationships(:follower, @api_users)
       end
 
       should "be able to sync friends which include followers" do
         api_users = @api_users + [Factory.build(:api_user, :id => 8)]
-        @twitter_user.update_relationships(:friends, api_users)
+        @twitter_user.update_relationships(:friend, api_users)
         assert_equal @twitter_user.friends.count, api_users.length
       end
     end
