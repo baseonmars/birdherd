@@ -50,7 +50,9 @@ class TwitterUsersController < ApplicationController
       return
     end
 
+    logger.debug { "verifying credentials" }
     user = verify_credentials(client)
+    logger.debug { "done verifying credentials" }
 
     # We have an authorized user, save the information to the database.
     @account = TwitterUser.find_or_initialize_by_id(user.id)
@@ -66,11 +68,13 @@ class TwitterUsersController < ApplicationController
 
     if @account.save
       @current_user.twitter_users << @account
-      sync_relationships(:follower, @account)
-      sync_relationships(:friend, @account)
+      spawn do
+        sync_relationships(:follower, @account)
+        sync_relationships(:friend, @account)
+      end
 
       # Redirect to account list page
-      flash[:notice] = "Twitter account #{@account.screen_name} authorised"
+      flash[:notice] = "Twitter account #{@account.screen_name} authorised, your followers will be synced shortly."
       redirect_to user_twitter_user_path(@account) and return
     else
       # The user might have rejected this application. Or there was some other error during the request.
