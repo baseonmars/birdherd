@@ -12,7 +12,8 @@ class UserSessionsController < ApplicationController
       flash[:notice] = "Login successful!"
       redirect_back_or_default user_url
     else
-      render :action => :new
+      @user = User.new
+      render :action => :new, :status => 401
     end
   end
 
