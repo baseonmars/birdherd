@@ -10,7 +10,7 @@ class UserSessionsController < ApplicationController
     @user_session = UserSession.new(params[:user_session])
     if @user_session.save
       flash[:notice] = "Login successful!"
-      redirect_back_or_default user_url
+      redirect_back_or_default user_twitter_users_url
     else
       @user = User.new
       render :action => :new, :status => 401
