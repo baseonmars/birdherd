@@ -134,9 +134,25 @@ a:hover { color: #fff; background-color:#000; }
 	overflow: hidden;
 }
 
+.message-list h3 {
+	font-size: 1.2em;
+	margin: 0;
+	padding: 0;
+}
+
+.message-list h3 a {
+	color: #333;
+}
+
+.message-list a {
+	text-decoration: none;
+}
+
 .message-list p {
 	overflow: hidden;
 	font-size: 1em;
+	margin: 0;
+	padding: 0;
 }
 
 .message-list ul {
@@ -145,8 +161,42 @@ a:hover { color: #fff; background-color:#000; }
 }
 
 .message-list li {
+	list-style: none;
+	padding: 8px 0;
+	margin: 0;
+	display: block;
+	overflow: hidden;
+	border-bottom: 1px solid #ccc;
+	min-height: 6em;
+}
+
+.message-list .dm-profile-pics {
+	width: 50px;
+	height: 50px;
+	position: relative;
+	float: left;
+}
+.dm-profile-pics a {
+	vertical-align: top;
+	width: 50px;
+	height: 50px;
 	margin: 0;
 	padding: 0;
+	botrder: 0px none;
+}
+
+.message-list .dm-recipient {
+	position: absolute;
+	left: 30px;
+	top: 30px;
+	height: 18px;
+	width: 18px;
+	border: 1px solid #fff;
+}
+
+.dm-recipient img {
+	width: 20px;
+	height: 20px;
 }
 
 
@@ -155,4 +205,5 @@ a:hover { color: #fff; background-color:#000; }
 
 .status-time {
 	margin-left: 60px;
+	font-style: italic;
 }

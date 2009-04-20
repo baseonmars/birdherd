@@ -13,7 +13,10 @@
 	<ul>
 	<% @direct_messages.each do |dm| %>
 	<li>
-		<p><strong><%= dm.sender.screen_name %> > <%= dm.recipient.screen_name %>:</strong> <%= dm.text %></p>
+		<div class="dm-profile-pics profile-image"><%= twitter_user_profile_image(dm.sender)%>
+		<%= twitter_user_profile_image(dm.recipient, :class => 'dm-recipient') %></div>
+		<h3><%= dm.sender.screen_name %></h3>
+		<p><strong>@<%= dm.recipient.screen_name %>:</strong> <%= dm.text %></p>
 		<p class="birdherd-user"><%= "posted by: #{h dm.birdherd_user.login}" unless dm.birdherd_user.nil?%></p>
 	</li>
 	<% end -%>
