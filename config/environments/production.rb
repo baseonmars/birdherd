@@ -28,3 +28,5 @@ config.action_view.cache_template_loading            = true
 # config.threadsafe!
 
 ActionMailer::Base.delivery_method = :sendmail
+SITE[:api_key] = 'gEn3FWqYxpDq4lQdjzA'
+SITE[:api_secret] = 'gGR18W7oPFptkDBgjbMnM22hprv1KYZ2rMYZviXsZg'
