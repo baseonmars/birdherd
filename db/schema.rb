@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20090417185659) do
+ActiveRecord::Schema.define(:version => 20090421175048) do
 
   create_table "friendships", :force => true do |t|
     t.integer "follower_id"
@@ -79,6 +79,7 @@ ActiveRecord::Schema.define(:version => 20090417185659) do
     t.integer  "replies_last_id"
     t.integer  "sent_dms_last_id"
     t.integer  "recieved_dms_last_id"
+    t.boolean  "protected",                  :default => false
   end
 
   create_table "twitter_users_users", :id => false, :force => true do |t|

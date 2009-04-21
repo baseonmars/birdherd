@@ -2,6 +2,34 @@ require 'test_helper'
 
 class TwitterUsersControllerTest < ActionController::TestCase
 
+  context "A logged in Birdherd user with an account" do
+    setup do
+      activate_authlogic
+      UserSession.create Factory.build(:user)
+      @user = User.find(1)
+      @account = Factory :real_twitter_user, :users => [@user]
+    end
+    
+    context "with protected friends that are not followers" do
+
+      setup do
+        friend = Factory(:twitter_user)
+        friend.statuses << Factory(:twitter_status) 
+        friend.protected = true
+        @account.friends << friend
+      end
+
+      should "not show their statuses" do
+        get :show, :id => @account.id
+        timeline = assigns(:timeline)
+        assert_equal 0, timeline.length
+      end
+
+    end
+  end
+
+
+
   context "Logged in with one account" do
     setup do
       activate_authlogic
@@ -136,8 +164,8 @@ class TwitterUsersControllerTest < ActionController::TestCase
       #         get :show, :id => @account.id
       #       end
       #
-    end    
-
+    end
+    
     context "when account is created" do
 
       setup do
@@ -220,7 +248,9 @@ class TwitterUsersControllerTest < ActionController::TestCase
       get :index
       assert_redirected_to new_user_session_path
     end
-end
+
+
+  end
 
 
 end

@@ -34,13 +34,41 @@ class TwitterUser < ActiveRecord::Base
   end
 
   def friends_timeline(args={})
-    f = friends.all(:include => {:statuses => [:poster, :replies]})
-    s = statuses.all(:include => [:poster, :replies])
-    friends_statuses = f.inject([]) do |acc,friend|
-      acc + friend.statuses
+    unprotected_f = friends.find(:all, :conditions => {:protected => false} )
+    
+    protected_f = friends.find(:all, :conditions => {:protected => true}).select do |friend|
+      friend.followers.include?(self)
     end
-    limit = args[:limit] || 20
-    (friends_statuses + s).sort { |a,b| b.created_at <=> a.created_at }[0...limit]
-  end
+    
+    viewable = unprotected_f + protected_f + [self]
 
+    statuses = viewable.inject([]) do |acc,twitter_user|
+      acc + twitter_user.statuses
+    end
+
+    limit = args[:limit] || 20
+    (statuses).sort { |a,b| b.created_at <=> a.created_at }[0...limit]
+  end
+  
 end
+
+
+def friends_timeline(args={})    
+  viewable = friends.find(:all).select do |friend|
+    friend.unprotected or friend.followers.include?(self)
+  end << self
+
+  statuses = viewable.inject([]) { |acc,tu| acc + tu.statuses }
+
+  limit = args[:limit] || 20
+  statuses.sort { |a,b| b.created_at <=> a.created_at }[0...limit]
+end
+
+private
+  def unprotected
+    !self.protected
+  end
+  
+    
+    
+
