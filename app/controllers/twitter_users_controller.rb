@@ -29,9 +29,9 @@ class TwitterUsersController < ApplicationController
         sync_dms(@account)
       end
       
-      @timeline = @account.friends_timeline(:limit => 20)
-      @replies = @account.replies(:include => [:replies, :poster], :limit => 20)
-      @direct_messages = @account.direct_messages(:include => [:sender, :recipient])
+      @timeline = @account.friends_timeline(:limit => 30)
+      @replies = @account.replies(:include => [:replies, :poster], :limit => 30)
+      @direct_messages = @account.direct_messages(:include => [:sender, :recipient])[0...30]
       @status = @account.statuses.new
     end
   end
