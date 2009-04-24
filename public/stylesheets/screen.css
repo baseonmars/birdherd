@@ -170,6 +170,7 @@ a img {border:0px none;}
 	overflow: hidden;
 	border-bottom: 1px solid #ccc;
 	min-height: 6em;
+	position: relative;
 }
 
 .message-list .dm-profile-pics {
@@ -199,6 +200,12 @@ a img {border:0px none;}
 .dm-recipient img {
 	width: 20px;
 	height: 20px;
+}
+
+.message-list .reply-link {
+	position: absolute;
+	top: 0;
+	right: 0;
 }
 
 
