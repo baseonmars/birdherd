@@ -71,7 +71,7 @@ class ApplicationController < ActionController::Base
       account.update_attribute("#{type}_sync_time", Time.now)
 
       options  = account.send("#{type}_last_id").nil? ? {} : {:since_id => account.send("#{type}_last_id")}
-      statuses = twitter_api(account).send( type, options )
+      statuses = twitter_api(account).send( type, options.merge(:count => 30) )
 
       statuses.each do |api_status|
         status = TwitterStatus.find_or_initialize_by_id(api_status.id)
@@ -89,8 +89,8 @@ class ApplicationController < ActionController::Base
 
       r_options = account.recieved_dms_last_id.nil? ? {} : {:since_id => account.recieved_dms_last_id}
       s_options = account.sent_dms_last_id.nil? ? {} : {:since_id => account.sent_dms_last_id}
-      recieved  = twitter_api(account).direct_messages( r_options ) || []
-      sent      = twitter_api(account).direct_messages_sent( s_options ) || []
+      recieved  = twitter_api(account).direct_messages( r_options.merge(:count => 15) ) || []
+      sent      = twitter_api(account).direct_messages_sent( s_options.merge(:count => 15) ) || []
       dms       = sent + recieved
 
       dms.each do |api_dm|
