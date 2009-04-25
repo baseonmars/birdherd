@@ -72,6 +72,18 @@ class UsersControllerTest < ActionController::TestCase
         end
       end
     end
+
+    context "with more than one account" do
+      setup do
+        accounts = [Factory(:twitter_user), Factory(:twitter_user), Factory(:twitter_user)]
+        accounts.each { |acc|
+          acc.friends << [Factory(:twitter_user), Factory(:twitter_user), Factory(:twitter_user)]
+          acc.followers << [Factory(:twitter_user), Factory(:twitter_user), Factory(:twitter_user)]
+        }
+        @user.twitter_users << accounts
+      end
+    end
+
   end
 
 end

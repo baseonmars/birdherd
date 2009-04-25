@@ -5,7 +5,6 @@ class User < ActiveRecord::Base
   acts_as_authentic
   
   def requires_friends_sync?
-    return true
     last_friends_sync.nil? || (last_friends_sync < 10.minutes.ago)
   end
 end

@@ -71,6 +71,7 @@ class TwitterUsersController < ApplicationController
       spawn do
         sync_relationships(:follower, @account)
         sync_relationships(:friend, @account)
+        @account.save
       end
 
       # Redirect to account list page

@@ -25,7 +25,7 @@ class ApplicationController < ActionController::Base
 
   def require_user
     if current_user
-      sync_all_users_relationships(current_user)# if current_user.requires_friends_sync?
+      sync_all_users_relationships(current_user) if current_user.requires_friends_sync?
     else
       store_location
       flash[:notice] = "You must be logged in to access this page"
@@ -50,12 +50,13 @@ class ApplicationController < ActionController::Base
     session[:return_to] = nil
   end
   def oauth_client
-    @oauth ||= @oauth = Twitter::OAuth.new(SITE[:api_key], SITE[:api_secret])
+    Twitter::OAuth.new(SITE[:api_key], SITE[:api_secret])
   end
 
   def twitter_api(account)
-    oauth_client.authorize_from_access(account.access_token, account.access_secret)
-    Twitter::Base.new(oauth_client)
+    oauth = oauth_client
+    oauth.authorize_from_access(account.access_token, account.access_secret)
+    Twitter::Base.new(oauth)
   end
 
   def update_twitter_user(api_user)
@@ -119,16 +120,21 @@ class ApplicationController < ActionController::Base
     user.update_attribute(:last_friends_sync, Time.now)
     spawn do
       user.twitter_users.each do |account|
-        sync_relationships(:friend, account)
-        sync_relationships(:follower, account)
+        begin
+          sync_relationships(:friend, account)
+          sync_relationships(:follower, account)
+          account.save
+        rescue
+          flash[:notice] ||= ""
+          flash[:notice] <<  "Rate limit exceeded for #{account}"
+          current_user.last_friends_sync = 10.minutes.from_now
+        end
       end
-      user.save
     end
   end
 
   def sync_search(search)
     Twitter::Search.new(search.tag_list).each do |status|
-
     end
   end
 
