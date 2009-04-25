@@ -25,6 +25,7 @@ class ApplicationController < ActionController::Base
 
   def require_user
     if current_user
+      logger.debug { "Next friends sync 10 mins after #{current_user.last_friends_sync}" }
       sync_all_users_relationships(current_user) if current_user.requires_friends_sync?
     else
       store_location
@@ -121,12 +122,13 @@ class ApplicationController < ActionController::Base
     spawn do
       user.twitter_users.each do |account|
         begin
-          sync_relationships(:friend, account)
-          sync_relationships(:follower, account)
+          api_user = twitter_api(account).verify_credentials
+          sync_relationships(:friend, account) if (api_user.friends_count != account.friends.count)
+          sync_relationships(:follower, account) if (api_user.followers_count != account.followers.count)
           account.save
         rescue
           flash[:notice] ||= ""
-          flash[:notice] <<  "Rate limit exceeded for #{account}"
+          flash[:notice] <<  "Rate limit exceeded for #{account.screen_name}"
           current_user.last_friends_sync = 10.minutes.from_now
         end
       end

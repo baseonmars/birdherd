@@ -26,13 +26,15 @@ class TwitterUserTest < ActiveSupport::TestCase
 
     should "update it's followers from api users" do
       api_users = [Factory.build(:api_user), Factory.build(:api_user), Factory.build(:api_user)]
-      @twitter_user.update_relationships(:follower, api_users)
+      ids = api_users.map { |f| f.id}
+      @twitter_user.update_relationships(:follower, ids)
       assert_equal @twitter_user.followers.count, api_users.length
     end
 
     should "update it's friends from api users" do
       api_users = [Factory.build(:api_user), Factory.build(:api_user), Factory.build(:api_user)]
-      @twitter_user.update_relationships(:friend, api_users)
+      ids = api_users.map { |f| f.id}
+      @twitter_user.update_relationships(:friend, ids)
       assert_equal @twitter_user.friends.count, api_users.length
     end
 
@@ -178,10 +180,37 @@ class TwitterUserTest < ActiveSupport::TestCase
       end
 
       should "remove twitter users they no longer follow when syncing" do
-        current_followers = @followers[2..4] << Factory(:twitter_user)
+        current_followers = @followers[2..4] + [Factory(:twitter_user)]
         removed_followers = @followers - current_followers
-        @twitter_user.update_relationships(:follower, current_followers)
-        @twitter_user.followers.none? { |follower| removed_followers.include?(@followers) }
+        
+        ids = current_followers.map { |f| f.id}
+                
+        @twitter_user.update_relationships(:follower, ids)
+
+        assert @twitter_user.followers.none? { |follower| removed_followers.include?(follower) }
+        assert_equal current_followers.length, @twitter_user.followers.count
+      end
+      
+      should "correctly sync when it has two accounts with mutual relations" do
+        @twitter_user2 = Factory(:twitter_user)
+        @friends2 = (1..5).to_a.map { Factory(:twitter_user) }
+        @followers2 = (1..5).to_a.map { Factory(:twitter_user) }
+        @twitter_user2.friends << @friends2
+        @twitter_user2.followers << @followers2
+        @twitter_user2.friends << @twitter_user
+        @twitter_user.followers << @twitter_user2
+        @twitter_user.friends << @twitter_user2
+
+        current_followers = @followers[2..4] + [Factory(:twitter_user), @twitter_user]
+        removed_followers = @followers - current_followers
+        
+        ids = current_followers.map { |f| f.id}
+
+        @twitter_user2.update_relationships(:follower, ids)
+        
+        assert @twitter_user2.followers.none? { |follower| removed_followers.include?(follower) }
+        assert_equal current_followers.length, @twitter_user2.followers.count
+        
       end
       
     end

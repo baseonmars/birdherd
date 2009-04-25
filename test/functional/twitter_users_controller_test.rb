@@ -179,63 +179,7 @@ class TwitterUsersControllerTest < ActionController::TestCase
       end
 
     end
-    #
-    #
-    #
-    #     context "viewing their dashboard" do
-    #       setup do
-    #         get :show, :id => @account.id
-    #       end
-    #       should "see a timeline of tweets" do
-    #         assert assigns(:timeline)
-    #       end
-    #
-    #       should "see all their replies" do
-    #         assert assigns(:replies)
-    #       end
-    #
-    #       should "see direct messages sent to them" do
-    #         assert assigns(:direct_messages)
-    #       end
-    #
-    #       should "be have a new status ready to post" do
-    #         assert assigns(:status)
-    #       end
-    #     end
-    #
-    #   end
-    #
-    #   context "logged in with no accounts" do
-    #     setup do
-    #       activate_authlogic
-    #       UserSession.create Factory.build(:user)
-    #     end
-    #
-    #     should "create a new user" do
-    #       get :new
-    #       assert_response :success
-    #       post :create, :twitter_user => Factory.attributes_for(:twitter_user)
-    #       assert_redirected_to user_twitter_user_path(assigns('account').id)
-    #       assert_not_nil assigns('account')
-    #       assert assigns(:account).users.include?(assigns('current_user'))
-    #     end
-    #
-    #     should "update the account from the twitter api" do
-    #       post :create, :twitter_user => Factory.attributes_for(:twitter_user)
-    #       assert assigns('account')
-    #       assert_equal assigns('account').id, 7
-    #       assert_equal assigns('account').password, 'password'
-    #       assert_equal assigns('current_user').twitter_users.first, assigns('account')
-    #     end
-    #
-    #     should "claim an existing user that doesn't have a password" do
-    #       Factory(:twitter_user, :screen_name => 'birdherd', :password => 'nil', :id => 7)
-    #       post :create, :twitter_user => {:screen_name => "birdherd", :password => 'password'}
-    #       assert_redirected_to user_twitter_user_path(assigns('account').id)
-    #       assert_equal assigns('account').password, 'password'
-    #     end
-    #   end
-    #
+
   end
 
   context "not logged in" do
