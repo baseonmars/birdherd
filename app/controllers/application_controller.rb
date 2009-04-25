@@ -26,7 +26,7 @@ class ApplicationController < ActionController::Base
   def require_user
     if current_user
       logger.debug { "Next friends sync 10 mins after #{current_user.last_friends_sync}" }
-      sync_all_users_relationships(current_user) if current_user.requires_friends_sync?
+      sync_all_users_relationships(current_user) #if current_user.requires_friends_sync?
     else
       store_location
       flash[:notice] = "You must be logged in to access this page"
@@ -110,7 +110,7 @@ class ApplicationController < ActionController::Base
   def sync_relationships(type, account)
     page = 1
     twitter_user_ids = twitter_api(account).send("#{type}_ids", :page => page)
-    while twitter_user_ids.length.remainder(100) == 0
+    while twitter_user_ids.length > 0 && twitter_user_ids.length.remainder(100) == 0
       page += 1
       twitter_user_ids.push *twitter_api(account).send("#{type}_ids", :page => page)
     end
@@ -123,8 +123,9 @@ class ApplicationController < ActionController::Base
       user.twitter_users.each do |account|
         begin
           api_user = twitter_api(account).verify_credentials
-          sync_relationships(:friend, account) if (api_user.friends_count != account.friends.count)
-          sync_relationships(:follower, account) if (api_user.followers_count != account.followers.count)
+          logger.info { "#{api_user.inspect}" }
+          sync_relationships(:friend, account) if api_user.friends_count != account.friends.count
+          sync_relationships(:follower, account) if api_user.followers_count != account.followers.count
           account.save
         rescue
           flash[:notice] ||= ""
