@@ -42,8 +42,9 @@ class TwitterUsersController < ApplicationController
       access_token, access_secret = oauth_client.authorize_from_request( session[:request_token],
       session[:request_token_secret])
 
-      oauth_client.authorize_from_access(access_token, access_secret)
-      client = Twitter::Base.new(oauth_client)
+      oauth = oauth_client
+      oauth.authorize_from_access(access_token, access_secret)
+      client = Twitter::Base.new(oauth)
     rescue
       flash[:notice] = "Authentication failed"
       redirect_to :action => :new
