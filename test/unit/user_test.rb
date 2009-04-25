@@ -29,5 +29,12 @@ class UserTest < ActiveSupport::TestCase
       assert @user.errors
     end
     
+    should "require friends sync if not synced within last 10 minutes" do
+      @user.last_friends_sync = Time.now
+      pretend_now_is(11.minutes.from_now) do
+        assert @user.requires_friends_sync? 
+      end
+    end
+    
   end
 end

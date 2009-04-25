@@ -168,5 +168,23 @@ class TwitterUserTest < ActiveSupport::TestCase
         assert_equal @twitter_user.direct_messages.count, 2
       end
     end
+
+    context "with friends and followers" do
+      setup do
+        @friends = (1..5).to_a.map { Factory(:twitter_user) }
+        @followers = (1..5).to_a.map { Factory(:twitter_user) }
+        @twitter_user.friends << @friends
+        @twitter_user.followers << @followers
+      end
+
+      should "remove twitter users they no longer follow when syncing" do
+        current_followers = @followers[2..4] << Factory(:twitter_user)
+        removed_followers = @followers - current_followers
+        @twitter_user.update_relationships(:follower, current_followers)
+        @twitter_user.followers.none? { |follower| removed_followers.include?(@followers) }
+      end
+      
+    end
+      
   end
 end

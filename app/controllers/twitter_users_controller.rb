@@ -102,14 +102,4 @@ class TwitterUsersController < ApplicationController
     user
   end
 
-  def sync_relationships(type, account)
-    page = 1
-    twitter_user_ids = twitter_api(account).send("#{type}_ids", :page => page)
-    while twitter_user_ids.length.remainder(100) == 0
-      page += 1
-      twitter_user_ids.push *twitter_api(account).send("#{type}_ids", :page => page)
-    end
-    account.update_relationships(type, twitter_user_ids)
-  end
-
 end

@@ -24,11 +24,12 @@ class ApplicationController < ActionController::Base
   end
 
   def require_user
-    unless current_user
+    if current_user
+      sync_all_users_relationships(current_user)# if current_user.requires_friends_sync?
+    else
       store_location
       flash[:notice] = "You must be logged in to access this page"
-      redirect_to new_user_session_url
-      return false
+      redirect_to new_user_session_url and return false
     end
   end
 
@@ -36,8 +37,7 @@ class ApplicationController < ActionController::Base
     if current_user
       store_location
       flash[:notice] = "You must be logged out to access this page"
-      redirect_to user_url
-      return false
+      redirect_to user_url and return false
     end
   end
 
@@ -102,6 +102,27 @@ class ApplicationController < ActionController::Base
       end
       account.update_attribute(:sent_dms_last_id, sent.first.id) unless sent.empty?
       account.update_attribute(:recieved_dms_last_id, recieved.first.id) unless recieved.empty?
+    end
+  end
+  
+  def sync_relationships(type, account)
+    page = 1
+    twitter_user_ids = twitter_api(account).send("#{type}_ids", :page => page)
+    while twitter_user_ids.length.remainder(100) == 0
+      page += 1
+      twitter_user_ids.push *twitter_api(account).send("#{type}_ids", :page => page)
+    end
+    account.update_relationships(type, twitter_user_ids)
+  end
+
+  def sync_all_users_relationships(user)
+    user.update_attribute(:last_friends_sync, Time.now)
+    spawn do
+      user.twitter_users.each do |account|
+        sync_relationships(:friend, account)
+        sync_relationships(:follower, account)
+      end
+      user.save
     end
   end
 

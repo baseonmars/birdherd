@@ -52,13 +52,26 @@ class UsersControllerTest < ActionController::TestCase
       assert_equal assigns('user'), @user
     end
 
-    should "be able to update their account" do
-      get :update, :user => {:login => 'jimbob'}
-      assert_response :redirect
-      assert_template :show
-      assert_equal assigns('user').login, 'jimbob'
-    end
+    context "with an account" do
+      setup do
+        @user.twitter_users << Factory(:twitter_user)
+      end
 
+      should "be able to update their account" do
+        get :update, :user => {:login => 'jimbob'}
+        assert_response :redirect
+        assert_template :show
+        assert_equal assigns('user').login, 'jimbob'
+      end
+
+      should "sync all it's twitter_users friends on request" do
+        before_friends_sync = 0.minutes.ago
+        pretend_now_is(11.minutes.from_now) do
+          get :show
+          assert before_friends_sync < assigns(:user).last_friends_sync
+        end
+      end
+    end
   end
 
 end

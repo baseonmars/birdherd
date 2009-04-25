@@ -19,6 +19,7 @@ Factory.define :user do |f|
   f.password "password"
   f.password_confirmation "password"
   f.email { Factory.next :user_email }
+  f.last_friends_sync 1.hours.ago
 end
 
 Factory.define :twitter_user do |f|

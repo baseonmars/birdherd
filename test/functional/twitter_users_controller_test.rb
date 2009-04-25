@@ -13,16 +13,18 @@ class TwitterUsersControllerTest < ActionController::TestCase
     context "with protected friends that are not followers" do
 
       setup do
-        friend = Factory(:twitter_user)
-        friend.statuses << Factory(:twitter_status) 
-        friend.protected = true
-        @account.friends << friend
+        @friend = Factory(:twitter_user)
+        @friend.statuses << Factory(:twitter_status) 
+        @friend.protected = true
+        @account.friends << @friend
       end
 
       should "not show their statuses" do
         get :show, :id => @account.id
         timeline = assigns(:timeline)
-        assert_equal 0, timeline.length
+
+        posters = timeline.map { |status| status.poster }
+        assert !posters.include?(@friend)
       end
 
     end
