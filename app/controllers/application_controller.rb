@@ -26,7 +26,7 @@ class ApplicationController < ActionController::Base
   def require_user
     if current_user
       logger.debug { "Next friends sync 10 mins after #{current_user.last_friends_sync}" }
-      sync_all_users_relationships(current_user) #if current_user.requires_friends_sync?
+      sync_all_users_relationships(current_user) if current_user.requires_friends_sync?
     else
       store_location
       flash[:notice] = "You must be logged in to access this page"
