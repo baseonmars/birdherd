@@ -24,6 +24,7 @@ Rails::Initializer.run do |config|
 	config.gem 'oauth'
 	config.gem 'mocha'
 	config.gem 'fakeweb'
+	config.gem 'vlad'
 
   # Only load the plugins named here, in the order given (default is alphabetical).
   # :all can be used as a placeholder for all plugins not explicitly named
