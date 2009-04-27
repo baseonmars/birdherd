@@ -21,4 +21,8 @@ production:
   database: birdherd_production
   username: root
   password:
-  socket: /tmp/mysql.sock
+  socket: <%=
+        ['/opt/local/var/run/mysql5/mysqld.sock', # darwinports
+         '/opt/local/var/run/mysqld/mysqld.sock', # darwinports, again
+         '/var/run/mysqld/mysqld.sock',           # ubuntu/debian
+         '/tmp/mysql.sock'].select { |f| File.exist? f }.first %>
