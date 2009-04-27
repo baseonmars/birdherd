@@ -49,7 +49,8 @@ Rails::Initializer.run do |config|
     :email => 'team@thebirdherd.com',
     :team_signoff => 'The Birdherd Team',
     :app_name => 'Birdherd',
-    :url => 'http://thebirdherd.com'
+    :url => 'http://thebirdherd.com',
+    :entry_code => 'fre555h'
   }
 
   SITE[:email_str] = "#{SITE[:app_name]} <#{SITE[:email]}>"

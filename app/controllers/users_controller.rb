@@ -8,6 +8,10 @@ class UsersController < ApplicationController
   end
 
   def create
+    if params[:entry_code] != SITE[:entry_code]
+      flash[:notice] = "Please re-type the entry code"
+      redirect_to new_user_session_path and return
+    end
     @user = User.new(params[:user])
     if @user.save
       flash[:notice] = "Account registered!"

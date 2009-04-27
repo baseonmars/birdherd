@@ -22,10 +22,24 @@ class UsersControllerTest < ActionController::TestCase
     should "be able to register a new user" do
       get :new
       assert_response :success
-      post :create, :user => Factory.attributes_for(:user)
+      post :create, :user => Factory.attributes_for(:user), :entry_code => SITE[:entry_code]
       assert_redirected_to user_twitter_users_path
       assert_kind_of User, assigns('user')
     end
+    
+    should "require a code to register a new user" do
+      post :create, :user => Factory.attributes_for(:user), :entry_code => SITE[:entry_code]
+      assert_redirected_to user_twitter_users_path
+    end
+    
+    should "be redirected if entering the wrong code" do
+      post :create, :user => Factory.attributes_for(:user), :entry_code => 'wrong code'
+      assert_redirected_to new_user_session_path
+    end
+    
+    
+      
+    
 
   end
 
