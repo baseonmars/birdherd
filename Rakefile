@@ -8,3 +8,10 @@ require 'rake/testtask'
 require 'rake/rdoctask'
 
 require 'tasks/rails'
+
+begin
+   require 'vlad'
+   Vlad.load :app => :passenger, :scm => :git
+ rescue LoadError
+   puts "vlad the deployer not found"
+ end
