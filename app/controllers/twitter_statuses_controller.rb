@@ -49,7 +49,7 @@ class TwitterStatusesController < ApplicationController
       return
     end
   end
-  
+ 
   private
   def post_update(account, status)
     if status.text =~ /^d \w+\s/

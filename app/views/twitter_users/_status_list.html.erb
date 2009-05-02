@@ -1,6 +1,6 @@
 <div class="message-list">
 	<h2><%= h title %></h2>
-	<ul>
+	<ul id="<%= list_id %>">
 		<% statuses.each do |status| -%>
 		<li>
 			<%= twitter_user_profile_image(status.poster)%>

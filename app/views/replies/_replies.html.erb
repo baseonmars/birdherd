@@ -1,0 +1,17 @@
+<ul id="replies">
+<% @replies.each do |status| -%>
+<li>
+	<%= twitter_user_profile_image(status.poster)%>
+	<h3><strong><%= twitter_user_link(status.poster) %></strong></h3>
+	<p><%= status.text %></p>
+	<p class="status-time">posted <%= h friendly_time(status.created_at) %></p>
+	<p class="reply-link"><%= link_to "Reply", status_reply_path(@account, status.id) %></p>
+	<% unless status.birdherd_user.nil? -%>
+	<p class="birdherd-user">Posted by: <%= "#{h status.birdherd_user.login} (#{status.birdherd_user.email})" %></p>
+	<% end -%>
+	<% unless reply_users_string(status).blank? %>
+	<p>Replied to by: <%= h reply_users_string(status) %></p>
+	<% end -%>
+</li>
+<% end -%>
+</ul>

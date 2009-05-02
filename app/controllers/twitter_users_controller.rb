@@ -34,6 +34,25 @@ class TwitterUsersController < ApplicationController
       @direct_messages = @account.direct_messages(:include => [:sender, :recipient])[0...30]
       @status = @account.statuses.new
     end
+  end  
+  
+  def friends_timeline
+    @account = TwitterUser.find(params[:twitter_user_id])
+    @statuses = @account.friends_timeline
+
+    spawn do
+      sync_statuses(:friends_timeline, @account)
+    end             
+
+    render :update do |page|
+      page.visual_effect :highlight, "timeline", :durations => 0.4
+      page.delay(0.4) do
+        page.replace "timeline", :partial => "friends_timeline", :locals => { :statuses => @statuses, 
+          :account => @account,
+          :list_id => 'timeline'}
+        end   
+      end
+      return
   end
 
   def callback

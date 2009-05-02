@@ -1,30 +1,30 @@
 <h2><%= h @account.screen_name %></h2>
 
 <div id="post-status">
-<%= render :partial => 'twitter_statuses/brief_form', :locals => {:status => @status, :twitter_account => @account} %>
+<%= render :partial => 'twitter_statuses/brief_form', 
+	:locals => {:status => @status, 
+	:twitter_account => @account  } %>
 </div>
 
 <p>Friends timeline last synced <%= h @account.friends_timeline_sync_time %></p>
 
-<%= render :partial => 'status_list', :locals => { :statuses => @replies, :account => @account, :title => "Replies" } %>
+<%= render :partial => 'status_list', 
+	:locals => { :statuses => @replies, 
+	:account => @account, 
+	:title => "Replies",	
+	:list_id => 'replies' } %>
 
-<div id="direct_messages" class="message-list">
-	<h2>Direct messages</h2>
-	<ul>
-	<% @direct_messages.each do |dm| %>
-	<li>
-		<div class="dm-profile-pics profile-image"><%= twitter_user_profile_image(dm.sender)%>
-		<%= twitter_user_profile_image(dm.recipient, :class => 'dm-recipient') %></div>
-		<h3><%= twitter_user_link(dm.sender) %></h3>
-		<p><strong>@<%= dm.recipient.screen_name %>:</strong> <%= dm.text %></p>
-		<p class="status-time">sent <%= h friendly_time(dm.created_at) %></p>
-		<p class="birdherd-user"><%= "posted by: #{h dm.birdherd_user.login}" unless dm.birdherd_user.nil?%></p>
-	</li>
-	<% end -%>
-	</ul>
-</div>
-
-<%= render :partial => 'status_list', :locals => { :statuses => @timeline, :account => @account,	:title => "#{@account.screen_name}'s Timeline" } %>
-
+<%= periodically_call_remote(:url => {:controller => :replies, :action => 'index',
+	:twitter_user_id => @account.id },:method => :get, :frequency => 60) %>    
+	<div class="message-list">
+		<h2>Direct Messages</h2>	
+		<%= render :partial => 'twitter_direct_messages/direct_messages', :locals => {:direct_messages => @direct_messages} %>
+		<%= periodically_call_remote( :url => direct_messages_url(@account),:method => :get, :frequency => 60) %>
+	</div>
+<%= render :partial => 'status_list', 
+	:locals => { :statuses => @timeline, 
+	:account => @account,	:title => "#{@account.screen_name}'s Timeline", 
+	:list_id => 'timeline' } %>
+	<%= periodically_call_remote( :url => friends_timeline_url(@account),:method => :get, :frequency => 60) %>
 
 
