@@ -118,14 +118,27 @@ class TwitterUserTest < ActiveSupport::TestCase
       should "have 1 follower" do
         assert_equal @twitter_user.followers.count, 1
       end
+      
+      context "and is set protectd" do
+        setup do
+          @twitter_user.update_attribute(:protected, true)
+        end
+           
+        should "be visible to it's follower" do
+           assert @twitter_user.visible_to?(@follower)
+        end           
+        
+        should "not be visible to non following friend" do
+           assert !@twitter_user.visible_to?(@friend1)
+        end
+        
+      end
     end
 
     context "owned by a user" do
       setup do
         @user = Factory(:user)
         @twitter_user.users << @user
-        # @twitter_user.save
-        # @user.reload
       end
 
       should "agree that it is owned by a user" do

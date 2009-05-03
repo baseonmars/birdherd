@@ -13,7 +13,17 @@ class TwitterUser < ActiveRecord::Base
   has_many :friends, :class_name              => 'TwitterUser', :through     => :follower_friendships, :source => :friend
 
   has_many :searches
-  
+
+  has_many :friends_timeline , 
+    :class_name => 'TwitterStatus', 
+    :finder_sql => %q{SELECT * from twitter_statuses 
+      WHERE poster_id = #{id} OR 
+      poster_id in (#{friends.map {|f| f.id}.join(",")})
+      ORDER BY created_at DESC
+    }
+
+
+
   def owned_by?(user)
     users.include? user unless users.nil?
   end
@@ -33,42 +43,15 @@ class TwitterUser < ActiveRecord::Base
     self
   end
 
-  def friends_timeline(args={})
-    unprotected_f = friends.find(:all, :conditions => {:protected => false} )
-    
-    protected_f = friends.find(:all, :conditions => {:protected => true}).select do |friend|
-      friend.followers.include?(self)
-    end
-    
-    viewable = unprotected_f + protected_f + [self]
-
-    statuses = viewable.inject([]) do |acc,twitter_user|
-      acc + twitter_user.statuses
-    end
-
-    limit = args[:limit] || 20
-    (statuses).sort { |a,b| b.created_at <=> a.created_at }[0...limit]
+  def visible_to?(other)
+    unprotected || followers.include?(other)
   end
-  
-end
 
-
-def friends_timeline(args={})    
-  viewable = friends.find(:all).select do |friend|
-    friend.unprotected or friend.followers.include?(self)
-  end << self
-
-  statuses = viewable.inject([]) { |acc,tu| acc + tu.statuses }
-
-  limit = args[:limit] || 20
-  statuses.sort { |a,b| b.created_at <=> a.created_at }[0...limit]
-end
-
-private
+  private
   def unprotected
     !self.protected
   end
-  
-    
-    
+
+end
+
 
