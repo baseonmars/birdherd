@@ -25,17 +25,15 @@ class TwitterUserTest < ActiveSupport::TestCase
     end
 
     should "update it's followers from api users" do
-      api_users = [Factory.build(:api_user), Factory.build(:api_user), Factory.build(:api_user)]
-      ids = api_users.map { |f| f.id}
+      ids = [2323,44545,23322324]
       @twitter_user.update_relationships(:follower, ids)
-      assert_equal @twitter_user.followers.count, api_users.length
+      assert_equal @twitter_user.followers.count, ids.length
     end
 
     should "update it's friends from api users" do
-      api_users = [Factory.build(:api_user), Factory.build(:api_user), Factory.build(:api_user)]
-      ids = api_users.map { |f| f.id}
+      ids = [34534,234234,12312]
       @twitter_user.update_relationships(:friend, ids)
-      assert_equal @twitter_user.friends.count, api_users.length
+      assert_equal @twitter_user.friends.count, ids.length
     end
 
     context "after syncing followers" do
