@@ -6,25 +6,25 @@
 	:twitter_account => @account  } %>
 </div>
 
-<p>Friends timeline last synced <%= h @account.friends_timeline_sync_time %></p>
-
 <%= render :partial => 'status_list', 
 	:locals => { :statuses => @replies, 
 	:account => @account, 
 	:title => "Replies",	
 	:list_id => 'replies' } %>
-
-<%= periodically_call_remote(:url => {:controller => :replies, :action => 'index',
-	:twitter_user_id => @account.id },:method => :get, :frequency => 60) %>    
-	<div class="message-list">
-		<h2>Direct Messages</h2>	
-		<%= render :partial => 'twitter_direct_messages/direct_messages', :locals => {:direct_messages => @direct_messages} %>
-		<%= periodically_call_remote( :url => direct_messages_url(@account),:method => :get, :frequency => 60) %>
-	</div>
+<%= periodic_list_update twitter_user_replies_url(@account) %>
+	
+<div class="message-list">
+	<h2>Direct Messages</h2>	
+	<%= render :partial => 'twitter_direct_messages/direct_messages', 
+	:locals => {:direct_messages => @direct_messages} %>
+	<%= periodic_list_update direct_messages_url(@account) %>
+</div>
+	
 <%= render :partial => 'status_list', 
 	:locals => { :statuses => @timeline, 
-	:account => @account,	:title => "#{@account.screen_name}'s Timeline", 
+	:account => @account,	
+	:title => "#{@account.screen_name}'s Timeline", 
 	:list_id => 'timeline' } %>
-	<%= periodically_call_remote( :url => friends_timeline_url(@account),:method => :get, :frequency => 60) %>
+<%= periodic_list_update friends_timeline_url(@account) %>
 
 

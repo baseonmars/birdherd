@@ -17,6 +17,10 @@ module TwitterUsersHelper
     end
   end
   
+  def periodic_list_update(url)
+    periodically_call_remote(:url => url,:method => :get, :frequency => 60)
+  end
+  
   private
     def profile_text(twitter_user)
       "@#{twitter_user.screen_name}'s profile"
