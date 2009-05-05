@@ -38,10 +38,15 @@ class ActiveSupport::TestCase
   # -- they do not yet inherit this setting
   # fixtures :all
 
-  # Add more helper methods to be used by all tests here...
-  setup do 
-  
-  end
-
+  # Add more helper methods to be used by all tests here...         
+    
 end
 
+module Spawn
+  def self.now_yields
+    old_method = @@method
+    Spawn::method :yield
+    yield
+    Spawn::method old_method
+  end
+end
