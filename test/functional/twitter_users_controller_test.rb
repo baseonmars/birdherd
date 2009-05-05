@@ -38,10 +38,11 @@ class TwitterUsersControllerTest < ActionController::TestCase
       UserSession.create Factory.build(:user)
       @user = User.find(1)
       @account = Factory :real_twitter_user, :users => [@user], :screen_name => 'birdherd', :id => 25256654
-      @account.save
+      # TODO remove the save and reloads. if they're not required.
+      # @account.save
       friend = Factory :twitter_user, :screen_name => 'baseonmars', :id => 7733932
       @account.friends << friend
-      @user.reload
+      # @user.reload
     end
 
     should "see a list of all it's twitter accounts" do
@@ -70,10 +71,12 @@ class TwitterUsersControllerTest < ActionController::TestCase
     end
 
     should "updates the accounts friends and followers from the api" do
-      post :create, :twitter => Factory.attributes_for(:twitter_user)
-      post :callback
-      assert_equal 63, assigns(:account).followers.count, "followers don't match"
-      assert_equal 69, assigns(:account).friends.count, "friends don't match"
+      Spawn.now_yields do
+        post :create, :twitter => Factory.attributes_for(:twitter_user)
+        post :callback         
+      end
+      assert_equal 4, assigns(:account).followers.count, "followers don't match"
+      assert_equal 6, assigns(:account).friends.count, "friends don't match"
     end
     
     should "only get the id's of friends and followers" do
@@ -96,7 +99,9 @@ class TwitterUsersControllerTest < ActionController::TestCase
     context "when getting statuses" do
       setup do
         @start_time = Time.now
-        get :show, :id => @account.id
+        Spawn.now_yields do
+          get :show, :id => @account.id
+        end
         assert_response :success
       end
 
@@ -104,7 +109,6 @@ class TwitterUsersControllerTest < ActionController::TestCase
         assert_not_nil assigns('account').friends_timeline_sync_time
         assert assigns('account').friends_timeline_sync_time = @start_time
         assert_response :success
-
       end
 
       should "not sync friends timeline if synced in last 2.5 minutes" do
@@ -150,7 +154,7 @@ class TwitterUsersControllerTest < ActionController::TestCase
       end
       
       should "update the direct messages on the twitter user" do
-        assert_equal assigns('account').direct_messages.count, 15
+        assert_equal assigns('account').direct_messages.count, 3
       end
       
       should "update the last sync id for sent dm's" do
@@ -160,12 +164,6 @@ class TwitterUsersControllerTest < ActionController::TestCase
       should "update the last sync id for recieved dm's" do
         assert_equal assigns('account').recieved_dms_last_id, 89724222
       end
-
-      #
-      #       should "set the poster on statuses it recieves" do
-      #         get :show, :id => @account.id
-      #       end
-      #
     end
     
     context "when account is created" do
