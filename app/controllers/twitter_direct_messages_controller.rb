@@ -2,7 +2,7 @@ class TwitterDirectMessagesController < ApplicationController
   
   def index
     @account = TwitterUser.find(params[:twitter_user_id])
-    @direct_messages = @account.direct_messages
+    @direct_messages = @account.direct_messages[0..30]
 
     spawn do
       sync_dms(@account)

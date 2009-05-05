@@ -1,6 +1,7 @@
 class TwitterUsersController < ApplicationController
   before_filter :require_user
   before_filter :get_account, :only => :show
+  before_filter :tweet_syncs, :only => :show
 
   def index
     @user = @current_user
@@ -22,13 +23,8 @@ class TwitterUsersController < ApplicationController
   end
 
   def show
-    if @account && @account.owned_by?(@current_user)
-
-      sync_statuses(:friends_timeline, @account)
-      sync_statuses(:replies, @account)
-      sync_dms(@account)
-      
-      @timeline = @account.friends_timeline(:limit => 30)
+    if @account && @account.owned_by?(@current_user)    
+      @timeline = @account.friends_timeline_with_limit(30, :include => [:replies, :poster] )
       @replies = @account.replies(:include => [:replies, :poster], :limit => 30)
       @direct_messages = @account.direct_messages(:include => [:sender, :recipient])[0...30]
       @status = @account.statuses.new
@@ -37,7 +33,7 @@ class TwitterUsersController < ApplicationController
   
   def friends_timeline
     @account = TwitterUser.find(params[:twitter_user_id])
-    @statuses = @account.friends_timeline
+    @statuses = @account.friends_timeline[0...30]
 
     sync_statuses(:friends_timeline, @account)
 
@@ -67,9 +63,7 @@ class TwitterUsersController < ApplicationController
       return
     end
 
-    logger.debug { "verifying credentials" }
     user = verify_credentials(client)
-    logger.debug { "done verifying credentials" }
 
     # We have an authorized user, save the information to the database.
     @account = TwitterUser.find_or_initialize_by_id(user.id)
@@ -109,6 +103,12 @@ class TwitterUsersController < ApplicationController
     rescue
       @account = nil
     end
+  end
+  
+  def tweet_syncs
+    sync_statuses(:friends_timeline, @account)
+    sync_statuses(:replies, @account)
+    sync_dms(@account)
   end
 
   def verify_credentials(client)

@@ -5,7 +5,13 @@ class TwitterUser < ActiveRecord::Base
 
   has_many :sent_direct_messages, :class_name     => 'TwitterDirectMessage', :foreign_key => 'sender_id', :order => 'created_at DESC'
   has_many :recieved_direct_messages, :class_name => 'TwitterDirectMessage', :foreign_key => 'recipient_id', :order => 'created_at DESC'
-  has_many :direct_messages, :class_name          => 'TwitterDirectMessage', :finder_sql  => 'SELECT * from twitter_direct_messages WHERE sender_id = #{id} OR recipient_id = #{id} ORDER BY created_at DESC'
+  has_many :direct_messages, :class_name          => 'TwitterDirectMessage', 
+  :finder_sql  => %q{SELECT * from twitter_direct_messages 
+    WHERE sender_id = #{id} OR 
+    recipient_id = #{id} 
+    ORDER BY created_at DESC
+    LIMIT #{timeline_limit||1000}
+  }
 
   has_many :follower_friendships, :class_name => 'Friendship',  :foreign_key => 'follower_id'
   has_many :followers, :class_name            => 'TwitterUser', :through     => :friend_friendships, :source => :follower
@@ -20,9 +26,22 @@ class TwitterUser < ActiveRecord::Base
       WHERE poster_id = #{id} OR 
       poster_id in (#{friends.map {|f| f.id}.join(",")})
       ORDER BY created_at DESC
-    }
-
-
+      LIMIT #{timeline_limit||1000}
+  } 
+               
+  def friends_timeline_with_limit(limit=30, options={})
+    @timeline_limit = limit
+    timeline = friends_timeline(options={})
+    @timeline_limit = nil
+    timeline
+  end
+      
+  def direct_messages_with_limit(limit=30, options={})
+    @timeline_limit = limit
+    timeline = direct_messages(options={})
+    @timeline_limit = nil
+    timeline
+  end
 
   def owned_by?(user)
     users.include? user unless users.nil?
@@ -45,7 +64,10 @@ class TwitterUser < ActiveRecord::Base
 
   def visible_to?(other)
     unprotected || followers.include?(other)
-  end
+  end 
+
+  protected
+    attr_accessor :timeline_limit           
 
   private
   def unprotected

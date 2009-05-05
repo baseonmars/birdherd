@@ -2,7 +2,7 @@ class RepliesController < TwitterStatusesController
   layout nil, :only => :index
   def index
     @account = TwitterUser.find(params[:twitter_user_id])
-    @replies = @account.replies
+    @replies = @account.replies.find(:all, :limit => 30)
     
     spawn do
       sync_statuses(:replies, @account)

@@ -112,7 +112,8 @@ class ApplicationController < ActionController::Base
   def sync_relationships(type, account)
     page = 1
     twitter_user_ids = twitter_api(account).send("#{type}_ids", :page => page)
-    while twitter_user_ids.length > 0 && twitter_user_ids.length.remainder(100) == 0
+    while (twitter_user_ids.length > SITE[:social_graph_ids_per_page] && 
+      twitter_user_ids.length % SITE[:social_graph_ids_per_page] == 0)
       page += 1
       twitter_user_ids.push *twitter_api(account).send("#{type}_ids", :page => page)
     end
@@ -130,8 +131,7 @@ class ApplicationController < ActionController::Base
           sync_relationships(:follower, account) if api_user.followers_count != account.followers.count
           account.save
         rescue
-          flash[:notice] ||= ""
-          flash[:notice] <<  "Rate limit exceeded for #{account.screen_name}"
+          (flash[:notice] ||= "") <<  "Rate limit exceeded for #{account.screen_name}"
           current_user.last_friends_sync = 10.minutes.from_now
         end
       end

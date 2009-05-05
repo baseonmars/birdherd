@@ -51,7 +51,8 @@ Rails::Initializer.run do |config|
     :team_signoff => 'The Birdherd Team',
     :app_name => 'Birdherd',
     :url => 'http://thebirdherd.com',
-    :entry_code => 'fre555h'
+    :entry_code => 'fre555h', 
+    :social_graph_ids_per_page => 5000
   }
 
   SITE[:email_str] = "#{SITE[:app_name]} <#{SITE[:email]}>"

@@ -63,6 +63,8 @@ class TwitterUserTest < ActiveSupport::TestCase
         @twitter_user.friends << @friend
         Factory(:twitter_status, :poster => @friend)
         Factory(:twitter_status, :poster => @twitter_user)
+        Factory( :twitter_direct_message, :recipient_id => @twitter_user.id )  
+        Factory( :twitter_direct_message, :recipient_id => @twitter_user.id )  
       end
 
       should "have one friend" do
@@ -85,9 +87,21 @@ class TwitterUserTest < ActiveSupport::TestCase
         assert @twitter_user.respond_to?(:friends_timeline)
         assert_equal @twitter_user.friends_timeline.length, 2
       end
+                                        
+      should "allow direct messages to be limited" do
+         assert_equal 1, @twitter_user.direct_messages_with_limit(1).length
+      end
+      
+      should "allow direct messages to be limited, with options" do
+        assert_equal 1, @twitter_user.direct_messages_with_limit(1, :include => [:replies, :poster]).length
+      end
       
       should "allow timelime to be limited" do
-        assert_equal 1, @twitter_user.friends_timeline(:limit => 1).length
+        assert_equal 1, @twitter_user.friends_timeline_with_limit( 1 ).length
+      end                                                                    
+      
+      should "allow timeline to be limited, with options" do
+        assert_equal 1, @twitter_user.friends_timeline_with_limit(1, :include => [:replies, :poster]).length
       end
 
       should "includes friends statuses in friends timeline" do
