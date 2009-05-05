@@ -24,7 +24,8 @@ Rails::Initializer.run do |config|
 	config.gem 'oauth'
 	config.gem 'mocha'
 	config.gem 'fakeweb'
-	config.gem 'vlad'
+	config.gem 'vlad'        
+  # config.gem "timocratic-test_benchmark", :lib => 'test_benchmark', :source => 'http://gems.github.com', :version => '0.4.3'
 
   # Only load the plugins named here, in the order given (default is alphabetical).
   # :all can be used as a placeholder for all plugins not explicitly named
