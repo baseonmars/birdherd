@@ -96,7 +96,7 @@ class TwitterUsersControllerTest < ActionController::TestCase
       assert_not_nil assigns('timeline')
     end
 
-    context "when getting statuses" do
+    context "when getting statuses with a yielding spawn" do
       setup do
         @start_time = Time.now
         Spawn.now_yields do
@@ -104,28 +104,10 @@ class TwitterUsersControllerTest < ActionController::TestCase
         end
         assert_response :success
       end
-
-      should "update the friends timeline sync time" do
-        assert_not_nil assigns('account').friends_timeline_sync_time
-        assert assigns('account').friends_timeline_sync_time = @start_time
-        assert_response :success
-      end
-
-      should "not sync friends timeline if synced in last 2.5 minutes" do
-        last_sync = assigns('account').friends_timeline_sync_time
-        pretend_now_is(2.3.minutes.from_now) do
-          get :show, :id => @account.id
-          assert_equal assigns('account').friends_timeline_sync_time.to_s, last_sync.to_s
-        end
-      end
       
       should "update the friends timeline last sync id" do
         get :show, :id => @account.id
         assert_equal assigns('account').friends_timeline_last_id, 1483410281
-      end
-
-      should "update the replies sync time" do
-        assert assigns('account').replies_sync_time
       end
 
       should "update the replies on the twitter user" do
@@ -136,21 +118,9 @@ class TwitterUsersControllerTest < ActionController::TestCase
       should "update the friends timeline on the twitter user" do
         assert assigns('account').friends_timeline.length > 0
       end
-
-      should "not sync replies if synced in last 2.5 minutes" do
-        last_sync = assigns('account').replies_sync_time
-        pretend_now_is(2.3.minutes.from_now) do
-          get :show, :id => @account.id
-          assert_equal assigns('account').replies_sync_time.to_s, last_sync.to_s
-        end
-      end
       
       should "update the replies last sync id" do
         assert_equal assigns('account').replies_last_id, 1465564830
-      end
-
-      should "updated the direct messages sync time" do
-        assigns assigns('account').direct_messages_sync_time
       end
       
       should "update the direct messages on the twitter user" do
@@ -164,6 +134,51 @@ class TwitterUsersControllerTest < ActionController::TestCase
       should "update the last sync id for recieved dm's" do
         assert_equal assigns('account').recieved_dms_last_id, 89724222
       end
+    end  
+    
+    context "when getting statuses with a forking spawn" do
+      setup do
+        @start_time = Time.now
+        get :show, :id => @account.id
+        assert_response :success
+      end 
+      
+      should "not sync replies if synced in last 2.5 minutes" do
+        last_sync = assigns('account').replies_sync_time
+        pretend_now_is(2.3.minutes.from_now) do
+          get :show, :id => @account.id
+          assert_equal assigns('account').replies_sync_time.to_s, last_sync.to_s
+        end
+      end  
+          
+      should "not sync friends timeline if synced in last 2.5 minutes" do
+        last_sync = assigns('account').friends_timeline_sync_time
+        pretend_now_is(2.3.minutes.from_now) do
+          get :show, :id => @account.id
+          assert_equal assigns('account').friends_timeline_sync_time.to_s, last_sync.to_s
+        end
+      end
+
+      should "update the friends timeline sync time" do
+        assert_not_nil assigns('account').friends_timeline_sync_time
+        assert assigns('account').friends_timeline_sync_time > @start_time
+        assert_response :success
+      end     
+      
+      should "update the replies sync time" do
+        assert_not_nil assigns('account').replies_sync_time
+        assert assigns('account').friends_timeline_sync_time > @start_time
+        assert_response :success
+      end   
+      
+      
+      should "updated the direct messages sync time" do
+        assert assigns('account').direct_messages_sync_time
+        assert_not_nil assigns('account').direct_messages_sync_time
+        assert assigns('account').direct_messages_sync_time > @start_time
+        assert_response :success
+      end
+      
     end
     
     context "when account is created" do

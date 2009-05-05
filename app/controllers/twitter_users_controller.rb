@@ -23,11 +23,10 @@ class TwitterUsersController < ApplicationController
 
   def show
     if @account && @account.owned_by?(@current_user)
-      spawn do
-        sync_statuses(:friends_timeline, @account)
-        sync_statuses(:replies, @account)
-        sync_dms(@account)
-      end
+
+      sync_statuses(:friends_timeline, @account)
+      sync_statuses(:replies, @account)
+      sync_dms(@account)
       
       @timeline = @account.friends_timeline(:limit => 30)
       @replies = @account.replies(:include => [:replies, :poster], :limit => 30)
@@ -40,9 +39,7 @@ class TwitterUsersController < ApplicationController
     @account = TwitterUser.find(params[:twitter_user_id])
     @statuses = @account.friends_timeline
 
-    spawn do
-      sync_statuses(:friends_timeline, @account)
-    end             
+    sync_statuses(:friends_timeline, @account)
 
     render :update do |page|
       page.visual_effect :highlight, "timeline", :durations => 0.4
