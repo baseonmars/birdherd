@@ -33,7 +33,7 @@ class TwitterUsersController < ApplicationController
   
   def friends_timeline
     @account = TwitterUser.find(params[:twitter_user_id])
-    @statuses = @account.friends_timeline[0...30]
+    @statuses = @account.friends_timeline_with_limit 30
 
     sync_statuses(:friends_timeline, @account)
 
