@@ -19,7 +19,7 @@ config.action_mailer.raise_delivery_errors = true
 ActionMailer::Base.delivery_method = :sendmail
 
 SITE ||= {}
-SITE[:url] = 'http://localhost:3000'
+SITE[:url] = 'http://devbirdherd.com:3000'
 SITE[:api_key] = 'FhNZIOFLllHvpB2VlEXAA'
 SITE[:api_secret] = 'MHXEDctGtssS7VQjLwHHA5lgPlAnWy0Xi6NO2nnRc'    
 
