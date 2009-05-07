@@ -21,4 +21,6 @@ ActionMailer::Base.delivery_method = :sendmail
 SITE ||= {}
 SITE[:url] = 'http://localhost:3000'
 SITE[:api_key] = 'FhNZIOFLllHvpB2VlEXAA'
-SITE[:api_secret] = 'MHXEDctGtssS7VQjLwHHA5lgPlAnWy0Xi6NO2nnRc'
+SITE[:api_secret] = 'MHXEDctGtssS7VQjLwHHA5lgPlAnWy0Xi6NO2nnRc'    
+
+config.gem "ruby-debug"                                                                                                   
