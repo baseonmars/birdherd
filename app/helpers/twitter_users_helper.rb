@@ -18,7 +18,7 @@ module TwitterUsersHelper
   end
   
   def periodic_list_update(url)
-    periodically_call_remote(:url => url,:method => :get, :frequency => 10)
+    periodically_call_remote(:url => url,:method => :get, :frequency => 60)
   end
   
   private
