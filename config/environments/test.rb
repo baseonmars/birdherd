@@ -32,4 +32,4 @@ config.gem "thoughtbot-factory_girl", :lib => "factory_girl", :source => "http:/
 config.gem 'iridesco-time-warp', :lib => 'time_warp', :source => "http://gems.github.com"    
 config.gem 'mocha'
 config.gem 'fakeweb'
-config.gem "timocratic-test_benchmark", :lib => 'test_benchmark', :source => 'http://gems.github.com', :version => '0.4.3'
+# config.gem "timocratic-test_benchmark", :lib => 'test_benchmark', :source => 'http://gems.github.com', :version => '0.4.3'
