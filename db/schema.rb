@@ -9,12 +9,15 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20090424201604) do
+ActiveRecord::Schema.define(:version => 20090523181051) do
 
   create_table "friendships", :force => true do |t|
     t.integer "follower_id"
     t.integer "friend_id"
   end
+
+  add_index "friendships", ["follower_id"], :name => "index_friendships_on_follower_id"
+  add_index "friendships", ["friend_id"], :name => "index_friendships_on_friend_id"
 
   create_table "searches", :force => true do |t|
     t.datetime "created_at"
@@ -49,6 +52,10 @@ ActiveRecord::Schema.define(:version => 20090424201604) do
     t.integer  "birdherd_user_id"
   end
 
+  add_index "twitter_direct_messages", ["birdherd_user_id"], :name => "index_twitter_direct_messages_on_birdherd_user_id"
+  add_index "twitter_direct_messages", ["recipient_id"], :name => "index_twitter_direct_messages_on_recipient_id"
+  add_index "twitter_direct_messages", ["sender_id"], :name => "index_twitter_direct_messages_on_sender_id"
+
   create_table "twitter_statuses", :force => true do |t|
     t.text     "text"
     t.integer  "poster_id"
@@ -59,6 +66,9 @@ ActiveRecord::Schema.define(:version => 20090424201604) do
     t.integer  "birdherd_user_id"
     t.string   "cached_tag_list"
   end
+
+  add_index "twitter_statuses", ["birdherd_user_id"], :name => "index_twitter_statuses_on_birdherd_user_id"
+  add_index "twitter_statuses", ["poster_id"], :name => "index_twitter_statuses_on_poster_id"
 
   create_table "twitter_users", :force => true do |t|
     t.string   "screen_name"
@@ -81,6 +91,9 @@ ActiveRecord::Schema.define(:version => 20090424201604) do
     t.integer "user_id"
     t.integer "twitter_user_id"
   end
+
+  add_index "twitter_users_users", ["twitter_user_id"], :name => "index_twitter_users_users_on_twitter_user_id"
+  add_index "twitter_users_users", ["user_id"], :name => "index_twitter_users_users_on_user_id"
 
   create_table "users", :force => true do |t|
     t.string   "login"
