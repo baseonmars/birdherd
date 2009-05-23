@@ -40,8 +40,8 @@ class TwitterUsersControllerTest < ActionController::TestCase
       @account = Factory :real_twitter_user, :users => [@user], :screen_name => 'birdherd', :id => 25256654
       # TODO remove the save and reloads. if they're not required.
       # @account.save
-      friend = Factory :twitter_user, :screen_name => 'baseonmars', :id => 7733932
-      @account.friends << friend
+      @friend = Factory :twitter_user, :screen_name => 'baseonmars', :id => 7733932
+      @account.friends << @friend
       # @user.reload
     end
 
@@ -94,6 +94,21 @@ class TwitterUsersControllerTest < ActionController::TestCase
       get :show, :id => @account.id
       assert_not_nil assigns('account')
       assert_not_nil assigns('timeline')
+    end
+
+    context "with over 30 statuses in their timeline" do
+      
+      setup do
+        statuses = []
+        31.times { statuses << Factory(:twitter_status, :poster => @friend) }
+        @friend.statuses << statuses
+      end
+      
+      should "get 30 statuses when getting the friends timeline" do
+        get :friends_timeline, :twitter_user_id => @account.id
+        assert_equal 30, assigns(:statuses).length
+      end
+      
     end
 
     context "when getting statuses with a yielding spawn" do
