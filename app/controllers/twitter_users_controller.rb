@@ -25,7 +25,7 @@ class TwitterUsersController < ApplicationController
   def show
     if @account && @account.owned_by?(@current_user)    
       @timeline = @account.friends_timeline_with_limit(30, :include => [:replies, :poster] )
-      @replies = @account.replies(:include => [:replies, :poster], :limit => 30)
+      @replies = @account.replies.find(:all, :include => [:replies, :poster], :limit => 30)
       @direct_messages = @account.direct_messages_with_limit(30, :include => [:sender, :recipient])
       @status = @account.statuses.new
     end
