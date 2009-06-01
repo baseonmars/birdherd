@@ -1,11 +1,20 @@
 <% form_for([twitter_account, status]) do |f| %>
   <%= f.error_messages %>
-  <p>
-    <%= f.label "What are you doing?" %><br />
-    <%= f.text_area :text, :cols => 70, :rows => 3 %>
-  </p>
+	<%= f.label "What are you doing?" %>
+	<div id="charcount"><span id="count">0</span>/140</div>
+	<%= f.text_area :text, :cols => 70, :rows => 3 %>
+
 
   <p>
     <%= f.submit 'update' %>
   </p>
 <% end %>
+<%= observe_field :twitter_status_text,
+	:frequency => 0.3,
+	:function => "$('count').innerHTML = value.length; 
+	if ( value.length > 140) { 
+		$('charcount').setStyle({color: 'red'});
+	} else { 
+	 $('charcount').setStyle({color: 'inherit'});
+	}" %>
+
