@@ -56,25 +56,33 @@ Rails::Initializer.run do |config|
   
 end
 
-# module Twitter
-#   class Base
-#     private
-#     alias_method :perform_get_nocache, :perform_get 
-#     def perform_get(path, options={})
-#       key = "#{@client.access_token.token}#{path.gsub('/', '-')}"
-#       if Rails.cache.exist?(key) 
-#         Rails.logger.info "got cached response"
-#         return Rails.cache.read(key)
-#       else
-#         Rails.logger.info "generating response"
-#         response = perform_get_nocache(path, options)
-#         # Rails.logger.info response.inspect
-#         Rails.cache.write(key, response)
-#         return response
-#       end
-#     end
-#   end   
-# end     
+module Twitter
+  class Base
+    private
+    alias_method :perform_get_nocache, :perform_get 
+    def perform_get(path, options={})
+      key = "#{@client.access_token.token}#{path.gsub('/', '-')}"
+      if Rails.cache.exist?(key) 
+        return Rails.cache.read(key)
+      else
+        response = perform_get_nocache(path, options)
+        Rails.cache.write(key, response)
+        return response
+      end
+    end
+  end   
+end
+
+class Mash
+  def _dump(depth)
+    self.to_yaml
+  end
+
+  def Mash._load(str)
+    YAML.load(str)
+  end
+end
+
 #      
 # module Twitter
 #   class Request    
