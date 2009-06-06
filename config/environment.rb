@@ -17,11 +17,11 @@ Rails::Initializer.run do |config|
   # Specify gems that this application depends on and have them installed with rake gems:install 
   # development and test gems are specified in their environments
   config.gem "authlogic", :version => '>2.0.4'
-	config.gem "twitter", :version => '>=0.6.6'
+	config.gem "twitter", :version => '>=0.6.6' 
 	config.gem "mbleigh-acts-as-taggable-on", :source => "http://gems.github.com", :lib => "acts-as-taggable-on"
 	config.gem 'oauth'
-	config.gem 'vlad'
-
+	config.gem 'vlad'                           
+	
   # Only load the plugins named here, in the order given (default is alphabetical).
   # :all can be used as a placeholder for all plugins not explicitly named
   # config.plugins = [ :exception_notification, :ssl_requirement, :all ]

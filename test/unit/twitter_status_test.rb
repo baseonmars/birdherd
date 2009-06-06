@@ -8,14 +8,30 @@ class TwitterStatusTest < ActiveSupport::TestCase
     
     should_belong_to :poster
     should_belong_to :recipient
-    should_have_many :replies
     should_belong_to :birdherd_user
-
-    should "have it's attributes updated from a Twitter::Status" do
-      @twitter_status = Factory.build(:api_status)
-      @status.update_from_twitter(@twitter_status)
-      assert @status.text, @twitter_status.text
-    end
+    
+    context "that has been merged" do
+      setup do                                                               
+        @api_status = Factory.build :api_status, :text => "lorum ipsum", :created_at => Time.new
+        @api_status.id = 2342
+        @saved_status = Factory :twitter_status, :id => @api_status.id
+        TwitterStatus.expects(:find_or_initialize_by_id).returns(@saved_status)         
+        @merged_status = TwitterStatus.merge(@api_status)   
+      end                                              
+      
+      should "have text from api_status" do
+        assert_equal @api_status.text, @merged_status.text
+      end  
+      
+      should "have id from api_status" do
+        assert_equal @api_status.id, @merged_status.id
+      end   
+      
+      should "have created at date from api_status" do
+        assert_equal    @api_status.created_at, @merged_status.created_at 
+        assert_not_nil  @merged_status.created_at
+      end               
+    end 
 
     should "produce a reply with it's in_reply_to_status set" do
       reply = @status.reply
@@ -28,3 +44,4 @@ class TwitterStatusTest < ActiveSupport::TestCase
     end
   end
 end
+  

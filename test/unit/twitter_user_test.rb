@@ -1,6 +1,19 @@
 require 'test_helper'
 
-class TwitterUserTest < ActiveSupport::TestCase
+class TwitterUserTest < ActiveSupport::TestCase      
+  
+  context "a twitter user2" do
+    setup do
+      @twitter_user = Factory(:twitter_user)
+    end              
+    
+    should "have a friends timeline" do
+      status = Factory :twitter_status
+      TwitterStatus.expects(:friends_timeline).returns([status])
+      assert_equal [status], @twitter_user.friends_timeline2
+    end
+  end
+  
   # Replace this with your real tests.
   context "a twitter user" do
     setup do
@@ -13,7 +26,7 @@ class TwitterUserTest < ActiveSupport::TestCase
 
     should "update its attributes from an api user" do
       api_user = Factory.build(:api_user)
-      @twitter_user.update_from_twitter api_user
+      @twitter_user = TwitterUser.merge(api_user)
       assert_equal @twitter_user.screen_name, api_user.screen_name
     end
     
@@ -158,16 +171,6 @@ class TwitterUserTest < ActiveSupport::TestCase
       should "agree that it is owned by a user" do
         assert @twitter_user.owned_by?(@user)
       end
-
-      # context "with updated attributes from an api user" do
-      #        setup do
-      #          @twitter_user.update_from_twitter Factory.build(:api_user, :id => 23423423)
-      #        end
-      #
-      #        should "still be owned by it's previous owner" do
-      #          assert @twitter_user.owned_by?(@user)
-      #        end
-      #      end
 
       should "return false if owned by no one" do
         new_user = Factory(:twitter_user)

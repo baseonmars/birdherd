@@ -61,11 +61,7 @@ class ApplicationController < ActionController::Base
   end
 
   def update_twitter_user(api_user)
-    twitter_user = TwitterUser.find_or_initialize_by_id(api_user.id)
-    if (twitter_user.new_record? || api_user.screen_name != twitter_user.screen_name)
-      twitter_user.update_from_twitter(api_user).save
-    end
-    twitter_user
+    TwitterUser.merge(api_user)
   end
 
   def sync_statuses(type, account)
@@ -75,12 +71,10 @@ class ApplicationController < ActionController::Base
         options  = account.send("#{type}_last_id").nil? ? {} : {:since_id => account.send("#{type}_last_id")}
         statuses = twitter_api(account).send( type, options.merge(:count => 30) )
 
-        statuses.each do |api_status|
-          status = TwitterStatus.find_or_initialize_by_id(api_status.id)
-          status.update_from_twitter(api_status) if status.new_record?
-          status.poster = update_twitter_user(api_status.user)
-          status.save
+        statuses.each do |api_status| 
+          TwitterStatus.merge(api_status).save                                               
         end
+        
         account.update_attribute("#{type}_last_id", statuses.first.id) unless statuses.empty?
       end
     end

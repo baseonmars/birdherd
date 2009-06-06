@@ -19,6 +19,7 @@ class TwitterUser < ActiveRecord::Base
   has_many :friends, :class_name              => 'TwitterUser', :through     => :follower_friendships, :source => :friend
 
   has_many :searches
+                    
 
   has_many :friends_timeline , 
     :class_name => 'TwitterStatus', 
@@ -28,7 +29,13 @@ class TwitterUser < ActiveRecord::Base
       ORDER BY created_at DESC
       LIMIT #{timeline_limit||1000}
   } 
-               
+                 
+
+  
+  def friends_timeline2   
+    TwitterStatus.friends_timeline(account_api)
+  end
+            
   def friends_timeline_with_limit(limit=30, options={})
     @timeline_limit = limit
     timeline = friends_timeline(options={})
@@ -46,11 +53,17 @@ class TwitterUser < ActiveRecord::Base
   def owned_by?(user)
     users.include? user unless users.nil?
   end
-
+              
+  # TODO - remove
   def update_from_twitter(api_user)
-    api_user.each { |k,v| self.send("#{k}=", v) if self.respond_to?(k) }
-    self
+     TwitterUser.merge api_user
   end
+
+  def self.merge(api_user)
+    user = TwitterUser.find_or_initialize_by_id(api_user.id)
+    api_user.each { |k,v| user.send("#{k}=", v) if user.respond_to?("#{k}=") } 
+    user
+  end 
 
   def update_relationships(type, api_user_ids)
     users = []
@@ -69,10 +82,21 @@ class TwitterUser < ActiveRecord::Base
   protected
     attr_accessor :timeline_limit           
 
-  private
-  def unprotected
-    !self.protected
-  end
+  private     
+          
+    def unprotected
+      !self.protected
+    end  
+    
+    def oauth_client
+      Twitter::OAuth.new(SITE[:api_key], SITE[:api_secret])
+    end
+
+    def account_api
+      oauth = oauth_client
+      oauth.authorize_from_access(access_token, access_secret)
+      Twitter::Base.new(oauth)
+    end     
 
 end
 

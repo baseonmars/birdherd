@@ -63,11 +63,8 @@ class TwitterStatusesController < ApplicationController
       dm.save
       return dm
     else
-      response = twitter_api(account).update( status.text, :in_reply_to_status_id => status.in_reply_to_status_id, :source => 'birdherd' )
-      status = @current_user.statuses.build
-      status.id = response.id
-      status.update_from_twitter(response)
-      status.poster = update_twitter_user(response.user)
+      api_status = twitter_api(account).update( status.text, :in_reply_to_status_id => status.in_reply_to_status_id, :source => 'birdherd' )
+      status = TwitterStatus.merge api_status.merge(:birdherd_user => @current_user)
       status.save
       return status
     end
