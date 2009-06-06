@@ -104,11 +104,6 @@ class TwitterUsersControllerTest < ActionController::TestCase
         end
         assert_response :success
       end
-      
-      should "update the friends timeline last sync id" do
-        get :show, :id => @account.id
-        assert_equal assigns('account').friends_timeline_last_id, 1483410281
-      end
 
       should "update the replies on the twitter user" do
         assert_equal assigns('account').replies.count, 4
@@ -158,16 +153,10 @@ class TwitterUsersControllerTest < ActionController::TestCase
           assert_equal assigns('account').friends_timeline_sync_time.to_s, last_sync.to_s
         end
       end
-
-      should "update the friends timeline sync time" do
-        assert_not_nil assigns('account').friends_timeline_sync_time
-        assert assigns('account').friends_timeline_sync_time > @start_time
-        assert_response :success
-      end     
       
       should "update the replies sync time" do
         assert_not_nil assigns('account').replies_sync_time
-        assert assigns('account').friends_timeline_sync_time > @start_time
+        assert assigns('account').replies_sync_time > @start_time
         assert_response :success
       end   
       

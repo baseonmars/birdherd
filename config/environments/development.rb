@@ -21,9 +21,10 @@ ActionMailer::Base.delivery_method = :sendmail
 SITE ||= {}
 SITE[:url] = 'http://devbirdherd.com:3000'
 SITE[:api_key] = 'FhNZIOFLllHvpB2VlEXAA'
-SITE[:api_secret] = 'MHXEDctGtssS7VQjLwHHA5lgPlAnWy0Xi6NO2nnRc'    
-                            
-config.action_controller.perform_caching             = true
-config.cache_store = :file_store, '/tmp/cache/'
+SITE[:api_secret] = 'MHXEDctGtssS7VQjLwHHA5lgPlAnWy0Xi6NO2nnRc'
+                                        
+config.cache_classes = true    
+config.action_controller.perform_caching = true
+config.cache_store = :file_store, '/tmp/bh_cache'    
                                            
 config.gem "ruby-debug"                                                                                                   

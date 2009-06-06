@@ -20,7 +20,7 @@ class TwitterUser < ActiveRecord::Base
 
   has_many :searches
                     
-  def friends_timeline   
+  def friends_timeline
     TwitterStatus.friends_timeline(account_api)
   end
       
