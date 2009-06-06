@@ -10,7 +10,7 @@ class TwitterUserTest < ActiveSupport::TestCase
     should "have a friends timeline" do
       status = Factory :twitter_status
       TwitterStatus.expects(:friends_timeline).returns([status])
-      assert_equal [status], @twitter_user.friends_timeline2
+      assert_equal [status], @twitter_user.friends_timeline
     end
   end
   
@@ -74,8 +74,8 @@ class TwitterUserTest < ActiveSupport::TestCase
       setup do
         @friend = Factory(:twitter_user, :id => '7733932')
         @twitter_user.friends << @friend
-        Factory(:twitter_status, :poster => @friend)
-        Factory(:twitter_status, :poster => @twitter_user)
+        @statuses = [ Factory(:twitter_status, :poster => @friend), 
+                      Factory(:twitter_status, :poster => @twitter_user) ]
         Factory( :twitter_direct_message, :recipient_id => @twitter_user.id )  
         Factory( :twitter_direct_message, :recipient_id => @twitter_user.id )  
       end
@@ -95,34 +95,13 @@ class TwitterUserTest < ActiveSupport::TestCase
       should "be a follower of the friend" do
         assert @friend.followers.include?(@twitter_user)
       end
-
-      should "get timeline of friends statuses" do
-        assert @twitter_user.respond_to?(:friends_timeline)
-        assert_equal @twitter_user.friends_timeline.length, 2
-      end
-                                        
+                        
       should "allow direct messages to be limited" do
          assert_equal 1, @twitter_user.direct_messages_with_limit(1).length
       end
       
       should "allow direct messages to be limited, with options" do
         assert_equal 1, @twitter_user.direct_messages_with_limit(1, :include => [:replies, :poster]).length
-      end
-      
-      should "allow timelime to be limited" do
-        assert_equal 1, @twitter_user.friends_timeline_with_limit( 1 ).length
-      end                                                                    
-      
-      should "allow timeline to be limited, with options" do
-        assert_equal 1, @twitter_user.friends_timeline_with_limit(1, :include => [:replies, :poster]).length
-      end
-
-      should "includes friends statuses in friends timeline" do
-        assert @friend.statuses.all? { |status| @twitter_user.friends_timeline.include? status }
-      end
-
-      should "includes own statuses in friends timeline" do
-        assert @twitter_user.statuses.all? { |status| @twitter_user.friends_timeline.include? status }
       end
 
       should "has many replies" do

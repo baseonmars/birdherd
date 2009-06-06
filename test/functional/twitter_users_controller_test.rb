@@ -71,7 +71,7 @@ class TwitterUsersControllerTest < ActionController::TestCase
     end
 
     should "updates the accounts friends and followers from the api" do
-      Spawn.now_yields do
+      Spawn.now_yields do                 
         post :create, :twitter => Factory.attributes_for(:twitter_user)
         post :callback         
       end
@@ -94,21 +94,6 @@ class TwitterUsersControllerTest < ActionController::TestCase
       get :show, :id => @account.id
       assert_not_nil assigns('account')
       assert_not_nil assigns('timeline')
-    end
-
-    context "with over 30 statuses in their timeline" do
-      
-      setup do
-        statuses = []
-        31.times { statuses << Factory(:twitter_status, :poster => @friend) }
-        @friend.statuses << statuses
-      end
-      
-      should "get 30 statuses when getting the friends timeline" do
-        get :friends_timeline, :twitter_user_id => @account.id
-        assert_equal 30, assigns(:statuses).length
-      end
-      
     end
 
     context "when getting statuses with a yielding spawn" do

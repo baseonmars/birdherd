@@ -20,32 +20,13 @@ class TwitterUser < ActiveRecord::Base
 
   has_many :searches
                     
-
-  has_many :friends_timeline , 
-    :class_name => 'TwitterStatus', 
-    :finder_sql => %q{SELECT * from twitter_statuses 
-      WHERE poster_id = #{id} OR 
-      poster_id in (#{friends.map {|f| f.id}.join(",")})
-      ORDER BY created_at DESC
-      LIMIT #{timeline_limit||1000}
-  } 
-                 
-
-  
-  def friends_timeline2   
+  def friends_timeline   
     TwitterStatus.friends_timeline(account_api)
-  end
-            
-  def friends_timeline_with_limit(limit=30, options={})
-    @timeline_limit = limit
-    timeline = friends_timeline(options={})
-    @timeline_limit = nil
-    timeline
   end
       
   def direct_messages_with_limit(limit=30, options={})
     @timeline_limit = limit
-    timeline = direct_messages(options={})
+    timeline = direct_messages()
     @timeline_limit = nil
     timeline
   end

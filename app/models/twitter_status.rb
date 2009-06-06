@@ -23,7 +23,7 @@ class TwitterStatus < ActiveRecord::Base
   end    
   
   def self.friends_timeline(account_api)
-    account_api.friends_timeline.collect do |api_status|
+    account_api.friends_timeline(:limit => 30).collect do |api_status|
       status = TwitterStatus.merge(api_status)   
       status.save
       status
