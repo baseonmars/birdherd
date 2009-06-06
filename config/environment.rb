@@ -17,11 +17,11 @@ Rails::Initializer.run do |config|
   # Specify gems that this application depends on and have them installed with rake gems:install 
   # development and test gems are specified in their environments
   config.gem "authlogic", :version => '>2.0.4'
-	config.gem "twitter", :version => '>=0.6.11' 
-	config.gem "mbleigh-acts-as-taggable-on", :source => "http://gems.github.com", :lib => "acts-as-taggable-on"
-	config.gem 'oauth'
-	config.gem 'vlad'                
-	
+  config.gem "twitter", :version => '>=0.6.11' 
+  config.gem "mbleigh-acts-as-taggable-on", :source => "http://gems.github.com", :lib => "acts-as-taggable-on"
+  config.gem 'oauth'
+  config.gem 'vlad'                
+
   # Only load the plugins named here, in the order given (default is alphabetical).
   # :all can be used as a placeholder for all plugins not explicitly named
   # config.plugins = [ :exception_notification, :ssl_requirement, :all ]
@@ -40,7 +40,7 @@ Rails::Initializer.run do |config|
   # The default locale is :en and all translations from config/locales/*.rb,yml are auto loaded.
   # config.i18n.load_path += Dir[Rails.root.join('my', 'locales', '*.{rb,yml}')]
   # config.i18n.default_locale = :de
-  
+
   SITE = {
     :email => 'team@thebirdherd.com',
     :team_signoff => 'The Birdherd Team',
@@ -52,8 +52,12 @@ Rails::Initializer.run do |config|
 
   SITE[:email_str] = "#{SITE[:app_name]} <#{SITE[:email]}>"
 
-  config.active_record.observers = :user_observer
-  
+  config.active_record.observers = :user_observer   
+
+  config.cache_classes = true    
+  config.action_controller.perform_caching = true
+  config.cache_store = :file_store, '/tmp/bh_cache'
+
 end
 
 module Twitter
@@ -66,7 +70,7 @@ module Twitter
         return Rails.cache.read(key)
       else
         response = perform_get_nocache(path, options)
-        Rails.cache.write(key, response)
+        Rails.cache.write(key, response, :expires_in => 2.5.minutes)
         return response
       end
     end
@@ -82,28 +86,6 @@ class Mash
     YAML.load(str)
   end
 end
-
-#      
-# module Twitter
-#   class Request    
-#     alias_method :perform_no_cache, :perform
-# 
-#     def perform
-#       key = "#{@client.client.access_token.token}#{path.gsub('/', '-')}"
-#       if Rails.cache.exist?(key)
-#         return Rails.cache.read(key)
-#       else
-#         response = perform_no_cache
-#         Rails.logger.info response.inspect
-#         Rails.cache.write(key, response)
-#         return response
-#       end
-#     end
-#          
-#   end
-# end
-#     
-
 
 module ActiveSupport
   class BufferedLogger
