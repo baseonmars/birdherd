@@ -35,8 +35,6 @@ class TwitterUsersController < ApplicationController
     @account = TwitterUser.find(params[:twitter_user_id])
     @statuses = @account.friends_timeline
 
-    sync_statuses(:friends_timeline, @account)
-
     render :update do |page|
       page.visual_effect :highlight, "timeline", :durations => 0.4
       page.delay(0.4) do
@@ -110,7 +108,6 @@ class TwitterUsersController < ApplicationController
   end
   
   def tweet_syncs
-    sync_statuses(:friends_timeline, @account)
     sync_statuses(:replies, @account)
     sync_dms(@account)
   end
