@@ -46,7 +46,7 @@ class TwitterStatusTest < ActiveSupport::TestCase
 
   should "set a limit of 30 statuses when getting the friends timeline" do
     account = Factory :twitter_user
-    Twitter::Base.any_instance.expects(:friends_timeline).with(:limit => 30).returns([Factory(:api_status).merge('id' => 1)])
+    Twitter::Base.any_instance.expects(:friends_timeline).with(:count => 30).returns([Factory(:api_status).merge('id' => 1)])
     account.friends_timeline
   end
 
