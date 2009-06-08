@@ -21,7 +21,11 @@ class TwitterUser < ActiveRecord::Base
   has_many :searches
                     
   def friends_timeline
-    TwitterStatus.friends_timeline(account_api)
+    TwitterStatus.merge_all account_api.friends_timeline(:limit => 30)
+  end
+  
+  def sent_direct_messages2
+    TwitterDirectMessage.merge_all account_api.sent_direct_messages(:limit => 30)
   end
       
   def direct_messages_with_limit(limit=30, options={})

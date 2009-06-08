@@ -20,14 +20,11 @@ class TwitterStatus < ActiveRecord::Base
     api_status.each { |k,v| status.send("#{k}=", v) if status.respond_to?("#{k}=") }
     status.poster = TwitterUser.merge(api_status.user)
     status
-  end    
+  end
   
-  def self.friends_timeline(account_api)
-    account_api.friends_timeline(:count => 30).collect do |api_status|
-      status = TwitterStatus.merge(api_status)   
-      status.save
-      status
-    end                             
-  end    
+  def self.merge_all(api_result)
+    # TODO check response for errors
+    api_result.collect { |status| self.merge status }
+  end
                        
 end
