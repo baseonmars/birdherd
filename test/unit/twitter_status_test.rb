@@ -11,12 +11,11 @@ class TwitterStatusTest < ActiveSupport::TestCase
     should_belong_to :birdherd_user
 
     context "that has been merged" do
-      setup do                                                               
+      setup do                                             
         @api_status = Factory.build :api_status, :text => "lorum ipsum", :created_at => Time.new
-        @api_status.id = 2342
         @saved_status = Factory :twitter_status, :id => @api_status.id
-        TwitterStatus.expects(:find_or_initialize_by_id).returns(@saved_status)         
-        @merged_status = TwitterStatus.merge(@api_status)   
+        TwitterStatus.expects(:find_or_initialize_by_id).returns(@saved_status)
+        @merged_status = TwitterStatus.merge(@api_status)
       end                                              
 
       should "have text from api_status" do
@@ -46,7 +45,7 @@ class TwitterStatusTest < ActiveSupport::TestCase
 
   should "set a limit of 30 statuses when getting the friends timeline" do
     account = Factory :twitter_user
-    Twitter::Base.any_instance.expects(:friends_timeline).with(:count => 30).returns([Factory(:api_status).merge('id' => 1)])
+    Twitter::Base.any_instance.expects(:friends_timeline).with(:limit => 30).returns([Factory.build :api_status])
     account.friends_timeline
   end
 

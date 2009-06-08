@@ -25,9 +25,18 @@ class TwitterUser < ActiveRecord::Base
   end
   
   def sent_direct_messages2
-    TwitterDirectMessage.merge_all account_api.sent_direct_messages(:limit => 30)
+    TwitterDirectMessage.merge_all account_api.direct_messages_sent(:limit => 30)
   end
-      
+  
+  def recieved_direct_messages2
+    TwitterDirectMessage.merge_all account_api.direct_messages(:limit => 30)
+  end
+  
+  def direct_messages2
+    (sent_direct_messages2 + recieved_direct_messages2).sort {|a,b| b.created_at <=> a.created_at}
+  end
+     
+  # TODO - remove    
   def direct_messages_with_limit(limit=30, options={})
     @timeline_limit = limit
     timeline = direct_messages()

@@ -12,6 +12,24 @@ class TwitterUserTest < ActiveSupport::TestCase
       TwitterUser.any_instance.expects(:friends_timeline).returns([status])
       assert_equal [status], @twitter_user.friends_timeline
     end
+    
+    should "have sent direct messages" do
+      message = Factory :twitter_direct_message
+      TwitterUser.any_instance.expects(:sent_direct_messages).returns([message])
+      assert_equal [message], @twitter_user.sent_direct_messages
+    end
+    
+    should "have recieved direct message" do
+      message = Factory :twitter_direct_message
+      TwitterUser.any_instance.expects(:recieved_direct_messages).returns([message])
+      assert_equal [message], @twitter_user.recieved_direct_messages
+    end
+    
+    should "have mixed sent and recieved direct messages" do
+      messages = (0..1).collect { Factory :api_status }
+      TwitterUser.any_instance.expects(:direct_messages).returns(messages)
+      assert_equal messages, @twitter_user.direct_messages
+    end
   end
   
   # Replace this with your real tests.
@@ -26,6 +44,7 @@ class TwitterUserTest < ActiveSupport::TestCase
 
     should "update its attributes from an api user" do
       api_user = Factory.build(:api_user)
+      
       @twitter_user = TwitterUser.merge(api_user)
       assert_equal @twitter_user.screen_name, api_user.screen_name
     end
@@ -51,12 +70,12 @@ class TwitterUserTest < ActiveSupport::TestCase
 
     context "after syncing followers" do
       setup do
-        @api_users = [Factory.build(:api_user, :id => 5), Factory.build(:api_user, :id => 6), Factory.build(:api_user, :id => 7)]
+        @api_users = [Factory.build(:api_user), Factory.build(:api_user), Factory.build(:api_user)]
         @twitter_user.update_relationships(:follower, @api_users)
       end
 
       should "be able to sync friends which include followers" do
-        api_users = @api_users + [Factory.build(:api_user, :id => 8)]
+        api_users = @api_users + [Factory.build(:api_user)]
         @twitter_user.update_relationships(:friend, api_users)
         assert_equal @twitter_user.friends.count, api_users.length
       end
