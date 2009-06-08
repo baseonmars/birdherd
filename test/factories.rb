@@ -7,11 +7,15 @@ Factory.sequence :screen_name do |n|
 end
 
 Factory.sequence :api_user_id do |n|
-  "123456#{n}"
+  "123456#{n}".to_i
 end 
 
 Factory.sequence :api_status_id do |n|
-  "654321#{n}"
+  "654321#{n}".to_i
+end 
+
+Factory.sequence :api_message_id do |n|
+  "732423#{n}".to_i
 end
 
 Factory.sequence :user_email do |n|
@@ -46,14 +50,23 @@ Factory.define :twitter_status do |f|
   f.poster { |poster| poster.association(:twitter_user) }
 end
 
-Factory.define :api_user, :class => Mash do |f|
+Factory.define :api_user, :class => Mash do |f|   
+  f.add_attribute(:id) {Factory.next :api_user_id} 
   f.screen_name { Factory.next :screen_name }
 end
 
-Factory.define :api_status, :class => Mash do |f|
+Factory.define :api_status, :class => Mash do |f| 
+  f.add_attribute(:id) {Factory.next :api_status_id} 
   f.text "Lorem ipsum dolor sit amet, consectetur adipisicing"
   f.user {|user| user.association :api_user}
-end   
+end  
+
+Factory.define :api_message, :class => Mash do |f| 
+  f.add_attribute(:id) {Factory.next :api_message_id} 
+  f.text "Ut enim ad minim veniam" 
+  f.sender {|user| user.association :api_user}
+  f.recipient {|user| user.association :api_user}
+end
 
 Factory.define :search do |f|
   f.tag_list "ham, egg, peas"
