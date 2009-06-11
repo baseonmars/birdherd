@@ -59,6 +59,7 @@ Factory.define :api_status, :class => Mash do |f|
   f.add_attribute(:id) {Factory.next :api_status_id} 
   f.text "Lorem ipsum dolor sit amet, consectetur adipisicing"
   f.user {|user| user.association :api_user}
+  f.created_at {Time.random}
 end  
 
 Factory.define :api_message, :class => Mash do |f| 
@@ -66,7 +67,7 @@ Factory.define :api_message, :class => Mash do |f|
   f.text "Ut enim ad minim veniam" 
   f.sender {|user| user.association :api_user}
   f.recipient {|user| user.association :api_user} 
-  f.created_at { Time.random }
+  f.created_at {Time.random}
 end
 
 Factory.define :search do |f|
