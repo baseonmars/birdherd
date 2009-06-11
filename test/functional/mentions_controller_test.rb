@@ -1,16 +1,17 @@
 require 'test_helper'
 
-class RepliesControllerTest < ActionController::TestCase
+class MentionsControllerTest < ActionController::TestCase
   
   context "a twitter user with a reply" do
      setup do
         @account = Factory :twitter_user
-        @reply = Factory :twitter_status, :in_reply_to_user_id => @account.id
+        @api_status = Factory :api_status, :in_reply_to_user_id => @account.id
      end                                                                    
      
      should "see the reply" do
+        Twitter::Base.any_instance.expects(:replies).returns([@api_status])
         get :index, :twitter_user_id => @account.id
-        assert assigns(:replies).include?( @reply ), "Replies #{assigns(:replies).inspect} did not include reply #{@reply.id}"
+        assert_equal @api_status.id, assigns(:mentions).first.id
         assert_response :success
      end
     

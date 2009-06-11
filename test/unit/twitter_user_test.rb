@@ -39,7 +39,7 @@ class TwitterUserTest < ActiveSupport::TestCase
     end
 
     should_have_and_belong_to_many :users
-    should_have_many :statuses, :friends, :replies
+    should_have_many :statuses, :friends, :followers
     should_have_many :searches
 
     should "update its attributes from an api user" do
@@ -120,8 +120,8 @@ class TwitterUserTest < ActiveSupport::TestCase
         @twitter_user.direct_messages
       end
 
-      should "has many replies" do
-        assert @twitter_user.respond_to?(:replies)
+      should "has many mentions" do
+        assert @twitter_user.respond_to?(:mentions)
       end
     end
 

@@ -5,7 +5,7 @@ ActionController::Routing::Routes.draw do |map|
   end  
   map.resources :twitter_users do |twitter_user|
     twitter_user.resources :twitter_statuses, :as => 'statuses'
-    twitter_user.resources :replies
+    twitter_user.resources :mentions
   end
   map.resources :twitter_statuses,:as => 'statuses' do |status|
   end

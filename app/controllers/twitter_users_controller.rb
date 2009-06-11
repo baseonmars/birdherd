@@ -1,7 +1,6 @@
 class TwitterUsersController < ApplicationController
   before_filter :require_user
   before_filter :get_account, :only => :show
-  before_filter :tweet_syncs, :only => :show
 
   def index
     @user = @current_user
@@ -25,7 +24,7 @@ class TwitterUsersController < ApplicationController
   def show
     if @account && @account.owned_by?(@current_user)    
       @timeline = @account.friends_timeline
-      @replies = @account.replies.find(:all, :include => [:replies, :poster], :limit => 30)
+      @mentions = @account.mentions
       @direct_messages = @account.direct_messages
       @status = @account.statuses.new
     end
@@ -92,7 +91,7 @@ class TwitterUsersController < ApplicationController
   
   def get_account
     begin
-      @account = @current_user.twitter_users.find(params[:id], :include => [:users, :replies])
+      @account = @current_user.twitter_users.find(params[:id], :include => [:users])
     rescue
       @account = nil
     end
@@ -106,10 +105,7 @@ class TwitterUsersController < ApplicationController
     end
     user
   end
-  
-  def tweet_syncs
-    sync_statuses(:replies, @account)
-  end
+
 
   def redirect_if_account_already_owned(account)
      if account.owned_by?(current_user)

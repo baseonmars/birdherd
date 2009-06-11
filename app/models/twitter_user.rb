@@ -1,7 +1,6 @@
 class TwitterUser < ActiveRecord::Base
   has_and_belongs_to_many :users
   has_many :statuses, :class_name => "TwitterStatus", :foreign_key => "poster_id"
-  has_many :replies , :class_name => 'TwitterStatus', :foreign_key => 'in_reply_to_user_id', :order => 'created_at DESC'
 
   has_many :follower_friendships, :class_name => 'Friendship',  :foreign_key => 'follower_id'
   has_many :followers, :class_name            => 'TwitterUser', :through     => :friend_friendships, :source => :follower
@@ -24,6 +23,10 @@ class TwitterUser < ActiveRecord::Base
   
   def direct_messages
     (direct_messages_sent + direct_messages_recieved).sort {|a,b| b.created_at <=> a.created_at}
+  end
+  
+  def mentions
+     TwitterStatus.merge_all account_api.replies(:limit => 30)
   end
 
   def owned_by?(user)
