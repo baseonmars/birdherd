@@ -65,10 +65,20 @@ Factory.define :api_message, :class => Mash do |f|
   f.add_attribute(:id) {Factory.next :api_message_id} 
   f.text "Ut enim ad minim veniam" 
   f.sender {|user| user.association :api_user}
-  f.recipient {|user| user.association :api_user}
+  f.recipient {|user| user.association :api_user} 
+  f.created_at { Time.random }
 end
 
 Factory.define :search do |f|
   f.tag_list "ham, egg, peas"
   f.twitter_user { |user| user.association :twitter_user }
+end   
+
+class Time
+  def self.random(years_back=5)
+    year = Time.now.year - rand(years_back) - 1
+    month = rand(12) + 1
+    day = rand(31) + 1
+    Time.local(year, month, day)
+  end
 end
