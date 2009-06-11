@@ -15,7 +15,7 @@ class TwitterDirectMessageTest < ActiveSupport::TestCase
         @saved_message = Factory :twitter_direct_message, :id => @api_message.id
         TwitterDirectMessage.expects(:find_or_initialize_by_id).returns(@saved_message)
         @merged_message = TwitterDirectMessage.merge(@api_message)
-      end                                              
+      end                                 
 
       should "have text from api_message" do
         assert_equal @api_message.text, @merged_message.text
@@ -30,6 +30,18 @@ class TwitterDirectMessageTest < ActiveSupport::TestCase
         assert_not_nil  @merged_message.created_at
       end               
     end
+    
+    should "handle merging with nil" do
+      message = TwitterDirectMessage.merge(nil)
+      assert_nil message, "message is not nil"
+      assert_nil $!, "exception thrown"
+    end
+    
+    should "return an empty array when merge_all with nil" do
+      message = TwitterDirectMessage.merge_all nil
+      assert_equal [], message
+    end
+      
 
   end
 end

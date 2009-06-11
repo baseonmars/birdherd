@@ -119,15 +119,7 @@ class TwitterUsersControllerTest < ActionController::TestCase
       end
       
       should "update the direct messages on the twitter user" do
-        assert_equal assigns('account').direct_messages.count, 3
-      end
-      
-      should "update the last sync id for sent dm's" do
-        assert_equal assigns('account').sent_dms_last_id, 87516211
-      end
-      
-      should "update the last sync id for recieved dm's" do
-        assert_equal assigns('account').recieved_dms_last_id, 89724222
+        assert_equal assigns('account').direct_messages.length, 3
       end
     end  
     
@@ -145,26 +137,10 @@ class TwitterUsersControllerTest < ActionController::TestCase
           assert_equal assigns('account').replies_sync_time.to_s, last_sync.to_s
         end
       end  
-          
-      should "not sync friends timeline if synced in last 2.5 minutes" do
-        last_sync = assigns('account').friends_timeline_sync_time
-        pretend_now_is(2.3.minutes.from_now) do
-          get :show, :id => @account.id
-          assert_equal assigns('account').friends_timeline_sync_time.to_s, last_sync.to_s
-        end
-      end
-      
+
       should "update the replies sync time" do
         assert_not_nil assigns('account').replies_sync_time
         assert assigns('account').replies_sync_time > @start_time
-        assert_response :success
-      end   
-      
-      
-      should "updated the direct messages sync time" do
-        assert assigns('account').direct_messages_sync_time
-        assert_not_nil assigns('account').direct_messages_sync_time
-        assert assigns('account').direct_messages_sync_time > @start_time
         assert_response :success
       end
       

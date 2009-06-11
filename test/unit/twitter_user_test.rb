@@ -15,14 +15,14 @@ class TwitterUserTest < ActiveSupport::TestCase
     
     should "have sent direct messages" do
       message = Factory :twitter_direct_message
-      TwitterUser.any_instance.expects(:sent_direct_messages).returns([message])
-      assert_equal [message], @twitter_user.sent_direct_messages
+      TwitterUser.any_instance.expects(:direct_messages_sent).returns([message])
+      assert_equal [message], @twitter_user.direct_messages_sent
     end
     
     should "have recieved direct message" do
       message = Factory :twitter_direct_message
-      TwitterUser.any_instance.expects(:recieved_direct_messages).returns([message])
-      assert_equal [message], @twitter_user.recieved_direct_messages
+      TwitterUser.any_instance.expects(:direct_messages_received).returns([message])
+      assert_equal [message], @twitter_user.direct_messages_received
     end
     
     should "have mixed sent and recieved direct messages" do
@@ -39,7 +39,7 @@ class TwitterUserTest < ActiveSupport::TestCase
     end
 
     should_have_and_belong_to_many :users
-    should_have_many :statuses, :friends, :replies, :sent_direct_messages, :recieved_direct_messages
+    should_have_many :statuses, :friends, :replies
     should_have_many :searches
 
     should "update its attributes from an api user" do
@@ -115,12 +115,9 @@ class TwitterUserTest < ActiveSupport::TestCase
         assert @friend.followers.include?(@twitter_user)
       end
                         
-      should "allow direct messages to be limited" do
-         assert_equal 1, @twitter_user.direct_messages_with_limit(1).length
-      end
-      
-      should "allow direct messages to be limited, with options" do
-        assert_equal 1, @twitter_user.direct_messages_with_limit(1, :include => [:replies, :poster]).length
+      should "have direct messages limited to 30" do
+        Twitter::Base.any_instance.expects(:direct_messages).with(:limit => 30)
+        @twitter_user.direct_messages
       end
 
       should "has many replies" do
@@ -184,16 +181,20 @@ class TwitterUserTest < ActiveSupport::TestCase
         @twitter_user.reload
       end
 
-      should "have one sent direct message" do
-        assert_equal @twitter_user.sent_direct_messages.count, 1
+      should "have limit sent direct message to 30" do
+        Twitter::Base.any_instance.expects(:direct_messages_sent).with(:limit => 30)
+        @twitter_user.direct_messages_sent
       end
 
-      should "have one recieved direct message" do
-        assert_equal @twitter_user.recieved_direct_messages.count, 1
+      should "have limit recieved direct message to 30" do
+        Twitter::Base.any_instance.expects(:direct_messages).with(:limit => 30)
+        @twitter_user.direct_messages_recieved
       end
 
       should "have two direct messages" do
-        assert_equal @twitter_user.direct_messages.count, 2
+        Twitter::Base.any_instance.expects(:direct_messages).returns([Factory.build(:api_message)])
+        Twitter::Base.any_instance.expects(:direct_messages_sent).returns([Factory.build(:api_message)])
+        assert_equal @twitter_user.direct_messages.length, 2
       end
     end
 

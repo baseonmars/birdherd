@@ -48,5 +48,16 @@ class TwitterStatusTest < ActiveSupport::TestCase
     Twitter::Base.any_instance.expects(:friends_timeline).with(:limit => 30).returns([Factory.build(:api_status)])
     account.friends_timeline
   end
+  
+  should "handle merging with nil" do
+    status = TwitterStatus.merge nil
+    assert_nil status, "status not nil"
+    assert_nil $!, "exception raised"
+  end
+  
+  should "return an array when merge_all with nil" do
+    statuses = TwitterStatus.merge_all nil
+    assert_equal [], statuses
+  end
 
 end

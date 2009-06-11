@@ -26,7 +26,7 @@ class TwitterUsersController < ApplicationController
     if @account && @account.owned_by?(@current_user)    
       @timeline = @account.friends_timeline
       @replies = @account.replies.find(:all, :include => [:replies, :poster], :limit => 30)
-      @direct_messages = @account.direct_messages_with_limit(30, :include => [:sender, :recipient])
+      @direct_messages = @account.direct_messages
       @status = @account.statuses.new
     end
   end  
@@ -92,7 +92,7 @@ class TwitterUsersController < ApplicationController
   
   def get_account
     begin
-      @account = @current_user.twitter_users.find(params[:id], :include => [:users, :replies, :recieved_direct_messages, :sent_direct_messages])
+      @account = @current_user.twitter_users.find(params[:id], :include => [:users, :replies])
     rescue
       @account = nil
     end
@@ -109,7 +109,6 @@ class TwitterUsersController < ApplicationController
   
   def tweet_syncs
     sync_statuses(:replies, @account)
-    sync_dms(@account)
   end
 
   def redirect_if_account_already_owned(account)

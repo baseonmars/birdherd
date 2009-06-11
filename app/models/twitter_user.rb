@@ -3,16 +3,6 @@ class TwitterUser < ActiveRecord::Base
   has_many :statuses, :class_name => "TwitterStatus", :foreign_key => "poster_id"
   has_many :replies , :class_name => 'TwitterStatus', :foreign_key => 'in_reply_to_user_id', :order => 'created_at DESC'
 
-  has_many :sent_direct_messages, :class_name     => 'TwitterDirectMessage', :foreign_key => 'sender_id', :order => 'created_at DESC'
-  has_many :recieved_direct_messages, :class_name => 'TwitterDirectMessage', :foreign_key => 'recipient_id', :order => 'created_at DESC'
-  has_many :direct_messages, :class_name          => 'TwitterDirectMessage', 
-  :finder_sql  => %q{SELECT * from twitter_direct_messages 
-    WHERE sender_id = #{id} OR 
-    recipient_id = #{id} 
-    ORDER BY created_at DESC
-    LIMIT #{timeline_limit||1000}
-  }
-
   has_many :follower_friendships, :class_name => 'Friendship',  :foreign_key => 'follower_id'
   has_many :followers, :class_name            => 'TwitterUser', :through     => :friend_friendships, :source => :follower
   has_many :friend_friendships, :class_name   => 'Friendship',  :foreign_key => 'friend_id'
@@ -24,24 +14,16 @@ class TwitterUser < ActiveRecord::Base
     TwitterStatus.merge_all account_api.friends_timeline(:limit => 30)
   end
   
-  def sent_direct_messages2
+  def direct_messages_sent
     TwitterDirectMessage.merge_all account_api.direct_messages_sent(:limit => 30)
   end
   
-  def recieved_direct_messages2
+  def direct_messages_recieved
     TwitterDirectMessage.merge_all account_api.direct_messages(:limit => 30)
   end
   
-  def direct_messages2
-    (sent_direct_messages2 + recieved_direct_messages2).sort {|a,b| b.created_at <=> a.created_at}
-  end
-     
-  # TODO - remove    
-  def direct_messages_with_limit(limit=30, options={})
-    @timeline_limit = limit
-    timeline = direct_messages()
-    @timeline_limit = nil
-    timeline
+  def direct_messages
+    (direct_messages_sent + direct_messages_recieved).sort {|a,b| b.created_at <=> a.created_at}
   end
 
   def owned_by?(user)

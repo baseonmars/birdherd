@@ -15,7 +15,8 @@ class TwitterStatus < ActiveRecord::Base
     TwitterStatus.merge(api_status)
   end
 
-  def self.merge(api_status)
+  def self.merge(api_status)                                     
+    return if api_status.nil?
     status = TwitterStatus.find_or_initialize_by_id(api_status.id)
     api_status.each { |k,v| status.send("#{k}=", v) if status.respond_to?("#{k}=") }
     status.poster = TwitterUser.merge(api_status.user)
@@ -24,6 +25,7 @@ class TwitterStatus < ActiveRecord::Base
   
   def self.merge_all(api_result)
     # TODO check response for errors
+    return [] if api_result.nil?
     api_result.collect { |status| self.merge status }
   end
                        

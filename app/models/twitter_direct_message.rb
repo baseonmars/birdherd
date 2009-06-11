@@ -13,6 +13,7 @@ class TwitterDirectMessage < ActiveRecord::Base
   end
   
   def self.merge(api_message)
+    return if api_message.nil?
     message = TwitterDirectMessage.find_or_initialize_by_id(api_message.id)
     api_message.each do |k,v| 
       next if ['sender','recipient'].include?(k)
@@ -25,6 +26,7 @@ class TwitterDirectMessage < ActiveRecord::Base
   
   def self.merge_all(api_result)
     # TODO check response for errors
+    return [] if api_result.nil?
     api_result.collect { |message| self.merge message }
   end
   
