@@ -119,6 +119,14 @@ class TwitterUserTest < ActiveSupport::TestCase
         Twitter::Base.any_instance.expects(:direct_messages).with(:limit => 30)
         @twitter_user.direct_messages
       end
+      
+      should "limit direct messages to 30" do                        
+        sent = (0..16).map { Factory :twitter_direct_message, :sender => @twitter_user }
+        received = (0..16).map {Factory :twitter_direct_message, :recipient => @twitter_user}
+        TwitterUser.any_instance.expects(:direct_messages_sent).returns(sent)
+        TwitterUser.any_instance.expects(:direct_messages_recieved).returns(received)
+        assert_equal 30, @twitter_user.direct_messages.length
+      end
 
       should "has many mentions" do
         assert @twitter_user.respond_to?(:mentions)
