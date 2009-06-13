@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20090523181051) do
+ActiveRecord::Schema.define(:version => 20090613112959) do
 
   create_table "friendships", :force => true do |t|
     t.integer "follower_id"
@@ -43,7 +43,7 @@ ActiveRecord::Schema.define(:version => 20090523181051) do
     t.string "name"
   end
 
-  create_table "twitter_direct_messages", :force => true do |t|
+  create_table "twitter_direct_messages", :use_big_id => true, :force => true do |t|
     t.integer  "sender_id"
     t.integer  "recipient_id"
     t.string   "text"
@@ -56,13 +56,13 @@ ActiveRecord::Schema.define(:version => 20090523181051) do
   add_index "twitter_direct_messages", ["recipient_id"], :name => "index_twitter_direct_messages_on_recipient_id"
   add_index "twitter_direct_messages", ["sender_id"], :name => "index_twitter_direct_messages_on_sender_id"
 
-  create_table "twitter_statuses", :force => true do |t|
+  create_table "twitter_statuses", :use_big_id => true, :force => true do |t|
     t.text     "text"
     t.integer  "poster_id"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "in_reply_to_user_id"
-    t.integer  "in_reply_to_status_id"
+    t.integer  "in_reply_to_status_id", :limit => 8
     t.integer  "birdherd_user_id"
     t.string   "cached_tag_list"
   end
@@ -80,11 +80,11 @@ ActiveRecord::Schema.define(:version => 20090523181051) do
     t.string   "profile_image_url"
     t.string   "access_token"
     t.string   "access_secret"
-    t.integer  "friends_timeline_last_id"
-    t.integer  "replies_last_id"
+    t.integer  "friends_timeline_last_id",   :limit => 8
+    t.integer  "replies_last_id",            :limit => 8
     t.integer  "sent_dms_last_id"
     t.integer  "recieved_dms_last_id"
-    t.boolean  "protected",                  :default => false
+    t.boolean  "protected",                               :default => false
   end
 
   create_table "twitter_users_users", :id => false, :force => true do |t|
