@@ -22,14 +22,22 @@ class TwitterUsersController < ApplicationController
   end
 
   def show
-    if @account && @account.owned_by?(@current_user)    
-      @timeline = @account.friends_timeline
-      @mentions = @account.mentions
-      @direct_messages = @account.direct_messages
-      @status = @account.statuses.new
+    if @account.owned_by?(@current_user)
+      begin    
+        @timeline = @account.friends_timeline
+        @mentions = @account.mentions
+        @direct_messages = @account.direct_messages
+      rescue
+        flash[:notice] = "Error from twitter: #{$!}"
+      ensure
+        @status = @account.statuses.new
+      end
+    else
+      flash[:notice] = "You don't appear to have access to this twitter account" 
+      redirect_back_or_default user_twitter_users_url
     end
   end  
-  
+
   def friends_timeline
     @account = TwitterUser.find(params[:twitter_user_id])
     @statuses = @account.friends_timeline
@@ -97,18 +105,18 @@ class TwitterUsersController < ApplicationController
   end 
   
   def get_user_credentials_or_redirect(client)
-    api_user = client.verify_credentials 
-    # TODO this needs be a better test for verification
-    unless api_user.screen_name
-      flash[:notice] = "Twitter Authentication failed, was your password correct?"
+    begin
+      api_user = client.verify_credentials               
+      return api_user
+    rescue
+      # TODO this needs be a better test for verification
+      flash[:notice] = "Twitter Authentication failed: #{$!}"
       redirect_to :action => :new and return
-    end
-    api_user
+    end    
   end
 
-
   def redirect_if_account_already_owned(account)
-     if account.owned_by?(current_user)
+    if account.owned_by?(current_user)
       flash[:notice] = "Account not added. You already have access to #{account.screen_name}"
       redirect_to user_twitter_users_path and return
     end

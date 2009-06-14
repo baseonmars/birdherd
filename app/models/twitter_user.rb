@@ -20,8 +20,8 @@ class TwitterUser < ActiveRecord::Base
   end
   
   def direct_messages
-    (direct_messages_sent[0...15] + 
-      direct_messages_recieved[0...15]).sort {|a,b| b.created_at <=> a.created_at}
+    messages = (direct_messages_sent + direct_messages_recieved).sort {|a,b| b.created_at <=> a.created_at}
+    messages[0...30]
   end
   
   def mentions
