@@ -52,11 +52,7 @@ Rails::Initializer.run do |config|
 
   SITE[:email_str] = "#{SITE[:app_name]} <#{SITE[:email]}>"
 
-  config.active_record.observers = :user_observer   
-
-  config.cache_classes = true    
-  config.action_controller.perform_caching = true
-  config.cache_store = :file_store, '/tmp/bh_cache'
+  config.active_record.observers = :user_observer 
 
 end
 
