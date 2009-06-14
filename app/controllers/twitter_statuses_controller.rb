@@ -54,14 +54,10 @@ class TwitterStatusesController < ApplicationController
   def post_update(account, status)
     if status.text =~ /^d \w+\s/
       user, text = status.text.scan(/^d (\w+) (.*)/).flatten
-      response = twitter_api(account).direct_message_create(user, text)
-      dm = @current_user.direct_messages.build
-      dm.id = response.id
-      dm.update_from_twitter(response)
-      dm.sender = update_twitter_user(response.sender)
-      dm.recipient = update_twitter_user(response.recipient)
-      dm.save
-      return dm
+      api_message = twitter_api(account).direct_message_create(user, text)
+      message = TwitterDirectMessage.merge api_message.merge(:birdherd_user => @current_user)
+      message.save
+      return message
     else
       api_status = twitter_api(account).update( status.text, :in_reply_to_status_id => status.in_reply_to_status_id, :source => 'birdherd' )
       status = TwitterStatus.merge api_status.merge(:birdherd_user => @current_user)
