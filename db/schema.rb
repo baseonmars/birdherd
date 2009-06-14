@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20090614131113) do
+ActiveRecord::Schema.define(:version => 20090614201134) do
 
   create_table "friendships", :force => true do |t|
     t.integer "follower_id"
@@ -18,13 +18,6 @@ ActiveRecord::Schema.define(:version => 20090614131113) do
 
   add_index "friendships", ["follower_id"], :name => "index_friendships_on_follower_id"
   add_index "friendships", ["friend_id"], :name => "index_friendships_on_friend_id"
-
-  create_table "searches", :force => true do |t|
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.string   "tag_list"
-    t.integer  "twitter_user_id"
-  end
 
   create_table "taggings", :force => true do |t|
     t.integer  "tag_id"

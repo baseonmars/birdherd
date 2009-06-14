@@ -6,8 +6,6 @@ class TwitterUser < ActiveRecord::Base
   has_many :followers, :class_name            => 'TwitterUser', :through     => :friend_friendships, :source => :follower
   has_many :friend_friendships, :class_name   => 'Friendship',  :foreign_key => 'friend_id'
   has_many :friends, :class_name              => 'TwitterUser', :through     => :follower_friendships, :source => :friend
-
-  has_many :searches
                     
   def friends_timeline
     TwitterStatus.merge_all account_api.friends_timeline(:limit => 30)

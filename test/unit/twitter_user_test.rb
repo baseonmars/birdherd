@@ -40,7 +40,6 @@ class TwitterUserTest < ActiveSupport::TestCase
 
     should_have_and_belong_to_many :users
     should_have_many :statuses, :friends, :followers
-    should_have_many :searches
 
     should "update its attributes from an api user" do
       api_user = Factory.build(:api_user)

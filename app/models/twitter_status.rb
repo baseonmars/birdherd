@@ -3,8 +3,6 @@ class TwitterStatus < ActiveRecord::Base
   belongs_to :recipient, :class_name => "TwitterUser", :foreign_key => "in_reply_to_user_id"
   belongs_to :birdherd_user, :class_name => 'User', :foreign_key => 'birdherd_user_id'
   has_many :replies, :class_name => "TwitterStatus", :foreign_key => 'in_reply_to_status_id'
-
-  acts_as_taggable_on :tags
   
   def reply
     TwitterStatus.new(:in_reply_to_status_id => id, :text => "@#{poster.screen_name} ")
