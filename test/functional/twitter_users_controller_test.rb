@@ -26,7 +26,23 @@ class TwitterUsersControllerTest < ActionController::TestCase
         posters = timeline.map { |status| status.poster }
         assert !posters.include?(@friend)
       end
-
+      
+      should "should save statuses when getting them" do
+        Twitter::Base.any_instance.expects(:friends_timeline).returns([Factory(:api_status)]) 
+        Twitter::Base.any_instance.expects(:replies).returns([Factory(:api_status)]) 
+        assert_difference 'TwitterStatus.count', 2 do
+          get :show, :id => @account.id
+        end
+      end
+      
+      should "save direct_messages when getting them" do
+        Twitter::Base.any_instance.expects(:direct_messages).returns([Factory(:api_message)]) 
+        Twitter::Base.any_instance.expects(:direct_messages_sent).returns([Factory(:api_message)])         
+        assert_difference 'TwitterDirectMessage.count', 2 do
+          get :show, :id => @account.id
+        end
+      end
+      
     end
   end
 

@@ -17,9 +17,10 @@ class TwitterStatus < ActiveRecord::Base
 
   def self.merge(api_status)                                     
     return if api_status.nil?
-    status = TwitterStatus.find_or_initialize_by_id(api_status.id)
+    status = TwitterStatus.find_or_initialize_by_id(api_status.id) 
     api_status.each { |k,v| status.send("#{k}=", v) if status.respond_to?("#{k}=") }
     status.poster = TwitterUser.merge(api_status.user)
+    status.save if  status.new_record? or status.changed?
     status
   end
   

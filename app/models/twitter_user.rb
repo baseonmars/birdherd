@@ -40,8 +40,10 @@ class TwitterUser < ActiveRecord::Base
   end
 
   def self.merge(api_user)
+    return if api_user.nil?
     user = TwitterUser.find_or_initialize_by_id(api_user.id)
     api_user.each { |k,v| user.send("#{k}=", v) if user.respond_to?("#{k}=") } 
+    user.save if user.new_record? or user.changed?
     user
   end 
 

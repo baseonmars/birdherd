@@ -15,12 +15,14 @@ class TwitterDirectMessage < ActiveRecord::Base
   def self.merge(api_message)
     return if api_message.nil?
     message = TwitterDirectMessage.find_or_initialize_by_id(api_message.id)
+
     api_message.each do |k,v| 
       next if ['sender','recipient'].include?(k)
       message.send("#{k}=", v) if message.respond_to?("#{k}=") 
     end
     message.sender = TwitterUser.merge api_message.sender
     message.recipient = TwitterUser.merge api_message.recipient
+    message.save if message.new_record? or message.changed?
     message
   end
   
