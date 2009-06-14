@@ -10,7 +10,7 @@ OAuth.</p>
 
 <ul>
 	<% @accounts.each do |account| %>
-		<li><%= link_to "@#{account.screen_name}", user_twitter_user_path(account) %> - Followers <%= h account.followers.length %>, Followering <%= h account.friends.length %></li>
+		<li><%= link_to "@#{account.screen_name}", user_twitter_user_path(account) %> - Followers <%= h account.followers_count %>, Followering <%= h account.friends_count %></li>
 		<% end %>
 </ul>
 

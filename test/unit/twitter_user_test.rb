@@ -46,7 +46,9 @@ class TwitterUserTest < ActiveSupport::TestCase
       api_user = Factory.build(:api_user)
       
       @twitter_user = TwitterUser.merge(api_user)
-      assert_equal @twitter_user.screen_name, api_user.screen_name
+      api_user.each do |k,v|
+        assert_equal v, @twitter_user[k]
+      end
     end
     
     should "keep track of the last id it pulled for timeline, reply and dm's" do

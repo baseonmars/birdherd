@@ -48,19 +48,18 @@ class TwitterUsersController < ApplicationController
   def callback
     # Exchange the request token for an access token.
     client, access_token, access_secret = get_authorized_client_and_tokens_or_redirect
-    user = get_user_credentials_or_redirect(client)
+    api_user = get_user_credentials_or_redirect(client)
 
-    @account = TwitterUser.merge(user)                      
+    @account = TwitterUser.merge(api_user)                      
     @account.attributes = { :access_token => access_token, :access_secret => access_secret }
-        
+
     # TODO write a test for this.
     redirect_if_account_already_owned( @account )
 
     if @account.save
       @current_user.twitter_users << @account      
-      sync_friends_and_followers(@account)
 
-      flash[:notice] = "Twitter account #{@account.screen_name} authorised, your followers will be synced shortly."
+      flash[:notice] = "Twitter account #{@account.screen_name} authorised."
       redirect_to user_twitter_user_path(@account) and return
     else
       # The user might have rejected this application. Or there was some other error during the request.
@@ -98,12 +97,13 @@ class TwitterUsersController < ApplicationController
   end 
   
   def get_user_credentials_or_redirect(client)
-    user = client.verify_credentials
-    unless user.screen_name
+    api_user = client.verify_credentials 
+    # TODO this needs be a better test for verification
+    unless api_user.screen_name
       flash[:notice] = "Twitter Authentication failed, was your password correct?"
       redirect_to :action => :new and return
     end
-    user
+    api_user
   end
 
 
@@ -111,14 +111,6 @@ class TwitterUsersController < ApplicationController
      if account.owned_by?(current_user)
       flash[:notice] = "Account not added. You already have access to #{account.screen_name}"
       redirect_to user_twitter_users_path and return
-    end
-  end 
-  
-  def sync_friends_and_followers(account)
-    spawn do
-      sync_relationships(:follower, account)
-      sync_relationships(:friend, account)
-      account.save
     end
   end
 

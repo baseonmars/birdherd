@@ -78,13 +78,6 @@ class UsersControllerTest < ActionController::TestCase
         assert_equal assigns('user').login, 'jimbob'
       end
 
-      should "sync all it's twitter_users friends on request" do
-        before_friends_sync = 0.minutes.ago
-        pretend_now_is(11.minutes.from_now) do
-          get :show
-          assert before_friends_sync < assigns(:user).last_friends_sync
-        end
-      end
     end
 
     context "with more than one account" do

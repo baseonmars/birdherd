@@ -53,6 +53,8 @@ end
 Factory.define :api_user, :class => Mash do |f|   
   f.add_attribute(:id) {Factory.next :api_user_id} 
   f.screen_name { Factory.next :screen_name }
+  f.followers_count { rand(200) }
+  f.friends_count { rand(200) }
 end
 
 Factory.define :api_status, :class => Mash do |f| 

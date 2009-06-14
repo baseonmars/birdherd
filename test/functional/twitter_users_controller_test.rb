@@ -70,13 +70,16 @@ class TwitterUsersControllerTest < ActionController::TestCase
       assert @user.twitter_users.find_by_screen_name('birdherd')
     end
 
-    should "updates the accounts friends and followers from the api" do
-      Spawn.now_yields do                 
-        post :create, :twitter => Factory.attributes_for(:twitter_user)
-        post :callback         
-      end
-      assert_equal 4, assigns(:account).followers.count, "followers don't match"
-      assert_equal 6, assigns(:account).friends.count, "friends don't match"
+    should "updates the accounts friends and followers from the api" do                                                   
+      fol_c, fri_c = 4,6
+      api_user = Factory :api_user, 
+        :followers_count => fol_c, :friends_count => fri_c
+      Twitter::Base.any_instance.expects(:verify_credentials).returns(api_user)
+
+      post :callback         
+
+      assert_equal fol_c, assigns(:account).followers_count, "followers don't match"
+      assert_equal fri_c, assigns(:account).friends_count, "friends don't match"
     end
     
     should "only get the id's of friends and followers" do
@@ -131,11 +134,17 @@ class TwitterUsersControllerTest < ActionController::TestCase
     context "when account is created" do
 
       setup do
+        @followers_count, @friends_count = 6, 12                                                                    
+        api_user = Factory :api_user, 
+          :followers_count => @followers_count,
+          :friends_count => @friends_count     
+        Twitter::Base.any_instance.expects(:verify_credentials).returns(api_user)
         post :callback
+        @account = assigns(:account)
       end
 
       should "be redirected to user_twitter_user_path" do
-        assert_redirected_to user_twitter_user_path(assigns(:account))
+        assert_redirected_to user_twitter_user_path(@account)
       end
 
     end
