@@ -61,35 +61,6 @@ class ApplicationController < ActionController::Base
     TwitterUser.merge(api_user)
   end
 
-  def sync_relationships(type, account)
-    page = 1
-    twitter_user_ids = twitter_api(account).send("#{type}_ids", :page => page)
-    while (twitter_user_ids.length > SITE[:social_graph_ids_per_page] && 
-      twitter_user_ids.length % SITE[:social_graph_ids_per_page] == 0)
-      page += 1
-      twitter_user_ids.push *twitter_api(account).send("#{type}_ids", :page => page)
-    end
-    account.update_relationships(type, twitter_user_ids)
-  end
-
-  def sync_all_users_relationships(user)
-    user.update_attribute(:last_friends_sync, Time.now)
-    spawn do
-      user.twitter_users.each do |account|
-        begin
-          api_user = twitter_api(account).verify_credentials
-          logger.info { "#{api_user.inspect}" }
-          sync_relationships(:friend, account) if api_user.friends_count != account.friends.count
-          sync_relationships(:follower, account) if api_user.followers_count != account.followers.count
-          account.save
-        rescue
-          (flash[:notice] ||= "") <<  "Rate limit exceeded for #{account.screen_name}"
-          current_user.last_friends_sync = 10.minutes.from_now
-        end
-      end
-    end
-  end
-
   def errors
     @errors = []
   end
