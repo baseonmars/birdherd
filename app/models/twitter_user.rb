@@ -30,12 +30,27 @@ class TwitterUser < ActiveRecord::Base
 
   def owned_by?(user)
     users.include? user unless users.nil?
+  end 
+  
+  def verify_credentials
+    TwitterUser.merge account_api.verify_credentials
+  end
+  
+  def self.verify_and_merge(token, secret)
+    user = new(:access_token => token, :access_secret => secret)
+    user.verify_credentials
+  end
+    
+  def merge!(api_user)
+    raise "Id's do not match" if id != api_user[:id]
+    return if api_user.nil?
+    api_user.each { |k,v| self.send("#{k}=", v) if self.respond_to?("#{k}=") }
   end
               
   # TODO - remove
   def update_from_twitter(api_user)
      TwitterUser.merge api_user
-  end
+  end 
 
   def self.merge(api_user)
     return if api_user.nil?

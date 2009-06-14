@@ -29,7 +29,15 @@ class TwitterUserTest < ActiveSupport::TestCase
       messages = (0..1).collect { Factory :api_status }
       TwitterUser.any_instance.expects(:direct_messages).returns(messages)
       assert_equal messages, @twitter_user.direct_messages
-    end
+    end   
+    
+    should "verify it's credentials" do                               
+      api_user = Factory(:api_user, :screen_name => 'charlie')
+      Twitter::Base.any_instance.expects(:verify_credentials).returns(api_user)
+      @twitter_user = @twitter_user.verify_credentials                                      
+      assert_equal api_user.screen_name, @twitter_user.screen_name
+    end                                                           
+    
   end
   
   # Replace this with your real tests.
