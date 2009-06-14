@@ -64,45 +64,6 @@ class ApplicationController < ActionController::Base
     TwitterUser.merge(api_user)
   end
 
-  def sync_statuses(type, account)
-    if account.send("#{type}_sync_time").nil? || account.send("#{type}_sync_time") < 2.5.minutes.ago
-      account.update_attribute("#{type}_sync_time", Time.now)
-      spawn do
-        options  = account.send("#{type}_last_id").nil? ? {} : {:since_id => account.send("#{type}_last_id")}
-        statuses = twitter_api(account).send( type, options.merge(:count => 30) )
-
-        statuses.each do |api_status| 
-          TwitterStatus.merge(api_status).save                                               
-        end
-        
-        account.update_attribute("#{type}_last_id", statuses.first.id) unless statuses.empty?
-      end
-    end
-  end
-
-  def sync_dms(account)
-    if account.direct_messages_sync_time.nil? || account.direct_messages_sync_time < 2.5.minutes.ago
-      account.update_attribute(:direct_messages_sync_time, Time.now)
-      spawn do
-        r_options = account.recieved_dms_last_id.nil? ? {} : {:since_id => account.recieved_dms_last_id}
-        s_options = account.sent_dms_last_id.nil? ? {} : {:since_id => account.sent_dms_last_id}
-        recieved  = twitter_api(account).direct_messages( r_options.merge(:count => 15) ) || []
-        sent      = twitter_api(account).direct_messages_sent( s_options.merge(:count => 15) ) || []
-        dms       = sent + recieved
-
-        dms.each do |api_dm|
-          dm = TwitterDirectMessage.find_or_initialize_by_id(api_dm.id)
-          dm.update_from_twitter(api_dm) if dm.new_record?
-          dm.sender = update_twitter_user(api_dm.sender)
-          dm.recipient = update_twitter_user(api_dm.recipient)
-          dm.save
-        end
-        account.update_attribute(:sent_dms_last_id, sent.first.id) unless sent.empty?
-        account.update_attribute(:recieved_dms_last_id, recieved.first.id) unless recieved.empty?
-      end
-    end
-  end
-  
   def sync_relationships(type, account)
     page = 1
     twitter_user_ids = twitter_api(account).send("#{type}_ids", :page => page)
@@ -129,11 +90,6 @@ class ApplicationController < ActionController::Base
           current_user.last_friends_sync = 10.minutes.from_now
         end
       end
-    end
-  end
-
-  def sync_search(search)
-    Twitter::Search.new(search.tag_list).each do |status|
     end
   end
 
