@@ -79,16 +79,6 @@ class TwitterUser < ActiveRecord::Base
     user
   end 
 
-  def update_relationships(type, api_user_ids)
-    users = []
-    api_user_ids.each do |api_id|
-      user = TwitterUser.find_or_initialize_by_id(api_id)
-      users << user
-    end
-    self.send("#{type}s").replace(users)
-    self
-  end
-
   def visible_to?(other)
     unprotected || followers.include?(other)
   end 

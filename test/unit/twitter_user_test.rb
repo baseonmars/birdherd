@@ -65,31 +65,6 @@ class TwitterUserTest < ActiveSupport::TestCase
       assert_respond_to @twitter_user, :recieved_dms_last_id
     end
 
-    should "update it's followers from api users" do
-      ids = [2323,44545,23322324]
-      @twitter_user.update_relationships(:follower, ids)
-      assert_equal @twitter_user.followers.count, ids.length
-    end
-
-    should "update it's friends from api users" do
-      ids = [34534,234234,12312]
-      @twitter_user.update_relationships(:friend, ids)
-      assert_equal @twitter_user.friends.count, ids.length
-    end
-
-    context "after syncing followers" do
-      setup do
-        @api_users = [Factory.build(:api_user), Factory.build(:api_user), Factory.build(:api_user)]
-        @twitter_user.update_relationships(:follower, @api_users)
-      end
-
-      should "be able to sync friends which include followers" do
-        api_users = @api_users + [Factory.build(:api_user)]
-        @twitter_user.update_relationships(:friend, api_users)
-        assert_equal @twitter_user.friends.count, api_users.length
-      end
-    end
-
     should "have friends" do
       assert @twitter_user.respond_to?(:friends)
     end
@@ -213,50 +188,6 @@ class TwitterUserTest < ActiveSupport::TestCase
         Twitter::Base.any_instance.expects(:direct_messages_sent).returns([Factory.build(:api_message)])
         assert_equal @twitter_user.direct_messages.length, 2
       end
-    end
-
-    context "with friends and followers" do
-      setup do
-        @friends = (1..5).to_a.map { Factory(:twitter_user) }
-        @followers = (1..5).to_a.map { Factory(:twitter_user) }
-        @twitter_user.friends << @friends
-        @twitter_user.followers << @followers
-      end
-
-      should "remove twitter users they no longer follow when syncing" do
-        current_followers = @followers[2..4] + [Factory(:twitter_user)]
-        removed_followers = @followers - current_followers
-        
-        ids = current_followers.map { |f| f.id}
-                
-        @twitter_user.update_relationships(:follower, ids)
-
-        assert @twitter_user.followers.none? { |follower| removed_followers.include?(follower) }
-        assert_equal current_followers.length, @twitter_user.followers.count
-      end
-      
-      should "correctly sync when it has two accounts with mutual relations" do
-        @twitter_user2 = Factory(:twitter_user)
-        @friends2 = (1..5).to_a.map { Factory(:twitter_user) }
-        @followers2 = (1..5).to_a.map { Factory(:twitter_user) }
-        @twitter_user2.friends << @friends2
-        @twitter_user2.followers << @followers2
-        @twitter_user2.friends << @twitter_user
-        @twitter_user.followers << @twitter_user2
-        @twitter_user.friends << @twitter_user2
-
-        current_followers = @followers[2..4] + [Factory(:twitter_user), @twitter_user]
-        removed_followers = @followers - current_followers
-        
-        ids = current_followers.map { |f| f.id}
-
-        @twitter_user2.update_relationships(:follower, ids)
-        
-        assert @twitter_user2.followers.none? { |follower| removed_followers.include?(follower) }
-        assert_equal current_followers.length, @twitter_user2.followers.count
-        
-      end
-      
     end
       
   end
