@@ -88,7 +88,7 @@ class TwitterStatusesControllerTest < ActionController::TestCase
       should "be marked as the new statuses birdherd_user" do
         new_post = Factory.attributes_for(:twitter_status, :poster => @original_poster)
         post :create,:twitter_user_id => @twitter_user.id, :twitter_status => new_post
-        assert_equal TwitterStatus.last.birdherd_user, @user
+        assert_equal assigns(:tweet).birdherd_user, @user
       end
     end
 

@@ -27,6 +27,25 @@ class TwitterUser < ActiveRecord::Base
   def mentions
      TwitterStatus.merge_all account_api.replies(:limit => 30)
   end
+  
+  def post_update(tweet, bh_user)
+    if tweet.text =~ /^d \w+\s/
+      user, text = status.text.scan(/^d (\w+) (.*)/).flatten
+      api_message = account_api.direct_message_create(user, text)
+      message = TwitterDirectMessage.merge api_message
+      message.birdherd_user = bh_user
+      message.save
+      return message
+    else
+      api_status = account_api.update( tweet.text,
+        :in_reply_to_status_id => tweet.in_reply_to_status_id,
+        :source => 'birdherd' )
+      status = TwitterStatus.merge api_status
+      status.birdherd_user = bh_user
+      status.save
+      return status
+    end  
+  end
 
   def owned_by?(user)
     users.include? user unless users.nil?
