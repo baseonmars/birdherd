@@ -30,7 +30,7 @@ class TwitterUser < ActiveRecord::Base
   
   def post_update(tweet, bh_user)
     if tweet.text =~ /^d \w+\s/
-      user, text = status.text.scan(/^d (\w+) (.*)/).flatten
+      user, text = tweet.text.scan(/^d (\w+) (.*)/).flatten
       api_message = account_api.direct_message_create(user, text)
       message = TwitterDirectMessage.merge api_message
       message.birdherd_user = bh_user
