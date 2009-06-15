@@ -100,7 +100,7 @@ class TwitterUserTest < ActiveSupport::TestCase
       end
                         
       should "have direct messages limited to 30" do
-        Twitter::Base.any_instance.expects(:direct_messages).with(:limit => 30)
+        Twitter::Base.any_instance.expects(:direct_messages).with(:count => 30)
         @twitter_user.direct_messages
       end
       
@@ -174,12 +174,12 @@ class TwitterUserTest < ActiveSupport::TestCase
       end
 
       should "have limit sent direct message to 30" do
-        Twitter::Base.any_instance.expects(:direct_messages_sent).with(:limit => 30)
+        Twitter::Base.any_instance.expects(:direct_messages_sent).with(:count => 30)
         @twitter_user.direct_messages_sent
       end
 
       should "have limit recieved direct message to 30" do
-        Twitter::Base.any_instance.expects(:direct_messages).with(:limit => 30)
+        Twitter::Base.any_instance.expects(:direct_messages).with(:count => 30)
         @twitter_user.direct_messages_recieved
       end
 

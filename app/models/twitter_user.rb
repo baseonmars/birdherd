@@ -8,15 +8,15 @@ class TwitterUser < ActiveRecord::Base
   has_many :friends, :class_name              => 'TwitterUser', :through     => :follower_friendships, :source => :friend
                     
   def friends_timeline
-    TwitterStatus.merge_all account_api.friends_timeline(:limit => 30)
+    TwitterStatus.merge_all account_api.friends_timeline(:count => 30)
   end
   
   def direct_messages_sent
-    TwitterDirectMessage.merge_all account_api.direct_messages_sent(:limit => 30)
+    TwitterDirectMessage.merge_all account_api.direct_messages_sent(:count => 30)
   end
   
   def direct_messages_recieved
-    TwitterDirectMessage.merge_all account_api.direct_messages(:limit => 30)
+    TwitterDirectMessage.merge_all account_api.direct_messages(:count => 30)
   end
   
   def direct_messages
@@ -25,7 +25,7 @@ class TwitterUser < ActiveRecord::Base
   end
   
   def mentions
-     TwitterStatus.merge_all account_api.replies(:limit => 30)
+     TwitterStatus.merge_all account_api.replies(:count => 30)
   end
   
   def post_update(tweet, bh_user)
