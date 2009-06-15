@@ -22,7 +22,7 @@ class TwitterStatusesController < ApplicationController
     begin
       raise "can't post a blank message" if params[:twitter_status].nil?
       status = twitter_user.statuses.new(params[:twitter_status])
-      raise "can't post dm's to self" if status.text =~ /^d #{twitter_user.screen_name}\s/
+      raise "can't post dm's to self" if status.text =~ /^d #{twitter_user.screen_name}\s/i
       
       @tweet = twitter_user.post_update(status, current_user)
       flash[:notice] = "Posted!"
