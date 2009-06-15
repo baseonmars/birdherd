@@ -81,10 +81,7 @@ class TwitterUser < ActiveRecord::Base
 
   def visible_to?(other)
     unprotected || followers.include?(other)
-  end 
-
-  protected
-    attr_accessor :timeline_limit           
+  end
 
   private     
           
