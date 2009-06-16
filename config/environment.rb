@@ -43,11 +43,10 @@ Rails::Initializer.run do |config|
 
   SITE = {
     :email => 'team@thebirdherd.com',
-    :team_signoff => 'The Birdherd Team',
-    :app_name => 'Birdherd',
+    :team_signoff => 'The Birdherders',
+    :app_name => 'The Birdherd',
     :url => 'http://thebirdherd.com',
-    :entry_code => 'fre555h', 
-    :social_graph_ids_per_page => 5000
+    :entry_code => 'fre555h'
   }
 
   SITE[:email_str] = "#{SITE[:app_name]} <#{SITE[:email]}>"
@@ -56,32 +55,7 @@ Rails::Initializer.run do |config|
 
 end
 
-module Twitter
-  class Base
-    private
-    alias_method :perform_get_nocache, :perform_get 
-    def perform_get(path, options={})
-      key = "#{@client.access_token.token}#{path.gsub('/', '-')}"
-      if Rails.cache.exist?(key) 
-        return Rails.cache.read(key)
-      else
-        response = perform_get_nocache(path, options)
-        Rails.cache.write(key, response, :expires_in => 2.5.minutes)
-        return response
-      end
-    end
-  end   
-end
-
-class Mash
-  def _dump(depth)
-    self.to_yaml
-  end
-
-  def Mash._load(str)
-    YAML.load(str)
-  end
-end
+require 'twitter_cache'
 
 module ActiveSupport
   class BufferedLogger
