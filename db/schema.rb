@@ -36,7 +36,7 @@ ActiveRecord::Schema.define(:version => 20090614201134) do
     t.string "name"
   end
 
-  create_table "twitter_direct_messages", :force => true do |t|
+  create_table "twitter_direct_messages", :use_big_id => true, :force => true do |t|
     t.integer  "sender_id"
     t.integer  "recipient_id"
     t.string   "text"
@@ -49,7 +49,7 @@ ActiveRecord::Schema.define(:version => 20090614201134) do
   add_index "twitter_direct_messages", ["recipient_id"], :name => "index_twitter_direct_messages_on_recipient_id"
   add_index "twitter_direct_messages", ["sender_id"], :name => "index_twitter_direct_messages_on_sender_id"
 
-  create_table "twitter_statuses", :force => true do |t|
+  create_table "twitter_statuses", :use_big_id => true, :force => true do |t|
     t.text     "text"
     t.integer  "poster_id"
     t.datetime "created_at"
