@@ -40,6 +40,7 @@ Rails::Initializer.run do |config|
   # The default locale is :en and all translations from config/locales/*.rb,yml are auto loaded.
   # config.i18n.load_path += Dir[Rails.root.join('my', 'locales', '*.{rb,yml}')]
   # config.i18n.default_locale = :de
+  config.active_record.observers = :user_observer
 
   SITE = {
     :email => 'team@thebirdherd.com',
@@ -50,12 +51,13 @@ Rails::Initializer.run do |config|
   }
 
   SITE[:email_str] = "#{SITE[:app_name]} <#{SITE[:email]}>"
-
-  config.active_record.observers = :user_observer 
+  
+  config.after_initialize do
+    require 'twitter_cache'   
+  end
+   
 
 end
-
-require 'twitter_cache'
 
 module ActiveSupport
   class BufferedLogger
