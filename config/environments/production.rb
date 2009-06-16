@@ -3,7 +3,6 @@
 # The production environment is meant for finished, "live" apps.
 # Code is not reloaded between requests
 
-
 # Full error reports are disabled and caching is turned on
 config.action_controller.consider_all_requests_local = false
 config.action_view.cache_template_loading            = true

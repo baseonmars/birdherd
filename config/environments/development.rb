@@ -3,6 +3,7 @@
 # In the development environment your application's code is reloaded on
 # every request.  This slows down response time but is perfect for development
 # since you don't have to restart the webserver when you make code changes.
+config.gem "ruby-debug"                 
 
 # Log error messages when you accidentally call methods on nil.
 config.whiny_nils = true
@@ -23,7 +24,4 @@ SITE ||= {}
 SITE[:url] = 'http://devbirdherd.com:3000'
 SITE[:api_key] = 'FhNZIOFLllHvpB2VlEXAA'
 SITE[:api_secret] = 'MHXEDctGtssS7VQjLwHHA5lgPlAnWy0Xi6NO2nnRc'
-                                        
-
-                                           
-config.gem "ruby-debug"                                                                                                   
+                                                                                  

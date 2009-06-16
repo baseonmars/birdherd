@@ -1,4 +1,10 @@
 # Settings specified here will take precedence over those in config/environment.rb
+config.gem "thoughtbot-shoulda", :lib => "shoulda", :source => "http://gems.github.com", :version => '>2.9.1'
+config.gem "thoughtbot-factory_girl", :lib => "factory_girl", :source => "http://gems.github.com"
+config.gem 'iridesco-time-warp', :lib => 'time_warp', :source => "http://gems.github.com"    
+config.gem 'mocha'
+config.gem 'fakeweb'
+# config.gem "timocratic-test_benchmark", :lib => 'test_benchmark', :source => 'http://gems.github.com', :version => '0.4.3'
 
 # The test environment is used exclusively to run your application's
 # test suite.  You never need to work with it otherwise.  Remember that
@@ -26,10 +32,3 @@ config.action_mailer.delivery_method = :test
 # This is necessary if your schema can't be completely dumped by the schema dumper,
 # like if you have constraints or database-specific column types
 # config.active_record.schema_format = :sql
-
-config.gem "thoughtbot-shoulda", :lib => "shoulda", :source => "http://gems.github.com", :version => '>2.9.1'
-config.gem "thoughtbot-factory_girl", :lib => "factory_girl", :source => "http://gems.github.com"
-config.gem 'iridesco-time-warp', :lib => 'time_warp', :source => "http://gems.github.com"    
-config.gem 'mocha'
-config.gem 'fakeweb'
-# config.gem "timocratic-test_benchmark", :lib => 'test_benchmark', :source => 'http://gems.github.com', :version => '0.4.3'
