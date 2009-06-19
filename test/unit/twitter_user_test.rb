@@ -47,7 +47,7 @@ class TwitterUserTest < ActiveSupport::TestCase
     end
 
     should_have_and_belong_to_many :users
-    should_have_many :statuses, :friends, :followers
+    should_have_many :statuses, :friends
 
     should "update its attributes from an api user" do
       api_user = Factory.build(:api_user)
@@ -69,10 +69,6 @@ class TwitterUserTest < ActiveSupport::TestCase
       assert @twitter_user.respond_to?(:friends)
     end
 
-    should "have followers" do
-      assert @twitter_user.respond_to?(:followers)
-    end
-
     context "with a friend, but no followers" do
       setup do
         @friend = Factory(:twitter_user, :id => '7733932')
@@ -88,15 +84,6 @@ class TwitterUserTest < ActiveSupport::TestCase
         assert @twitter_user.friends.count, 1
         assert_kind_of TwitterUser, @twitter_user.friends.first
         assert_equal @twitter_user.friends.first, @friend
-      end
-
-      should "have no followers" do
-        assert @twitter_user.followers.count, 0
-        assert_equal @twitter_user.followers.first, nil
-      end
-
-      should "be a follower of the friend" do
-        assert @friend.followers.include?(@twitter_user)
       end
                         
       should "have direct messages limited to 30" do
@@ -128,25 +115,7 @@ class TwitterUserTest < ActiveSupport::TestCase
       should "should have 2 friends" do
         assert_equal @twitter_user.friends.count, 2
       end
-
-      should "have 1 follower" do
-        assert_equal @twitter_user.followers.count, 1
-      end
       
-      context "and is set protectd" do
-        setup do
-          @twitter_user.update_attribute(:protected, true)
-        end
-           
-        should "be visible to it's follower" do
-           assert @twitter_user.visible_to?(@follower)
-        end           
-        
-        should "not be visible to non following friend" do
-           assert !@twitter_user.visible_to?(@friend1)
-        end
-        
-      end
     end
 
     context "owned by a user" do

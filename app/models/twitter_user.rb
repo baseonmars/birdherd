@@ -3,8 +3,6 @@ class TwitterUser < ActiveRecord::Base
   has_many :statuses, :class_name => "TwitterStatus", :foreign_key => "poster_id"
 
   has_many :follower_friendships, :class_name => 'Friendship',  :foreign_key => 'follower_id'
-  has_many :followers, :class_name            => 'TwitterUser', :through     => :friend_friendships, :source => :follower
-  has_many :friend_friendships, :class_name   => 'Friendship',  :foreign_key => 'friend_id'
   has_many :friends, :class_name              => 'TwitterUser', :through     => :follower_friendships, :source => :friend
                     
   def friends_timeline
@@ -77,10 +75,6 @@ class TwitterUser < ActiveRecord::Base
     api_user.each { |k,v| user.send("#{k}=", v) if user.respond_to?("#{k}=") } 
     user.save if user.new_record? or user.changed?
     user
-  end 
-
-  def visible_to?(other)
-    unprotected || followers.include?(other)
   end
 
   private     
