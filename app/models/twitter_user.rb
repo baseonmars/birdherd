@@ -1,9 +1,6 @@
 class TwitterUser < ActiveRecord::Base
   has_and_belongs_to_many :users
   has_many :statuses, :class_name => "TwitterStatus", :foreign_key => "poster_id"
-
-  has_many :follower_friendships, :class_name => 'Friendship',  :foreign_key => 'follower_id'
-  has_many :friends, :class_name              => 'TwitterUser', :through     => :follower_friendships, :source => :friend
                     
   def friends_timeline
     TwitterStatus.merge_all account_api.friends_timeline(:count => 30)

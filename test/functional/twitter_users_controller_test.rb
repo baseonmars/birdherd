@@ -2,63 +2,12 @@ require 'test_helper'
 
 class TwitterUsersControllerTest < ActionController::TestCase
 
-  context "A logged in Birdherd user with an account" do
-    setup do
-      activate_authlogic
-      UserSession.create Factory.build(:user)
-      @user = User.find(1)
-      @account = Factory :real_twitter_user, :users => [@user]
-    end
-    
-    context "with protected friends that are not followers" do
-
-      setup do
-        @friend = Factory(:twitter_user)
-        @friend.statuses << Factory(:twitter_status) 
-        @friend.protected = true
-        @account.friends << @friend
-      end
-
-      should "not show their statuses" do
-        get :show, :id => @account.id
-        timeline = assigns(:timeline)
-
-        posters = timeline.map { |status| status.poster }
-        assert !posters.include?(@friend)
-      end
-      
-      should "should save statuses when getting them" do
-        Twitter::Base.any_instance.expects(:friends_timeline).returns([Factory(:api_status)]) 
-        Twitter::Base.any_instance.expects(:replies).returns([Factory(:api_status)]) 
-        assert_difference 'TwitterStatus.count', 2 do
-          get :show, :id => @account.id
-        end
-      end
-      
-      should "save direct_messages when getting them" do
-        Twitter::Base.any_instance.expects(:direct_messages).returns([Factory(:api_message)]) 
-        Twitter::Base.any_instance.expects(:direct_messages_sent).returns([Factory(:api_message)])         
-        assert_difference 'TwitterDirectMessage.count', 2 do
-          get :show, :id => @account.id
-        end
-      end
-      
-    end
-  end
-
-
-
   context "Logged in with one account" do
     setup do
       activate_authlogic
       UserSession.create Factory.build(:user)
       @user = User.find(1)
       @account = Factory :real_twitter_user, :users => [@user], :screen_name => 'birdherd', :id => 25256654
-      # TODO remove the save and reloads. if they're not required.
-      # @account.save
-      @friend = Factory :twitter_user, :screen_name => 'baseonmars', :id => 7733932
-      @account.friends << @friend
-      # @user.reload
     end
 
     should "see a list of all it's twitter accounts" do

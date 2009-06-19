@@ -37,7 +37,23 @@ class TwitterUserTest < ActiveSupport::TestCase
       @twitter_user = @twitter_user.verify_credentials                                      
       assert_equal api_user.screen_name, @twitter_user.screen_name
     end                                                           
+                    
+    should "have direct messages limited to 30" do
+      Twitter::Base.any_instance.expects(:direct_messages).with(:count => 30)
+      @twitter_user.direct_messages
+    end
     
+    should "limit direct messages to 30" do                        
+      sent = (0..16).map { Factory :twitter_direct_message, :sender => @twitter_user }
+      received = (0..16).map {Factory :twitter_direct_message, :recipient => @twitter_user}
+      TwitterUser.any_instance.expects(:direct_messages_sent).returns(sent)
+      TwitterUser.any_instance.expects(:direct_messages_recieved).returns(received)
+      assert_equal 30, @twitter_user.direct_messages.length
+    end  
+    
+    should "has many mentions" do
+      assert @twitter_user.respond_to?(:mentions)
+    end
   end
   
   # Replace this with your real tests.
@@ -47,7 +63,7 @@ class TwitterUserTest < ActiveSupport::TestCase
     end
 
     should_have_and_belong_to_many :users
-    should_have_many :statuses, :friends
+    should_have_many :statuses
 
     should "update its attributes from an api user" do
       api_user = Factory.build(:api_user)
@@ -63,59 +79,6 @@ class TwitterUserTest < ActiveSupport::TestCase
       assert_respond_to @twitter_user, :replies_last_id
       assert_respond_to @twitter_user, :sent_dms_last_id
       assert_respond_to @twitter_user, :recieved_dms_last_id
-    end
-
-    should "have friends" do
-      assert @twitter_user.respond_to?(:friends)
-    end
-
-    context "with a friend, but no followers" do
-      setup do
-        @friend = Factory(:twitter_user, :id => '7733932')
-        @twitter_user.friends << @friend
-        @statuses = [ Factory(:twitter_status, :poster => @friend), 
-                      Factory(:twitter_status, :poster => @twitter_user) ]
-        Factory( :twitter_direct_message, :recipient_id => @twitter_user.id )  
-        Factory( :twitter_direct_message, :recipient_id => @twitter_user.id )  
-      end
-
-      should "have one friend" do
-        assert !@friend.nil?
-        assert @twitter_user.friends.count, 1
-        assert_kind_of TwitterUser, @twitter_user.friends.first
-        assert_equal @twitter_user.friends.first, @friend
-      end
-                        
-      should "have direct messages limited to 30" do
-        Twitter::Base.any_instance.expects(:direct_messages).with(:count => 30)
-        @twitter_user.direct_messages
-      end
-      
-      should "limit direct messages to 30" do                        
-        sent = (0..16).map { Factory :twitter_direct_message, :sender => @twitter_user }
-        received = (0..16).map {Factory :twitter_direct_message, :recipient => @twitter_user}
-        TwitterUser.any_instance.expects(:direct_messages_sent).returns(sent)
-        TwitterUser.any_instance.expects(:direct_messages_recieved).returns(received)
-        assert_equal 30, @twitter_user.direct_messages.length
-      end
-
-      should "has many mentions" do
-        assert @twitter_user.respond_to?(:mentions)
-      end
-    end
-
-    context "with 2 friend and one follower" do
-      setup do
-        @friend1, @friend2 = Factory(:twitter_user), Factory(:twitter_user)
-        @follower = Factory(:twitter_user)
-        @twitter_user.friends << [@friend1, @friend2]
-        @follower.friends << @twitter_user
-      end
-
-      should "should have 2 friends" do
-        assert_equal @twitter_user.friends.count, 2
-      end
-      
     end
 
     context "owned by a user" do
