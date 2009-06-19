@@ -9,7 +9,7 @@ class UserMailerTest < ActionMailer::TestCase
     should "welcome a user" do
       @expected.from    = "#{SITE[:email_str]}"
       @expected.to      = @user.email
-      @expected.subject = "Welcome to Birdherd"
+      @expected.subject = "Welcome to The Birdherd"
       @expected.body    = read_fixture('welcome_email')
       @expected.date    = Time.now
       
