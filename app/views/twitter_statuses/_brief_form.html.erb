@@ -3,7 +3,7 @@
 	<%= f.label "What are you doing?" %>
 	<div id="charcount"><span id="count">0</span>/140</div>
 	<%= f.text_area :text, :cols => 70, :rows => 3 %>
-
+  <%= f.hidden_field :in_reply_to_status_id %>
 
   <p>
     <%= f.submit 'update' %>
