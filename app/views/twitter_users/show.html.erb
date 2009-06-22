@@ -7,11 +7,11 @@
 </div>
 
 <%= render :partial => 'status_list', 
-	:locals => { :statuses => @replies, 
+	:locals => { :statuses => @mentions, 
 	:account => @account, 
 	:title => "Replies",	
-	:list_id => 'replies' } %>
-<%= periodic_list_update twitter_user_replies_url(@account) %>
+	:list_id => 'mentions' } %>
+<%= periodic_list_update twitter_user_mentions_url(@account) %>
 	
 <div class="message-list">
 	<h2>Direct Messages</h2>	

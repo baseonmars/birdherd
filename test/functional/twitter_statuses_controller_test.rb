@@ -88,7 +88,19 @@ class TwitterStatusesControllerTest < ActionController::TestCase
       should "be marked as the new statuses birdherd_user" do
         new_post = Factory.attributes_for(:twitter_status, :poster => @original_poster)
         post :create,:twitter_user_id => @twitter_user.id, :twitter_status => new_post
-        assert_equal TwitterStatus.last.birdherd_user, @user
+        assert_equal assigns(:tweet).birdherd_user, @user
+      end
+      
+      should "post a status" do
+        new_post = Factory.attributes_for(:twitter_status, :poster => @original_poster)
+        post :create, :twitter_user_id => @twitter_user.id, :twitter_status => new_post
+        assert_equal assigns(:tweet).birdherd_user, @user
+      end
+      
+      should "post a direct_message" do
+        new_post = Factory.attributes_for(:twitter_status, :text => 'd baseonmars here be words')
+        Twitter::Base.any_instance.expects(:direct_message_create).with('baseonmars', 'here be words').returns(Factory(:api_message))
+        post :create, :twitter_user_id => @twitter_user.id, :twitter_status => new_post
       end
     end
 

@@ -7,7 +7,15 @@ Factory.sequence :screen_name do |n|
 end
 
 Factory.sequence :api_user_id do |n|
-  "123456#{n}"
+  "123456#{n}".to_i
+end 
+
+Factory.sequence :api_status_id do |n|
+  "654321#{n}".to_i
+end 
+
+Factory.sequence :api_message_id do |n|
+  "732423#{n}".to_i
 end
 
 Factory.sequence :user_email do |n|
@@ -42,16 +50,38 @@ Factory.define :twitter_status do |f|
   f.poster { |poster| poster.association(:twitter_user) }
 end
 
-Factory.define :api_user, :class => Mash do |f|
+Factory.define :api_user, :class => Mash do |f|   
+  f.add_attribute(:id) {Factory.next :api_user_id} 
   f.screen_name { Factory.next :screen_name }
+  f.followers_count { rand(200) }
+  f.friends_count { rand(200) }
 end
 
-Factory.define :api_status, :class => Mash do |f|
+Factory.define :api_status, :class => Mash do |f| 
+  f.add_attribute(:id) {Factory.next :api_status_id} 
   f.text "Lorem ipsum dolor sit amet, consectetur adipisicing"
   f.user {|user| user.association :api_user}
+  f.created_at {Time.random}
+end  
+
+Factory.define :api_message, :class => Mash do |f| 
+  f.add_attribute(:id) {Factory.next :api_message_id} 
+  f.text "Ut enim ad minim veniam" 
+  f.sender {|user| user.association :api_user}
+  f.recipient {|user| user.association :api_user} 
+  f.created_at {Time.random}
 end
 
 Factory.define :search do |f|
   f.tag_list "ham, egg, peas"
   f.twitter_user { |user| user.association :twitter_user }
+end   
+
+class Time
+  def self.random(years_back=5)
+    year = Time.now.year - rand(years_back) - 1
+    month = rand(12) + 1
+    day = rand(31) + 1
+    Time.local(year, month, day)
+  end
 end

@@ -17,10 +17,10 @@ Rails::Initializer.run do |config|
   # Specify gems that this application depends on and have them installed with rake gems:install 
   # development and test gems are specified in their environments
   config.gem "authlogic", :version => '>2.0.4'
-	config.gem "twitter", :version => '>=0.6.6'
-	config.gem "mbleigh-acts-as-taggable-on", :source => "http://gems.github.com", :lib => "acts-as-taggable-on"
-	config.gem 'oauth'
-	config.gem 'vlad'
+  config.gem "twitter", :version => '>=0.6.11' 
+  config.gem "mbleigh-acts-as-taggable-on", :source => "http://gems.github.com", :lib => "acts-as-taggable-on"
+  config.gem 'oauth'
+  config.gem 'vlad'                
 
   # Only load the plugins named here, in the order given (default is alphabetical).
   # :all can be used as a placeholder for all plugins not explicitly named
@@ -40,20 +40,23 @@ Rails::Initializer.run do |config|
   # The default locale is :en and all translations from config/locales/*.rb,yml are auto loaded.
   # config.i18n.load_path += Dir[Rails.root.join('my', 'locales', '*.{rb,yml}')]
   # config.i18n.default_locale = :de
-  
+  config.active_record.observers = :user_observer
+
   SITE = {
     :email => 'team@thebirdherd.com',
-    :team_signoff => 'The Birdherd Team',
-    :app_name => 'Birdherd',
+    :team_signoff => 'The Birdherders',
+    :app_name => 'The Birdherd',
     :url => 'http://thebirdherd.com',
-    :entry_code => 'fre555h', 
-    :social_graph_ids_per_page => 5000
+    :entry_code => 'fre555h'
   }
 
   SITE[:email_str] = "#{SITE[:app_name]} <#{SITE[:email]}>"
-
-  config.active_record.observers = :user_observer
   
+  config.after_initialize do
+    require 'twitter_cache'   
+  end
+   
+
 end
 
 module ActiveSupport

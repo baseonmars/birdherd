@@ -69,7 +69,7 @@ module Twitter
     end
     
     def access_token
-      'access_token'
+      Struct.new(:token, :secret).new('access_token', "access_secret")
     end
     
     def authorize_from_access(atoken, asecret)

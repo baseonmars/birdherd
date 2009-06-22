@@ -1,5 +1,5 @@
-<ul id="replies">
-<% @replies.each do |status| -%>
+<ul id="mentions">
+<% @mentions.each do |status| -%>
 <li>
 	<%= twitter_user_profile_image(status.poster)%>
 	<h3><strong><%= twitter_user_link(status.poster) %></strong></h3>

@@ -1,5 +1,5 @@
 <ul id="direct_messages">
-	<% direct_messages.each do |dm| %>
+	<% @direct_messages.each do |dm| %>
 	<li>
 		<div class="dm-profile-pics profile-image"><%= twitter_user_profile_image(dm.sender)%>
 			<%= twitter_user_profile_image(dm.recipient, :class => 'dm-recipient') %>

@@ -2,47 +2,12 @@ require 'test_helper'
 
 class TwitterUsersControllerTest < ActionController::TestCase
 
-  context "A logged in Birdherd user with an account" do
-    setup do
-      activate_authlogic
-      UserSession.create Factory.build(:user)
-      @user = User.find(1)
-      @account = Factory :real_twitter_user, :users => [@user]
-    end
-    
-    context "with protected friends that are not followers" do
-
-      setup do
-        @friend = Factory(:twitter_user)
-        @friend.statuses << Factory(:twitter_status) 
-        @friend.protected = true
-        @account.friends << @friend
-      end
-
-      should "not show their statuses" do
-        get :show, :id => @account.id
-        timeline = assigns(:timeline)
-
-        posters = timeline.map { |status| status.poster }
-        assert !posters.include?(@friend)
-      end
-
-    end
-  end
-
-
-
   context "Logged in with one account" do
     setup do
       activate_authlogic
       UserSession.create Factory.build(:user)
       @user = User.find(1)
       @account = Factory :real_twitter_user, :users => [@user], :screen_name => 'birdherd', :id => 25256654
-      # TODO remove the save and reloads. if they're not required.
-      # @account.save
-      @friend = Factory :twitter_user, :screen_name => 'baseonmars', :id => 7733932
-      @account.friends << @friend
-      # @user.reload
     end
 
     should "see a list of all it's twitter accounts" do
@@ -70,13 +35,16 @@ class TwitterUsersControllerTest < ActionController::TestCase
       assert @user.twitter_users.find_by_screen_name('birdherd')
     end
 
-    should "updates the accounts friends and followers from the api" do
-      Spawn.now_yields do
-        post :create, :twitter => Factory.attributes_for(:twitter_user)
-        post :callback         
-      end
-      assert_equal 4, assigns(:account).followers.count, "followers don't match"
-      assert_equal 6, assigns(:account).friends.count, "friends don't match"
+    should "updates the accounts friends and followers from the api" do                                                   
+      fol_c, fri_c = 4,6
+      api_user = Factory :api_user, 
+        :followers_count => fol_c, :friends_count => fri_c
+      Twitter::Base.any_instance.expects(:verify_credentials).returns(api_user)
+
+      post :callback         
+
+      assert_equal fol_c, assigns(:account).followers_count, "followers don't match"
+      assert_equal fri_c, assigns(:account).friends_count, "friends don't match"
     end
     
     should "only get the id's of friends and followers" do
@@ -96,21 +64,6 @@ class TwitterUsersControllerTest < ActionController::TestCase
       assert_not_nil assigns('timeline')
     end
 
-    context "with over 30 statuses in their timeline" do
-      
-      setup do
-        statuses = []
-        31.times { statuses << Factory(:twitter_status, :poster => @friend) }
-        @friend.statuses << statuses
-      end
-      
-      should "get 30 statuses when getting the friends timeline" do
-        get :friends_timeline, :twitter_user_id => @account.id
-        assert_equal 30, assigns(:statuses).length
-      end
-      
-    end
-
     context "when getting statuses with a yielding spawn" do
       setup do
         @start_time = Time.now
@@ -119,35 +72,18 @@ class TwitterUsersControllerTest < ActionController::TestCase
         end
         assert_response :success
       end
-      
-      should "update the friends timeline last sync id" do
-        get :show, :id => @account.id
-        assert_equal assigns('account').friends_timeline_last_id, 1483410281
-      end
 
-      should "update the replies on the twitter user" do
-        assert_equal assigns('account').replies.count, 4
-        assert_equal assigns('replies').length, 4
+      should "update the mentions on the twitter user" do
+        assert_equal assigns('account').mentions.length, 4
+        assert_equal assigns('mentions').length, 4
       end
 
       should "update the friends timeline on the twitter user" do
         assert assigns('account').friends_timeline.length > 0
       end
-      
-      should "update the replies last sync id" do
-        assert_equal assigns('account').replies_last_id, 1465564830
-      end
-      
+     
       should "update the direct messages on the twitter user" do
-        assert_equal assigns('account').direct_messages.count, 3
-      end
-      
-      should "update the last sync id for sent dm's" do
-        assert_equal assigns('account').sent_dms_last_id, 87516211
-      end
-      
-      should "update the last sync id for recieved dm's" do
-        assert_equal assigns('account').recieved_dms_last_id, 89724222
+        assert_equal assigns('account').direct_messages.length, 3
       end
     end  
     
@@ -157,53 +93,23 @@ class TwitterUsersControllerTest < ActionController::TestCase
         get :show, :id => @account.id
         assert_response :success
       end 
-      
-      should "not sync replies if synced in last 2.5 minutes" do
-        last_sync = assigns('account').replies_sync_time
-        pretend_now_is(2.3.minutes.from_now) do
-          get :show, :id => @account.id
-          assert_equal assigns('account').replies_sync_time.to_s, last_sync.to_s
-        end
-      end  
-          
-      should "not sync friends timeline if synced in last 2.5 minutes" do
-        last_sync = assigns('account').friends_timeline_sync_time
-        pretend_now_is(2.3.minutes.from_now) do
-          get :show, :id => @account.id
-          assert_equal assigns('account').friends_timeline_sync_time.to_s, last_sync.to_s
-        end
-      end
-
-      should "update the friends timeline sync time" do
-        assert_not_nil assigns('account').friends_timeline_sync_time
-        assert assigns('account').friends_timeline_sync_time > @start_time
-        assert_response :success
-      end     
-      
-      should "update the replies sync time" do
-        assert_not_nil assigns('account').replies_sync_time
-        assert assigns('account').friends_timeline_sync_time > @start_time
-        assert_response :success
-      end   
-      
-      
-      should "updated the direct messages sync time" do
-        assert assigns('account').direct_messages_sync_time
-        assert_not_nil assigns('account').direct_messages_sync_time
-        assert assigns('account').direct_messages_sync_time > @start_time
-        assert_response :success
-      end
-      
+            
     end
     
     context "when account is created" do
 
       setup do
+        @followers_count, @friends_count = 6, 12                                                                    
+        api_user = Factory :api_user, 
+          :followers_count => @followers_count,
+          :friends_count => @friends_count     
+        Twitter::Base.any_instance.expects(:verify_credentials).returns(api_user)
         post :callback
+        @account = assigns(:account)
       end
 
       should "be redirected to user_twitter_user_path" do
-        assert_redirected_to user_twitter_user_path(assigns(:account))
+        assert_redirected_to user_twitter_user_path(@account)
       end
 
     end

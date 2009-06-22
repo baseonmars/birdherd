@@ -1,7 +1,6 @@
 class TwitterUsersController < ApplicationController
   before_filter :require_user
   before_filter :get_account, :only => :show
-  before_filter :tweet_syncs, :only => :show
 
   def index
     @user = @current_user
@@ -23,19 +22,25 @@ class TwitterUsersController < ApplicationController
   end
 
   def show
-    if @account && @account.owned_by?(@current_user)    
-      @timeline = @account.friends_timeline_with_limit(30, :include => [:replies, :poster] )
-      @replies = @account.replies.find(:all, :include => [:replies, :poster], :limit => 30)
-      @direct_messages = @account.direct_messages_with_limit(30, :include => [:sender, :recipient])
-      @status = @account.statuses.new
+    if @account.owned_by?(@current_user)
+      begin    
+        @timeline = @account.friends_timeline
+        @mentions = @account.mentions
+        @direct_messages = @account.direct_messages
+      rescue
+        flash[:notice] = "Error from twitter: #{$!}"
+      ensure
+        @status = @account.statuses.new
+      end
+    else
+      flash[:notice] = "You don't appear to have access to this twitter account" 
+      redirect_back_or_default user_twitter_users_url
     end
   end  
-  
+
   def friends_timeline
     @account = TwitterUser.find(params[:twitter_user_id])
-    @statuses = @account.friends_timeline_with_limit( 30, :include => [:replies, :poster])
-
-    sync_statuses(:friends_timeline, @account)
+    @statuses = @account.friends_timeline
 
     render :update do |page|
       page.visual_effect :highlight, "timeline", :durations => 0.4
@@ -46,78 +51,40 @@ class TwitterUsersController < ApplicationController
         end   
       end
       return
-  end
-
+  end     
+  
   def callback
-    # Exchange the request token for an access token.
     begin
-      access_token, access_secret = oauth_client.authorize_from_request( session[:request_token],
-      session[:request_token_secret])
-
-      oauth = oauth_client
-      oauth.authorize_from_access(access_token, access_secret)
-      client = Twitter::Base.new(oauth)
+      @account = TwitterUser.verify_and_merge( *fetch_authorized_tokens )
+      if !@account.owned_by?(@current_user) and @account.save
+        @current_user.twitter_users << @account
+        flash[:notice] = "Twitter account #{@account.screen_name} authorised."
+        redirect_to user_twitter_user_path(@account) and return
+      else
+        redirect_to user_twitter_users_path and return
+      end
     rescue
-      flash[:notice] = "Authentication failed"
+      flash[:notice] = "Authorization failed: #{$!}"
       redirect_to :action => :new
       return
     end
-
-    user = verify_credentials(client)
-
-    # We have an authorized user, save the information to the database.
-    @account = TwitterUser.find_or_initialize_by_id(user.id)
-
-    if @account.owned_by?(@current_user)
-      flash[:notice] = "Account not added. You already have access to #{@account.screen_name}"
-      redirect_to user_twitter_users_path and return
-    end
-    @account.update_from_twitter(user)
-    @account.attributes = { :access_token => access_token, :access_secret => access_secret }
-
-    #sync followers and followers
-
-    if @account.save
-      @current_user.twitter_users << @account
-      spawn do
-        sync_relationships(:follower, @account)
-        sync_relationships(:friend, @account)
-        @account.save
-      end
-
-      # Redirect to account list page
-      flash[:notice] = "Twitter account #{@account.screen_name} authorised, your followers will be synced shortly."
-      redirect_to user_twitter_user_path(@account) and return
-    else
-      # The user might have rejected this application. Or there was some other error during the request.
-      flash[:notice] = "Authentication failed"
-      redirect_to :action => :new and return
-    end
-
   end
 
-  private
+  private 
+  
+  def fetch_authorized_tokens
+    access_token, access_secret = oauth_client.authorize_from_request( session[:request_token],
+    session[:request_token_secret])
+    oauth_client.authorize_from_access(access_token, access_secret)
+    return access_token, access_secret
+  end  
+  
   def get_account
     begin
-      @account = @current_user.twitter_users.find(params[:id], :include => [:users, :replies, :recieved_direct_messages, :sent_direct_messages])
+      @account = @current_user.twitter_users.find(params[:id], :include => [:users])
     rescue
       @account = nil
     end
-  end
-  
-  def tweet_syncs
-    sync_statuses(:friends_timeline, @account)
-    sync_statuses(:replies, @account)
-    sync_dms(@account)
-  end
-
-  def verify_credentials(client)
-    user = client.verify_credentials
-    unless user.screen_name
-      flash[:notice] = "Twitter Authentication failed, was your password correct?"
-      redirect_to :action => :new and return
-    end
-    user
-  end
+  end 
 
 end

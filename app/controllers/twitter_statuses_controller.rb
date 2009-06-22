@@ -22,9 +22,9 @@ class TwitterStatusesController < ApplicationController
     begin
       raise "can't post a blank message" if params[:twitter_status].nil?
       status = twitter_user.statuses.new(params[:twitter_status])
-      raise "can't post dm's to self" if status.text =~ /^d #{twitter_user.screen_name}\s/
+      raise "can't post dm's to self" if status.text =~ /^d #{twitter_user.screen_name}\s/i
       
-      post_update(twitter_user, status)
+      @tweet = twitter_user.post_update(status, current_user)
       flash[:notice] = "Posted!"
       redirect_to user_twitter_user_url(twitter_user) and return
     rescue
@@ -47,29 +47,6 @@ class TwitterStatusesController < ApplicationController
       flash[:notice] = "You don't have the right to reply"
       redirect_to '/'
       return
-    end
-  end
- 
-  private
-  def post_update(account, status)
-    if status.text =~ /^d \w+\s/
-      user, text = status.text.scan(/^d (\w+) (.*)/).flatten
-      response = twitter_api(account).direct_message_create(user, text)
-      dm = @current_user.direct_messages.build
-      dm.id = response.id
-      dm.update_from_twitter(response)
-      dm.sender = update_twitter_user(response.sender)
-      dm.recipient = update_twitter_user(response.recipient)
-      dm.save
-      return dm
-    else
-      response = twitter_api(account).update( status.text, :in_reply_to_status_id => status.in_reply_to_status_id, :source => 'birdherd' )
-      status = @current_user.statuses.build
-      status.id = response.id
-      status.update_from_twitter(response)
-      status.poster = update_twitter_user(response.user)
-      status.save
-      return status
     end
   end
 

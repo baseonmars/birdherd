@@ -10,10 +10,6 @@ class BrowsingTest < ActionController::PerformanceTest
       UserSession.create Factory.build(:user)
       @user = User.find(1)
       @account = Factory :real_twitter_user, :users => [@user], :screen_name => 'birdherd', :id => 25256654
-      @account.save
-      friend = Factory :twitter_user, :screen_name => 'baseonmars', :id => 7733932
-      @account.friends << friend
-      @user.reload
     end
     
     should "get index" do
