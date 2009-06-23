@@ -51,12 +51,6 @@ class ApplicationController < ActionController::Base
     Twitter::OAuth.new(SITE[:api_key], SITE[:api_secret])
   end
 
-  def twitter_api(account)
-    oauth = oauth_client
-    oauth.authorize_from_access(account.access_token, account.access_secret)
-    Twitter::Base.new(oauth)
-  end
-
   def update_twitter_user(api_user)
     TwitterUser.merge(api_user)
   end
