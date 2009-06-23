@@ -34,8 +34,16 @@ class TwitterUserTest < ActiveSupport::TestCase
     should "verify it's credentials" do                               
       api_user = Factory(:api_user, :screen_name => 'charlie')
       Twitter::Base.any_instance.expects(:verify_credentials).returns(api_user)
-      @twitter_user = @twitter_user.verify_credentials                                      
+      @twitter_user = @twitter_user.verify_credentials                                   
       assert_equal api_user.screen_name, @twitter_user.screen_name
+    end
+    
+    should "get a verifed user from a_token" do
+     api_user = Factory :api_user
+     Twitter::Base.any_instance.expects(:verify_credentials).returns(api_user)
+     @twitter_user = TwitterUser.get_verified_user('a_token','a_secret')
+     assert_equal api_user.screen_name, @twitter_user.screen_name 
+     assert_equal 'a_token', @twitter_user.access_token
     end                                                           
                     
     should "have direct messages limited to 30" do

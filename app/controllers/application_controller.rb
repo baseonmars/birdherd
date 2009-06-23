@@ -47,6 +47,7 @@ class ApplicationController < ActionController::Base
     redirect_to(session[:return_to] || default)
     session[:return_to] = nil
   end
+  
   def oauth_client
     Twitter::OAuth.new(SITE[:api_key], SITE[:api_secret])
   end

@@ -54,8 +54,8 @@ class TwitterUsersController < ApplicationController
   end     
   
   def callback
-    begin
-      @account = TwitterUser.verify_and_merge( *fetch_authorized_tokens )
+    begin                         
+      @account = TwitterUser.get_verified_user(*fetch_authorized_tokens)
       if !@account.owned_by?(@current_user) and @account.save
         @current_user.twitter_users << @account
         flash[:notice] = "Twitter account #{@account.screen_name} authorised."
@@ -70,12 +70,10 @@ class TwitterUsersController < ApplicationController
     end
   end
 
-  private 
-  
+  private
   def fetch_authorized_tokens
     access_token, access_secret = oauth_client.authorize_from_request( session[:request_token],
-    session[:request_token_secret])
-    oauth_client.authorize_from_access(access_token, access_secret)
+    session[:request_token_secret])  
     return access_token, access_secret
   end  
   

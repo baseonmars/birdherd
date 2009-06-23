@@ -48,12 +48,7 @@ class TwitterUser < ActiveRecord::Base
   
   def verify_credentials
     TwitterUser.merge account_api.verify_credentials
-  end
-  
-  def self.verify_and_merge(token, secret)
-    user = new(:access_token => token, :access_secret => secret)
-    user.verify_credentials
-  end
+  end 
     
   def merge!(api_user)
     raise "Id's do not match" if id != api_user[:id]
@@ -64,6 +59,13 @@ class TwitterUser < ActiveRecord::Base
   # TODO - remove
   def update_from_twitter(api_user)
      TwitterUser.merge api_user
+  end
+  
+  def self.get_verified_user(a_token, a_secret)
+    user = new(:access_token => a_token, :access_secret => a_secret)
+    user = user.verify_credentials
+    user.access_token, user.access_secret = a_token, a_secret
+    user
   end 
 
   def self.merge(api_user)
