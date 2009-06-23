@@ -55,11 +55,6 @@ class TwitterUser < ActiveRecord::Base
     return if api_user.nil?
     api_user.each { |k,v| self.send("#{k}=", v) if self.respond_to?("#{k}=") }
   end
-              
-  # TODO - remove
-  def update_from_twitter(api_user)
-     TwitterUser.merge api_user
-  end
   
   def self.get_verified_user(a_token, a_secret)
     user = new(:access_token => a_token, :access_secret => a_secret)
