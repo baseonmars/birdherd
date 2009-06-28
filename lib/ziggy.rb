@@ -6,11 +6,11 @@ module Ziggy
     @@active = isActive
   end
 
-  def cached(cachable_method)
+  def cached(cachable_methods)
     return unless @@active
     @cached_methods ||= []
     @cached_methods_enhanced ||= []
-    @cached_methods << cachable_method
+    @cached_methods +=cachable_methods
     class << self
       def method_added(method)
         return unless @cached_methods.include? method        
