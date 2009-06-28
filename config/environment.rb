@@ -42,6 +42,8 @@ Rails::Initializer.run do |config|
   # config.i18n.default_locale = :de
   config.active_record.observers = :user_observer
 
+  require 'ziggy'
+
   SITE = {
     :email => 'team@thebirdherd.com',
     :team_signoff => 'The Birdherders',
