@@ -9,8 +9,9 @@ class TwitterUserTest < ActiveSupport::TestCase
     
     should "have a friends timeline" do
       status = Factory :twitter_status
-      TwitterUser.any_instance.expects(:friends_timeline).returns([status])
-      assert_equal [status], @twitter_user.friends_timeline
+      TwitterStatus.expects(:merge_all).returns([status])
+      Twitter::Base.any_instance.expects(:friends_timeline).returns([status])
+      assert_equal [status], @twitter_user.friends_timeline  
     end
     
     should "have sent direct messages" do
