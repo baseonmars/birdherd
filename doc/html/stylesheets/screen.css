@@ -1,0 +1,76 @@
+html, body {
+	height: 100%;    
+	margin: 0;
+	padding: 0;
+}              
+
+body {        
+	background-color: #888;
+	font: 62.5%/1.5 "Lucida Sans", Arial, Helvetica, sans-serif;
+	color: #222222;  
+}       
+          
+a:link, a:visited {
+	color: #000;
+}                                  
+
+a:hover, a:active {
+	color: #fff;
+	background-color: #000;
+}     
+
+    
+/* Header
+------------------------------*/
+
+#header {
+	background-color: #000;   
+	color: #eee;
+	position: relative;
+	line-height: 30px;
+	
+} 
+
+#header a:link, #header a:visited {
+	color: #eee;
+}                                  
+
+#header a:hover, #header a:active {
+	color: #fff;
+}     
+
+#header #titles, #header h1, #account-name, #friends-followers, #header dl, #header dd, #header dt, #nav, #nav li {
+	display: inline-block;     
+	vertical-align: top;
+} 
+
+#titles {
+	width: 480px;
+	position: relative;  
+}   
+                   
+#account-name {
+	font-size: 1.8em;
+	position: absolute;
+	right: 20px;          
+	top: 0;
+}                  
+
+
+#friends-followers {
+	font-size: 1.8em;
+	width: 480px;
+}
+
+#nav {
+	position: absolute;
+	right: 0;
+	bottom: 0;
+}   
+
+/* Misc Styles
+------------------------------*/
+
+#feedback-link {
+	text-align: right;
+}
