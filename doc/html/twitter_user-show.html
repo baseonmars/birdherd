@@ -1,0 +1,100 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+	<title>Twitter Account</title>
+</head>
+<body>
+	<div id="header">
+		<h1>The Birdherd</h1>
+		<h2>@moontweet</h2>
+		<dl>
+			<dt>Followers</dt>
+			<dd>301</dd>
+			<dt>Following</dt>
+			<dd>303</dd>
+		</dl>
+
+		<h3>Account Navigation</h3>
+		<ul id="nav">
+			<li>Logged in as <a href="/account">dan</a></li>
+			<li><a href="/account/settings">Settings</a></li>
+			<li>Accounts
+				<ul>
+					<li><a href="/accounts/baseonmars">baseonmars</a></li>
+					<li><a href="/accounts/birdherd">birdherd</a></li>
+					<li class="current"><a href="/accounts/moontweet">moontweet</a></li>
+				</ul>
+			</li>
+		</ul>
+	</div>
+
+	<p id="feedback-link" title="Report bugs or make suggestions">Send feedback</p>
+
+	<div id="status-update">
+		<form action="/status" method="post">
+			<fieldset>
+				<legend>Status update</legend>
+				<label for="status-text">What are you doing?</label>
+				<textarea id="status-text" rows="4" cols="78"></textarea>
+
+				<label>Shorten links?</label>
+				<input type="checkbox" value="true" />
+
+				<button type="button" title="Shorten links now">now</button>
+				<button type="submit">Update</button>
+			</fieldset>
+		</form>    
+		<p>Keep your posting style fun and informal, encourage public conversation. Post sites you think are great.</p>
+
+		<a id="toggle-status-update" href="#">Toggle status updates</a>
+	</div>
+
+	<div id="columns">
+		<div id="mentions">
+			<h3>@Mentions</h3>
+
+
+			<ul>
+				<li class="tweet">
+					<h4><a href="http://twitter.com/baseonmars" title="Profile for @baseonmars (Dan Etherington)">Dan Etherington</a></h4>
+					<a class="profile-image" href="http://twitter.com/baseonmars" title="Profile for @baseonmars (Dan Etherington)"><img src="http://static.twitter.com/images/default_profile_normal.png" alt="" /></a>
+					<p class="text">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation.</p>
+
+					<p class="time">posted 5 minutes ago</p>
+
+					<dl class="birdherd-info">
+						<dt class="posted_by">Posted by</dt>
+						<dd>joe@moonfruit.com</dd>
+						<dt class="replied_by">Replied by</dt>
+						<dd>dan@baseonmars.co.uk</dd>
+					</dl>
+
+					<div class="actions">
+						<button type="button">Reply</button>
+						<button type="button">Direct</button>
+						<button type="button">Re-Tweet</button>
+						
+						<p class="remaining">12/140</p>
+						
+						<form action="/status/3423423/reply" method="post">  
+							<fieldset>
+								<label for="reply_3423423">Post a reply</label>
+								<textarea id="reply_3423423" rows="5" cols="40"></textarea>  
+
+								<label>posting as @moontweet</label>
+								<button type="submit">Send</button>
+							</fieldset>
+						</form>
+					</div>
+
+				</li>
+
+			</ul>
+		</div>       
+
+	</div>
+
+</body>
+</html>                           
