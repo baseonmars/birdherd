@@ -5,7 +5,10 @@
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
 	<title>Twitter Account</title>  
 	<link rel="stylesheet" href="stylesheets/reset-min.css" type="text/css" charset="utf-8" >
-	<link rel="stylesheet" href="stylesheets/screen.css" type="text/css" charset="utf-8">
+	<link rel="stylesheet" href="stylesheets/screen.css" type="text/css" charset="utf-8">  
+	<script type="text/javascript" src="javascript/jquery-1.3.2.js"></script> 
+	<script type="text/javascript" src="javascript/application.js"></script>
+
 </head>
 <body>
 	<div id="header">
@@ -21,38 +24,42 @@
 		</dl>
 
 		<ul id="nav">
-			<li>Logged in as <a href="/account">dan</a></li>
+			<li class="first">Logged in as <a href="/account">dan</a></li>
 			<li><a href="/account/settings">Settings</a></li>
 			<li><select id="user-accounts">
-				<option><a href="/accounts/baseonmars">baseonmars</a></option>
-				<option><a href="/accounts/birdherd">birdherd</a></option>
-				<option class="current"><a href="/accounts/moontweet">moontweet</a></option>
+				<option>baseonmars</option>
+				<option>birdherd</option>
+				<option class="current">moontweet</option>
 			</select>
 		</li>
 	</ul>
 </div>
 
-<p id="feedback-link"><a href="/feedback" title="Report bugs or make suggestions">Send feedback</a></p>
-
 <div id="status-update">
-	<form action="/status" method="post">
+	<p id="feedback-link"><a href="/feedback" title="Report bugs or make suggestions">Send feedback</a></p>
+	<form action="/status" method="post" id="status-create">
 		<fieldset>
 			<legend>Status update</legend>
-			<label for="status-text">What are you doing?</label>
-			<textarea id="status-text" rows="4" cols="78"></textarea>
-
-			<label>Shorten links?</label>
-			<input type="checkbox" value="true" />
-
-			<button type="button" title="Shorten links now">now</button>
-			<button type="submit">Update</button>
+			<label for="status-text" id="what-are-you-doing">What are you doing?</label>
+			<textarea id="status-text" rows="4" cols="40"></textarea>
+                                   
+			<fieldset id="status-actions">
+				<div class="shorten-links">
+					<label class="checkbox">Shorten links? <input type="checkbox" value="true" /></label>
+					<button type="button" title="Shorten links now">now</button>
+				</div>
+				<button type="submit" class="update">Update</button>
+			</fieldset>
 		</fieldset>
 	</form>    
-	<p>Keep your posting style fun and informal, encourage public conversation. Post sites you think are great.</p>
+	<p id="posting-style">Keep your posting style fun and informal, encourage public conversation. Post sites you think are great.</p>
 
-	<a id="toggle-status-update" href="#">Toggle status updates</a>
 </div>
 
+<div id="toggle-status-update">
+	<span>Toggle status updates</span>
+</div>
+	
 <div id="columns">
 	<div id="mentions">
 		<h3>@Mentions</h3>
