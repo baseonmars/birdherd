@@ -1,7 +1,9 @@
 class TwitterUser < ActiveRecord::Base
+  extend Ziggy
   has_and_belongs_to_many :users
   has_many :statuses, :class_name => "TwitterStatus", :foreign_key => "poster_id"
-                    
+  cached :friends_timeline, :direct_messages_sent, :direct_messages_recieved, :mentions  
+  
   def friends_timeline
     TwitterStatus.merge_all account_api.friends_timeline(:count => 30)
   end
