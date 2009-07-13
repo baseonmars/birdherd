@@ -165,6 +165,7 @@ button {
 
 textarea {
 	border: 1px solid #666;
+	overflow: auto;
 }
 
 /* Misc Styles

@@ -1,0 +1,5 @@
+#header #titles,#header h1,#account-name,#friends-followers,#header dl,#header dd,#header dt,#nav,#nav li{display:inline;}
+.shorten-links{display:inline;}
+#toggle-status-update span{display:block;}
+label.checkbox{display:inline;}
+#feedback-link{text-align:right;display:inline;}
