@@ -1,4 +1,7 @@
-$(document).ready(function () {   
+$(document).ready(function () {
+	
+	$('#status-update').after('<div id="toggle-status-update" ><span>Toggle status updates</span></div>');
+	   
 	$('#toggle-status-update').click(function (){
 		$('#status-update').slideToggle('fast',function(){
 			if ($(this).css('display') === 'none') {
