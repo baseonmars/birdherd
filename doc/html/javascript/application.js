@@ -6,13 +6,12 @@ $(document).ready(function () {
 					'background-image': 'url(images/show-post-update.gif)',
 					'margin': '-4px 0 0 0'
 				});
-
+				
 			} else {
-				$('#toggle-status-update').css('margin-top', '0px').find('span').css({
+				$('#toggle-status-update').css('margin-top', '0').find('span').css({
 					'background-image': 'url(images/hide-post-update.gif)',
-					'margin': '0'
-				});
+					'margin': '0'});
 			}
-		);
+		});
 	});
 });
