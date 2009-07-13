@@ -79,12 +79,13 @@ a:hover, a:active {
 }
 
 #status-actions button {
-	font-size: 0.833em;
+	font-size: 1em;    
+	margin-left: 0.5em;
 }
 
 #status-create .update {
 	margin-right: 20px;
-	font-size: 1.1667em;
+	font-size: 1.4em;
 }                     
 
 #status-create textarea {
