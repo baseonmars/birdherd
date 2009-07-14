@@ -1,7 +1,3 @@
-html, body {
-	height: 100%;    
-}              
-
 body {        
 	background-color: #888;
 	font: 62.5%/1.5 "Lucida Sans", Arial, Helvetica, sans-serif;
@@ -21,16 +17,60 @@ a:hover, a:active {
 /* Header
 ------------------------------*/
 
-#header{background-color:#000;color:#eee;position:relative;line-height:30px; padding: 0 8px; position: relative; z-index: 1;}
-#header a:link,#header a:visited{color:#eee;}
-#header a:hover,#header a:active{color:#fff;}
-#header #titles,#header h1,#account-name,#friends-followers,#header dl,#header dd,#header dt,#nav,#nav li{display:inline-block;vertical-align:top;}
-#titles{width:480px;position:relative;}
-#account-name{font-size:1.8em;position:absolute;right:20px;top:0;}
-#friends-followers{font-size:1.8em;width:480px;}
-#nav{position:absolute;right:8px;bottom:0;}
-#nav li:before{content:"| ";}
-#nav .first:before{content:"";}
+#header {
+	background-color: #000;
+	color: #eee;
+	position: relative;
+	line-height: 30px;
+	padding: 0 8px;
+	position: relative;
+	z-index: 1;
+}
+#header a:link,#header a:visited {
+	color: #eee;
+}
+#header a:hover,#header a:active {
+	color: #fff;
+}
+#header #titles,#header h1,#account-name,#friends-followers,#header dl,#header dd,#header dt,#nav,#nav li {
+	display: inline-block;
+	vertical-align: top;
+}
+#titles {
+	width: 480px;
+	position: relative;
+}
+#account-name {
+	font-size: 1.8em;
+	position: absolute;
+	right: 20px;
+	top: 0;
+}
+#info-and-nav {
+	display: inline-block;
+	position: absolute;
+	right: 0;
+	top: 0;
+	left: 488px;
+	min-width: 48em;
+}
+#friends-followers {
+	font-size: 1.8em;
+	width: 480px;
+	float: left;
+}
+#nav {
+	position: absolute;
+	right: 8px;
+	top: 0;
+}
+#nav li:before {
+	content: "| ";
+}
+#nav .first:before {
+	content: "";
+}
+
 
 /* Status update area
 ------------------------------*/
@@ -116,12 +156,14 @@ a:hover, a:active {
 
 #toggle-status-update span {
 	display: inline-block;
-	background: transparent url(../images/hide-post-update.gif) no-repeat top left;
+	background: transparent url(../images/hide-post-update.gif) no-repeat 0 0.15em;
 	height: 28px;
 	width: 43px;
 	text-indent: -999px;
 	overflow: hidden;
-	z-index: 0;
+	z-index: 0; 
+	position: relative;
+	top: -1px;
 }
 
 /* Forms
@@ -227,7 +269,7 @@ textarea {
 }     
   
 .tweet .text {
-	margin: 2px 0;
+	margin: 0.5em 0;
 }
 
 .tweet .time {
@@ -237,7 +279,8 @@ textarea {
 
 .birdherd-info li {
 	min-height: 18px;
-	margin: 2px;
+	margin: 0.5em; 
+	background-position: middle left;
 }                                                                  
           
 .birdherd-info .posted-by {
@@ -266,6 +309,7 @@ textarea {
 
 .actions ul li {
 	display: inline-block;
+	vertical-align: top;
 }       
 
 .actions label {
