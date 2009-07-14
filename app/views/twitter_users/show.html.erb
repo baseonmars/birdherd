@@ -21,10 +21,8 @@
 </div>
 	
 <%= render :partial => 'status_list', 
-	:locals => { :statuses => @timeline, 
+	:locals => { :statuses => @history, 
 	:account => @account,	
-	:title => "#{@account.screen_name}'s Timeline", 
-	:list_id => 'timeline' } %>
-<%= periodic_list_update friends_timeline_url(@account) %>
-
-
+	:title => "#{@account.screen_name}'s History", 
+	:list_id => 'history' } %>
+<%= periodic_list_update history_url(@account) %>

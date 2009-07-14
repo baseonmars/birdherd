@@ -7,7 +7,9 @@ class TwitterUsersControllerTest < ActionController::TestCase
       activate_authlogic
       UserSession.create Factory.build(:user)
       @user = User.find(1)
-      @account = Factory :real_twitter_user, :users => [@user], :screen_name => 'birdherd', :id => 25256654
+      @account = Factory  :real_twitter_user, 
+                          :users => [@user], 
+                          :screen_name => 'birdherd'
     end
 
     should "see a list of all it's twitter accounts" do
@@ -52,48 +54,33 @@ class TwitterUsersControllerTest < ActionController::TestCase
       post :callback
     end
 
-    should "show a twitter account" do
-      get :show, :id => @account.id
-      assert_response :success
-      assert_not_nil assigns('account')
-    end
-
-    should "see the public timeline for an account they own" do
-      get :show, :id => @account.id
-      assert_not_nil assigns('account')
-      assert_not_nil assigns('timeline')
-    end
-
-    context "when getting statuses with a yielding spawn" do
+    context "showing a twitter account" do
       setup do
-        @start_time = Time.now
-        Spawn.now_yields do
-          get :show, :id => @account.id
-        end
+        @history = (1...10).map{ |n| Factory :twitter_status, :poster => @account }
+        TwitterUser.any_instance.expects(:history).returns(@history)
+        get :show, :id => @account.id
+      end
+      
+      should "assign an account" do
+        assert_not_nil assigns('account')
+      end
+      
+      should "succeed" do
         assert_response :success
       end
-
+      
+      should "show a history" do
+        assert_equal @history, assigns(:history)
+      end
+      
       should "update the mentions on the twitter user" do
         assert_equal assigns('account').mentions.length, 4
         assert_equal assigns('mentions').length, 4
       end
-
-      should "update the friends timeline on the twitter user" do
-        assert assigns('account').friends_timeline.length > 0
-      end
      
       should "update the direct messages on the twitter user" do
         assert_equal assigns('account').direct_messages.length, 3
-      end
-    end  
-    
-    context "when getting statuses with a forking spawn" do
-      setup do
-        @start_time = Time.now
-        get :show, :id => @account.id
-        assert_response :success
-      end 
-            
+      end      
     end
     
     context "when account is created" do
