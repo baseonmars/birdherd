@@ -256,6 +256,10 @@ textarea {
 	content: ': ';
 }    
 
+.actions textarea {
+ width: 230px;
+}
+
 .actions ul {
 	display: inline-block;
 }
@@ -269,6 +273,10 @@ textarea {
 }
 
 .remaining {
+	float: right;
+}   
+
+.actions .update {
 	float: right;
 }
 
