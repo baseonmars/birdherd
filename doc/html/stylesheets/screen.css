@@ -281,6 +281,7 @@ textarea {
 	min-height: 18px;
 	margin: 0.5em; 
 	background-position: middle left;
+	font-weight: bold;
 }                                                                  
           
 .birdherd-info .posted-by {
@@ -294,13 +295,18 @@ textarea {
 	padding-left: 18px;
 	margin-left: -18px;
 }
-
+    
+.birdherd-info span {
+	font-weight: normal;
+}
 .birdherd-info span:before {
 	content: ': ';
 }    
 
 .actions textarea {
- width: 230px;
+	width: 230px;
+	border: 1px solid #999; 
+	background-color: #efefef;
 }
 
 .actions ul {
@@ -310,7 +316,33 @@ textarea {
 .actions ul li {
 	display: inline-block;
 	vertical-align: top;
-}       
+	padding: 2px 4px;                     
+	border: 1px solid #999;
+	border-bottom: none;
+	-moz-border-radius-topleft: 4px;
+	-webkit-border-top-left-radius: 4px;
+	-moz-border-radius-topright: 4px;
+	-webkit-border-top-right-radius: 4px;
+	background: #DDD url(../images/action-button-up.png) repeat-x; 
+} 
+
+.actions li a {
+	text-decoration: none; 
+	color: #555;
+	background-color: transparent;
+} 
+
+.actions li a:hover,.actions li a:active {
+	color: #999;
+} 
+
+.actions li.down {
+	background: #DDD url(../images/action-button-down.png) repeat-x;
+	border-bottom: 1px solid #efefef;
+	margin-bottom: -1px;
+	position: relative;
+	z-index: 1;
+}
 
 .actions label {
 	display: none;
