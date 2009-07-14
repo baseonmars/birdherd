@@ -10,12 +10,13 @@ var showHideControls = function () {
 			if ($(this).css('display') === 'none') {
 				$('#toggle-status-update').css('margin-top', '-12px').find('span').css({
 					'background-image': 'url(images/show-post-update.gif)',
-					'margin': '-4px 0 0 0'
+					'position': 'relative',
+					'top': '-4px'
 				});
 			} else {
 				$('#toggle-status-update').css('margin-top', '0').find('span').css({
 					'background-image': 'url(images/hide-post-update.gif)',
-					'margin': '0'
+					'top': '0'
 				});
 			}
 		});
