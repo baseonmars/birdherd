@@ -10,7 +10,7 @@ ActionController::Routing::Routes.draw do |map|
   map.resources :twitter_statuses,:as => 'statuses' do |status|
   end
   map.resource :user_session  
-  map.friends_timeline '/twitter_users/:twitter_user_id/friends_timeline', :controller => 'twitter_users', :action => 'friends_timeline'
+  map.history '/twitter_users/:twitter_user_id/history', :controller => 'twitter_users', :action => 'history'
   map.direct_messages '/twitter_users/:twitter_user_id/direct_messages', :controller => 'twitter_direct_messages', :action => 'index'
   map.connect 'logout' , :controller => 'user_sessions', :action => 'destroy'
   map.connect '/oauth_callback', :controller => 'twitter_users', :action => 'callback'

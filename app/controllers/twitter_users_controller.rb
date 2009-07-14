@@ -27,6 +27,7 @@ class TwitterUsersController < ApplicationController
         @timeline = @account.friends_timeline
         @mentions = @account.mentions
         @direct_messages = @account.direct_messages
+        @history = @account.history
       rescue
         flash[:notice] = "Error from twitter: #{$!}"
       ensure
@@ -38,16 +39,16 @@ class TwitterUsersController < ApplicationController
     end
   end  
 
-  def friends_timeline
+  def history
     @account = TwitterUser.find(params[:twitter_user_id])
     @statuses = @account.friends_timeline
 
     render :update do |page|
-      page.visual_effect :highlight, "timeline", :durations => 0.4
+      page.visual_effect :highlight, "history", :durations => 0.4
       page.delay(0.4) do
-        page.replace "timeline", :partial => "friends_timeline", :locals => { :statuses => @statuses, 
+        page.replace "history", :partial => "history_timeline", :locals => { :statuses => @statuses, 
           :account => @account,
-          :list_id => 'timeline'}
+          :list_id => 'history'}
         end   
       end
       return
@@ -79,7 +80,7 @@ class TwitterUsersController < ApplicationController
   
   def get_account
     begin
-      @account = @current_user.twitter_users.find(params[:id], :include => [:users])
+      @account = current_user.twitter_users.find(params[:id], :include => [:users])
     rescue
       @account = nil
     end

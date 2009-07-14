@@ -16,6 +16,10 @@ class TwitterUser < ActiveRecord::Base
     TwitterDirectMessage.merge_all account_api.direct_messages(:count => 30)
   end
   
+  def history
+    TwitterStatus.merge_all account_api.user_timeline(:count => 30) || []
+  end
+  
   def direct_messages
     messages = (direct_messages_sent + direct_messages_recieved).sort {|a,b| b.created_at <=> a.created_at}
     messages[0...30]
