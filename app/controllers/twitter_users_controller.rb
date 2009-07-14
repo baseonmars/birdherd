@@ -41,7 +41,7 @@ class TwitterUsersController < ApplicationController
 
   def history
     @account = TwitterUser.find(params[:twitter_user_id])
-    @statuses = @account.friends_timeline
+    @statuses = @account.history
 
     render :update do |page|
       page.visual_effect :highlight, "history", :durations => 0.4
