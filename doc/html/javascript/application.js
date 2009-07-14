@@ -8,15 +8,15 @@ var showHideControls = function () {
 	$('#toggle-status-update').click(function (){
 		$('#status-update').toggle('fast',function(){
 			if ($(this).css('display') === 'none') {
-				$('#toggle-status-update').css('margin-top', '-12px').find('span').css({
+				$('#toggle-status-update').css('margin-top', '-2px').find('span').css({
 					'background-image': 'url(images/show-post-update.gif)',
 					'position': 'relative',
-					'top': '-4px'
+					'top': '-5px'
 				});
 			} else {
 				$('#toggle-status-update').css('margin-top', '0').find('span').css({
 					'background-image': 'url(images/hide-post-update.gif)',
-					'top': '0'
+					'top': '-1px'
 				});
 			}
 		});
