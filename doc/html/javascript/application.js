@@ -1,7 +1,20 @@
 $(document).ready(function () {
 	showHideControls();
-	setup_message();
-});
+	setup_response('direct_message', function(el, text) {
+		 return 'd ' + getScreenName(el).replace(/@/,'') + ' ' + text  
+	 });
+	setup_response('re_tweet',function(el, text) {
+		 return text + ' (via ' + getScreenName(el) + ')';
+	 }); 
+	setup_response('reply',function(el,text) {
+		return getScreenName(el)+'';
+	});
+});                    
+
+var getScreenName = function(el) {
+	return $(el).parents('.tweet').find('.screen_name').attr('title')
+}
+
 
 var showHideControls = function () {
 	$('#toggle-status-update').replaceWith('<div id="toggle-status-update" ><span>Toggle status updates</span></div>')
@@ -24,9 +37,12 @@ var showHideControls = function () {
 	});
 };
 
-var setup_message = function () {
-	$('.direct_message').click( function (){
-		$(this).parents('.actions').find('.status_text')[0].text($(this).parents('.tweet').find('.text').text());
+var setup_response = function (type, formatter) {
+	$('.'+type).click( function (){
+		var parents = $(this).parents('.tweet');
+		parents.find('.status_text').text(formatter(this, parents.find('.text').text())); 
+		parents.find('.actions li').removeClass('down');
+		$(this).addClass('down');
 		return false;                            
 	});                                                                   
 }
