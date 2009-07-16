@@ -1,5 +1,7 @@
-body {        
+html, body {
 	background-color: #888;
+}
+body {        
 	font: 62.5%/1.5 "Lucida Sans", Arial, Helvetica, sans-serif;
 	color: #222222;  
 }       
@@ -217,8 +219,10 @@ textarea {
 }
 
 .column {
+	display: inline-block;
 	width: 300px;                   
 	text-align: right;
+	margin: 0 4px;
 }    
 
 .column h3 { 
