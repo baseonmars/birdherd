@@ -1,5 +1,6 @@
 $(document).ready(function () {
 	showHideControls();
+	setup_message();
 });
 
 var showHideControls = function () {
@@ -8,16 +9,24 @@ var showHideControls = function () {
 	$('#toggle-status-update').click(function (){
 		$('#status-update').toggle('fast',function(){
 			if ($(this).css('display') === 'none') {
-				$('#toggle-status-update').css('margin-top', '-12px').find('span').css({
+				$('#toggle-status-update').css('margin-top', '-2px').find('span').css({
 					'background-image': 'url(images/show-post-update.gif)',
-					'margin': '-4px 0 0 0'
+					'position': 'relative',
+					'top': '-5px'
 				});
 			} else {
 				$('#toggle-status-update').css('margin-top', '0').find('span').css({
 					'background-image': 'url(images/hide-post-update.gif)',
-					'margin': '0'
+					'top': '-1px'
 				});
 			}
 		});
 	});
 };
+
+var setup_message = function () {
+	$('.direct_message').click( function (){
+		$(this).parents('.actions').find('.status_text')[0].text($(this).parents('.tweet').find('.text').text());
+		return false;                            
+	});                                                                   
+}
