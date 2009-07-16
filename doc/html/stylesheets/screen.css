@@ -215,7 +215,8 @@ textarea {
 ------------------------------*/  
      
 #columns {
-	padding: 0 6px;
+	padding: 8px 6px 0 6px; 
+	min-width: 124.2em;
 }
 
 .column {
@@ -342,9 +343,10 @@ textarea {
 
 .actions li.down {
 	background: #DDD url(../images/action-button-down.png) repeat-x;
-	border-bottom: 1px solid #efefef;
-	margin-bottom: -1px;
-	position: relative;
+	border-bottom: 2px solid #efefef;
+	margin-bottom: -2px;
+	position: relative;  
+	down: 1px;
 	z-index: 1;
 }
 
