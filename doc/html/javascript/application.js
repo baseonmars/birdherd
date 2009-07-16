@@ -1,5 +1,6 @@
 $(document).ready(function () {
 	showHideControls();
+	setup_message();
 });
 
 var showHideControls = function () {
@@ -22,3 +23,10 @@ var showHideControls = function () {
 		});
 	});
 };
+
+var setup_message = function () {
+	$('.direct_message').click( function (){
+		$(this).parents('.actions').find('.status_text')[0].text($(this).parents('.tweet').find('.text').text());
+		return false;                            
+	});                                                                   
+}
