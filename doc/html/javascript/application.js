@@ -1,5 +1,8 @@
 $(document).ready(function () {
-	Birdherd.UI.init(); 
+	Birdherd.UI.init();
+
+	// TODO set up a stylesheet or something instead of apply to each item
+	$('.tweet').addClass('collapsed');
 });       
 
 var Birdherd = {};
@@ -7,23 +10,26 @@ var Birdherd = {};
 Birdherd.UI = (function(){         
 	// Init
 	var init;
-	
+
 	init = function() {
-		this.showHideControls();
-		
-		this.setResponseAction('direct_message', function(el) {
+		showHideControls();
+
+		setupToggleExtendedTweet();
+
+		setResponseAction('direct_message', function(el) {
 			return 'd '+getScreenName(el).replace(/@/,'')+' ';
 		});
-		this.setResponseAction('re_tweet',function(el, text) {
+		setResponseAction('re_tweet',function(el, text) {
 			return text+' (via '+getScreenName(el)+')';
 		}); 
-		this.setResponseAction('reply',function(el) {
+		setResponseAction('reply',function(el) {
 			return getScreenName(el)+' ';
 		});
 	};
-	
+
 	//Private
-	var getScreenName, setupResponse, setCaretToEnd;
+	var getScreenName, setupResponse, setCaretToEnd, showHideControls, setupResponse,
+	setupToggleExtendedTweet;
 
 	getScreenName = function(el) {
 		return $(el).parents('.tweet').find('.sender').attr('title')
@@ -49,47 +55,48 @@ Birdherd.UI = (function(){
 			obj.setSelectionRange(pos, pos); 
 		} 
 	};
-	
-	return {
-		showHideControls: function () {
-			$('#toggle-status-update').replaceWith('<div id="toggle-status-update" ><span>Toggle status updates</span></div>')
 
-			$('#toggle-status-update').click(function (){
-				$('#status-update').toggle('fast',function(){
-					if ($(this).css('display') === 'none') {
-						$('#toggle-status-update').css('margin-top', '-2px').find('span').css({
-							'background-image': 'url(images/show-post-update.gif)',
-							'position': 'relative',
-							'top': '-5px'
-						});
-					} else {
-						$('#toggle-status-update').css('margin-top', '0').find('span').css({
-							'background-image': 'url(images/hide-post-update.gif)',
-							'top': '-1px'
-						});
-					}
-				});
+	showHideControls = function () {
+		$('#toggle-status-update').replaceWith('<div id="toggle-status-update" ><span>Toggle status updates</span></div>')
+
+		$('#toggle-status-update').click(function (){
+			$('#status-update').toggle('fast',function(){
+				if ($(this).css('display') === 'none') {
+					$('#toggle-status-update').css('margin-top', '-2px').find('span').css({
+						'background-image': 'url(images/show-post-update.gif)',
+						'position': 'relative',
+						'top': '-5px'
+					});
+				} else {
+					$('#toggle-status-update').css('margin-top', '0').find('span').css({
+						'background-image': 'url(images/hide-post-update.gif)',
+						'top': '-1px'
+					});
+				}
 			});
-		},
-		setResponseAction: function (type, formatter) {
-			$('.'+type).click( function (){
-				var parents = $(this).parents('.tweet');
-				parents.find('.status_text').text(formatter(this, parents.find('.text').focus().text())); 
-				parents.find('.actions li').removeClass('down');
-				setCaretToEnd(parents.find('.status_text').get(0));
-				$(this).addClass('down');
-				return false;                            
-			});                                                                   
-		},
+		});
+	};
+
+	setResponseAction = function (type, formatter) {
+		$('.'+type).click( function (){
+			var parents = $(this).parents('.tweet');
+			parents.find('.status_text').text(formatter(this, parents.find('.text').focus().text())); 
+			parents.find('.actions li').removeClass('down');
+			parents.find('.send_response').show();
+			setCaretToEnd(parents.find('.status_text').get(0));
+			$(this).addClass('down');
+			return false;                            
+		});                                                                   
+	};
+
+	setupToggleExtendedTweet = function() {
+		$('.tweet').each(function(){
+			var toggle = $(this).append('<p class="toggle">toggle</p>')
+			toggle.click( function() { $(this).toggleClass('collapsed');} );
+		});
+	}
+
+	return {
 		init: init
 	};
 }());
-
-
-
-
-
-
-
-
-
