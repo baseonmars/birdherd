@@ -91,8 +91,9 @@ Birdherd.UI = (function(){
 
 	setupToggleExtendedTweet = function() {
 		$('.tweet').each(function(){
-			var toggle = $(this).append('<p class="toggle">toggle</p>')
-			toggle.click( function() { $(this).toggleClass('collapsed');} );
+			$(this).append('<p class="toggle">toggle</p>')
+			$(this).find('.toggle').click( function(ev) { 
+				$(this).parents('.tweet').toggleClass('collapsed');} );
 		});
 	}
 
