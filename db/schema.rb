@@ -9,32 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20090614201134) do
-
-  create_table "friendships", :force => true do |t|
-    t.integer "follower_id"
-    t.integer "friend_id"
-  end
-
-  add_index "friendships", ["follower_id"], :name => "index_friendships_on_follower_id"
-  add_index "friendships", ["friend_id"], :name => "index_friendships_on_friend_id"
-
-  create_table "taggings", :force => true do |t|
-    t.integer  "tag_id"
-    t.integer  "taggable_id"
-    t.integer  "tagger_id"
-    t.string   "tagger_type"
-    t.string   "taggable_type"
-    t.string   "context"
-    t.datetime "created_at"
-  end
-
-  add_index "taggings", ["tag_id"], :name => "index_taggings_on_tag_id"
-  add_index "taggings", ["taggable_id", "taggable_type", "context"], :name => "index_taggings_on_taggable_id_and_taggable_type_and_context"
-
-  create_table "tags", :force => true do |t|
-    t.string "name"
-  end
+ActiveRecord::Schema.define(:version => 20090619214912) do
 
   create_table "twitter_direct_messages", :force => true do |t|
     t.integer  "sender_id"
