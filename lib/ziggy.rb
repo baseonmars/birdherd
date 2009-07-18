@@ -42,7 +42,6 @@ module Ziggy2
           result
         end
       end
-      p "caching added to #{method}"
       logger.debug "Caching added to #{self}.#{method}"
     end    
     
