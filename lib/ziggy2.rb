@@ -6,18 +6,18 @@ module Ziggy2
       @should_be_cached = []
       @cached = []  
       @keygens = {}
-      @expire_after = 2.5.minutes
+      @expire_after = {}
     end
   end
 
   module ClassMethods
     def cached(*cachable_methods, &block)
-      debugger
       opts = (cachable_methods.pop if cachable_methods.last.kind_of? Hash) || {}
       @should_be_cached += cachable_methods
-      cachable_methods.each{ |m| @keygens[m] = block }
-      @expire_after = opts[:expire_after] || @expire_after
-      debugger
+      cachable_methods.each do |m| 
+        @keygens[m] = block
+        @expire_after[m] = opts[:expire_after] || 2.5.minutes
+      end
     end
     
     def should_be_cached?(method)
@@ -47,7 +47,7 @@ module Ziggy2
     end    
     
     def expire_after(method)
-      @expire_after
+      @expire_after[method]
     end
     
     def build_key(instance, method, args)
