@@ -5,19 +5,19 @@ module Ziggy2
   def self.included(base)
     base.extend ClassMethods
     base.instance_eval do
-      @cached_methods = []
+      @should_be_cached = []
       @cached_methods_enhanced = []  
     end
   end
 
   module ClassMethods
     def cached(*cachable_methods, &block)
-      @cached_methods += cachable_methods
+      @should_be_cached += cachable_methods
       @key_generator = block
     end
     
     def should_be_cached?(method)
-      @cached_methods.include? method
+      @should_be_cached.include? method
     end
     
     def cached?(method)
@@ -37,13 +37,6 @@ module Ziggy2
           Rails.cache.write(key, result, :expires_in => 2.5.minutes)
           result
         end
-      
-        def build_key(method, args)
-          invocation_key = "#{method}#{ args.collect{ |a| a.to_s } }"
-          keygen = self.class.key_generator
-          differentiator = (keygen.call(self) unless keygen.nil?) || ""
-          differentiator + invocation_key
-        end
       end
       logger.debug "Caching added to #{self}.#{method}"
     end    
@@ -53,6 +46,11 @@ module Ziggy2
     end
   end
   
+  def build_key(method, args)
+    invocation_key = "#{method}#{ args.collect{ |a| a.to_s } }"
+    keygen = self.class.key_generator
+    differentiator = (keygen.call(self) unless keygen.nil?) || ""
+    differentiator + invocation_key
+  end  
   
-
 end
