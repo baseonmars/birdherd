@@ -19,7 +19,13 @@ module TwitterUsersHelper
   
   def periodic_list_update(url)
     periodically_call_remote(:url => url,:method => :get, :frequency => 60)
-  end
+  end 
+  
+  def render_message(account, message)
+    message_type = de_camelize message.class.name     
+    render :partial => "#{message_type.pluralize}/#{message_type}", 
+           :locals  => {:account => account, :message => message}
+  end 
   
   private
     def profile_text(twitter_user)

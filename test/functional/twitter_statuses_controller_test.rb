@@ -25,13 +25,13 @@ class TwitterStatusesControllerTest < ActionController::TestCase
 
     should "require a login to post a new status" do
       twitter_user = Factory(:twitter_user)
-      post :create, :twitter_user_id => twitter_user.id, :status => Factory.build(:twitter_status, :poster => twitter_user)
+      post :create, :twitter_user_id => twitter_user.id, :status => Factory.build(:twitter_status, :sender => twitter_user)
       assert_redirected_to new_user_session_path
     end
     
     should "require a login to reply to a status" do
       twitter_user = Factory(:twitter_user)
-      post :reply, :twitter_user_id => twitter_user.id, :status => Factory.build(:twitter_status, :poster => twitter_user)
+      post :reply, :twitter_user_id => twitter_user.id, :status => Factory.build(:twitter_status, :sender => twitter_user)
       assert_redirected_to new_user_session_path
     end
   end
@@ -55,7 +55,7 @@ class TwitterStatusesControllerTest < ActionController::TestCase
         @twitter_user = Factory(:twitter_user)
         @original_poster = Factory(:twitter_user, :screen_name => 'original_poster')
         @user.twitter_users << @twitter_user
-        @status = Factory(:twitter_status, :poster => @twitter_user)
+        @status = Factory(:twitter_status, :sender => @twitter_user)
       end
 
       should "be able to reply to a status on an account they 'own'" do
@@ -80,19 +80,19 @@ class TwitterStatusesControllerTest < ActionController::TestCase
       end
 
       should "not be able to create a post belonging to an account they don't own" do
-        new_post = Factory.attributes_for(:twitter_status, :poster => @original_poster)
+        new_post = Factory.attributes_for(:twitter_status, :sender => @original_poster)
         post :create, :twitter_user_id => @original_poster.id, :twitter_status => new_post
         assert_response 401
       end
       
       should "be marked as the new statuses birdherd_user" do
-        new_post = Factory.attributes_for(:twitter_status, :poster => @original_poster)
+        new_post = Factory.attributes_for(:twitter_status, :sender => @original_poster)
         post :create,:twitter_user_id => @twitter_user.id, :twitter_status => new_post
         assert_equal assigns(:tweet).birdherd_user, @user
       end
       
       should "post a status" do
-        new_post = Factory.attributes_for(:twitter_status, :poster => @original_poster)
+        new_post = Factory.attributes_for(:twitter_status, :sender => @original_poster)
         post :create, :twitter_user_id => @twitter_user.id, :twitter_status => new_post
         assert_equal assigns(:tweet).birdherd_user, @user
       end

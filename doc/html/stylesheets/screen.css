@@ -13,7 +13,7 @@ a:link, a:visited {
 a:hover, a:active {
 	color: #fff;
 	background-color: #000;
-}     
+}
 
     
 /* Header
@@ -215,14 +215,16 @@ textarea {
 ------------------------------*/  
      
 #columns {
-	padding: 0 6px;
+	padding: 8px 6px 0 6px; 
+	min-width: 1242px;
 }
 
 .column {
 	display: inline-block;
 	width: 300px;                   
 	text-align: right;
-	margin: 0 4px;
+	margin: 0 4px;     
+	vertical-align: top;
 }    
 
 .column h3 { 
@@ -245,7 +247,7 @@ textarea {
 .stack {       
 	background-color: #737373;
 	padding: 4px;   
-	text-align: left;
+	text-align: left;  
 }              
 
 .tweet {
@@ -253,13 +255,15 @@ textarea {
 	-webkit-border-radius: 2px;
 	-moz-border-radius: 2px;
 	border-width: 1px;
-	padding: 4px 4px 4px 56px;
+	padding: 4px 4px 12px 56px;
 	position: relative;
+	min-height: 70px;
 } 
         
 .tweet h4 {
 	font-size: 1.4em;
-	line-height: 0.8333;
+	line-height: 0.8333;  
+	margin-bottom: 0.333em;
 }
 
 .tweet h4 a {
@@ -269,17 +273,48 @@ textarea {
 .tweet .profile-image {
 	position: absolute;
 	left: 4px;
-	top: 4px;
+	top: 4px;    
+	text-decoration: none;
+	background-color: transparent; 
+	height: 48px;
+	width: 48px;
 }     
+
+.tweet .profile-image:hover {
+	border: 2px solid #222;
+	height: 44px;
+	width: 44px;
+	overflow: hidden;
+	top: 4px;
+	left: 4px;
+}           
+
+.tweet .profile-image:hover img {
+	margin: -2px 0 0 -2px;
+}                    
+                                                                                         
+.tweet .toggle {
+	overflow: hidden;
+	text-indent: -999px;
+	background: transparent url(../images/icons/arrow_090_small.png) no-repeat bottom right;
+/*	margin-top: -12px;
+	margin-botton: -8px;
+	margin-right: -6px; */
+	margin-bottom: -12px;
+	position: absolute;
+	bottom: 10px;
+	right: -2px;
+	height: 16px;
+	width: 16px;
+}
   
 .tweet .text {
-	margin: 0.5em 0;
 }
 
 .tweet .time {
 	font-style: italic;
 	color: #666;
-}    
+}
 
 .birdherd-info li {
 	min-height: 18px;
@@ -342,24 +377,64 @@ textarea {
 
 .actions li.down {
 	background: #DDD url(../images/action-button-down.png) repeat-x;
-	border-bottom: 1px solid #efefef;
-	margin-bottom: -1px;
-	position: relative;
+	border-bottom: 2px solid #efefef;
+	margin-bottom: -2px;
+	position: relative;  
+	down: 1px;
 	z-index: 1;
 }
 
 .actions label {
 	display: none;
 }
+           
+.send_response {
+	position: relative;
+}
 
 .remaining {
-	float: right;
+	position: absolute;
+	top: -1.6em;
+	right: 0;
+	text-align: right;
 }   
 
 .actions .update {
 	float: right;
+}  
+
+/* Collapsed Tweet
+------------------------------*/
+           
+.tweet.collapsed {
+	padding-bottom: 2px;
 }
 
+.tweet.collapsed .actions {
+	 display: none;
+} 
+
+.tweet.collapsed .birdherd-info {
+	position: absolute;
+	left: 24px;
+	top: 52px;
+	display: inline-block;
+}
+
+.tweet.collapsed .birdherd-info li {
+	text-indent: -999px;
+	overflow: hidden;
+	width: 18px;
+	display: inline-block;
+}
+   
+.tweet.collapsed .toggle {
+	overflow: hidden;
+	text-indent: -999px;
+	background: transparent url(../images/icons/arrow_270_small.png) no-repeat bottom right; 
+	right: 0;  
+	bottom: 12px;
+}
 
 /* Misc Styles
 ------------------------------*/

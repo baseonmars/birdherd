@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20090619214912) do
+ActiveRecord::Schema.define(:version => 20090718181810) do
 
   create_table "twitter_direct_messages", :force => true do |t|
     t.integer  "sender_id"
@@ -26,7 +26,7 @@ ActiveRecord::Schema.define(:version => 20090619214912) do
 
   create_table "twitter_statuses", :force => true do |t|
     t.text     "text"
-    t.integer  "poster_id"
+    t.integer  "sender_id"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "in_reply_to_user_id"
@@ -36,7 +36,7 @@ ActiveRecord::Schema.define(:version => 20090619214912) do
   end
 
   add_index "twitter_statuses", ["birdherd_user_id"], :name => "index_twitter_statuses_on_birdherd_user_id"
-  add_index "twitter_statuses", ["poster_id"], :name => "index_twitter_statuses_on_poster_id"
+  add_index "twitter_statuses", ["sender_id"], :name => "index_twitter_statuses_on_poster_id"
 
   create_table "twitter_users", :force => true do |t|
     t.string   "screen_name"

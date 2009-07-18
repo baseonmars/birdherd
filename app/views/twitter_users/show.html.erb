@@ -6,22 +6,22 @@
 	:twitter_account => @account  } %>
 </div>
 
-<%= render :partial => 'status_list', 
-	:locals => { :statuses => @mentions, 
+<%= render :partial => 'message_list', 
+	:locals => { :messages => @mentions, 
 	:account => @account, 
 	:title => "Replies",	
 	:list_id => 'mentions' } %>
 <%= periodic_list_update twitter_user_mentions_url(@account) %>
+	                      
+<%= render :partial => 'message_list',
+	:locals => { :messages => @direct_messages, 
+	:account => @account, 
+	:title => "Direct Messages",	
+	:list_id => 'direct_messages' } %>
+<%= periodic_list_update direct_messages_url(@account) %>
 	
-<div class="message-list">
-	<h2>Direct Messages</h2>	
-	<%= render :partial => 'twitter_direct_messages/direct_messages', 
-	:locals => {:direct_messages => @direct_messages} %>
-	<%= periodic_list_update direct_messages_url(@account) %>
-</div>
-	
-<%= render :partial => 'status_list', 
-	:locals => { :statuses => @history, 
+<%= render :partial => 'message_list', 
+	:locals => { :messages => @history, 
 	:account => @account,	
 	:title => "#{@account.screen_name}'s History", 
 	:list_id => 'history' } %>

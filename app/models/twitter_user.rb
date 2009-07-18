@@ -1,23 +1,27 @@
 class TwitterUser < ActiveRecord::Base
   include Ziggy
   has_and_belongs_to_many :users
-  has_many :statuses, :class_name => "TwitterStatus", :foreign_key => "poster_id"
+  has_many :statuses, :class_name => "TwitterStatus", :foreign_key => "sender_id"  
   cached( :history, :direct_messages_sent, :direct_messages_recieved, :mentions, :expire_after => 1.minutes ) { |twitter_user| twitter_user.screen_name }
 
   def friends_timeline
-    TwitterStatus.merge_all account_api.friends_timeline(:count => 30)
+    TwitterStatus.merge_all account_api.friends_timeline(:count => 30) || []
   end
   
   def direct_messages_sent
-    TwitterDirectMessage.merge_all account_api.direct_messages_sent(:count => 30)
+    TwitterDirectMessage.merge_all account_api.direct_messages_sent(:count => 30) || []
   end
   
   def direct_messages_recieved
-    TwitterDirectMessage.merge_all account_api.direct_messages(:count => 30)
+    TwitterDirectMessage.merge_all account_api.direct_messages(:count => 30) || []
+  end
+  
+  def user_timeline         
+    TwitterStatus.merge_all account_api.user_timeline(:count => 30) || []
   end
   
   def history
-    TwitterStatus.merge_all account_api.user_timeline(:count => 30) || []
+    (user_timeline + direct_messages).sort {|a,b| b.created_at.to_i <=> a.created_at.to_i}
   end
   
   def direct_messages

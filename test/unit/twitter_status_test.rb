@@ -6,7 +6,7 @@ class TwitterStatusTest < ActiveSupport::TestCase
       @status = Factory(:twitter_status)
     end
 
-    should_belong_to :poster
+    should_belong_to :sender
     should_belong_to :recipient
     should_belong_to :birdherd_user
 
@@ -39,7 +39,7 @@ class TwitterStatusTest < ActiveSupport::TestCase
 
     should "set the reply text with its screen name" do
       reply = @status.reply
-      assert_match /^@#{@status.poster.screen_name}/, reply.text
+      assert_match /^@#{@status.sender.screen_name}/, reply.text
     end
   end  
 

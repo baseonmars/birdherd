@@ -26,13 +26,38 @@ class TwitterUserTest < ActiveSupport::TestCase
       assert_equal [message], @twitter_user.direct_messages_received
     end
     
-    should "have a history" do
-      @history = (1...10).map{ |n| Factory :twitter_status, :poster => @account }
-      Twitter::Base.any_instance.expects(:user_timeline).returns(@history)
-      TwitterStatus.expects(:merge_all).with(@history).returns(@history)
-      assert_equal @history, @twitter_user.history
-    end
+    should "have a history of sent statuses and direct messages" do                                                                               
+      status      = Factory :twitter_status, :sender => @account
+      message     = Factory :twitter_direct_message, :sender => @account
+      api_status  = Factory :api_status, status.attributes
+      api_message = Factory :api_message, message.attributes        
+                                                                                                    
+      Twitter::Base.any_instance.expects(:user_timeline).returns([api_status]) 
+      Twitter::Base.any_instance.expects(:direct_messages_sent).returns([])
+      Twitter::Base.any_instance.expects(:direct_messages).returns([api_message])          
+                            
+      history = [message,status]
+      user_history = @twitter_user.history
+      assert history.all? {|item| user_history.include?(item)}
+    end                                                        
     
+    should "should have a sorted history" do                                                                               
+      earlier_status     = Factory :twitter_status, :created_at => 5.minutes.ago
+      later_status       = Factory :twitter_status, :created_at => 1.minutes.ago
+      message            = Factory :twitter_direct_message, :created_at => 3.minutes.ago
+      
+      earlier_api_status = Factory :api_status, earlier_status.attributes
+      later_api_status   = Factory :api_status, later_status.attributes      
+      api_message        = Factory :api_message, message.attributes
+
+      Twitter::Base.any_instance.expects(:user_timeline).returns([earlier_api_status, later_api_status]) 
+      Twitter::Base.any_instance.expects(:direct_messages_sent).returns([])
+      Twitter::Base.any_instance.expects(:direct_messages).returns([api_message])          
+                
+      history = [later_status, message, earlier_status]
+      assert_equal history, @twitter_user.history                                                                     
+    end    
+
     should "have mixed sent and recieved direct messages" do
       messages = (0..1).collect { Factory :api_status }
       TwitterUser.any_instance.expects(:direct_messages).returns(messages)
