@@ -54,8 +54,8 @@ class TwitterUserTest < ActiveSupport::TestCase
       Twitter::Base.any_instance.expects(:direct_messages_sent).returns([])
       Twitter::Base.any_instance.expects(:direct_messages).returns([api_message])          
                 
-      history = [earlier_status, message, later_status]
-      assert_equal history, @twitter_user.history                                                                      
+      history = [later_status, message, earlier_status]
+      assert_equal history, @twitter_user.history                                                                     
     end    
 
     should "have mixed sent and recieved direct messages" do
