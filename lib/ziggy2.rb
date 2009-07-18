@@ -4,19 +4,19 @@ module Ziggy2
 
   def self.included(base)
     base.extend ClassMethods
+    base.instance_eval do
+      @cached_methods = []
+      @cached_methods_enhanced = []  
+    end
   end
 
   module ClassMethods
     def cached(*cachable_methods, &block)
-      @cached_methods ||= []
-      @cached_methods_enhanced ||= []
       @cached_methods += cachable_methods
       @key_generator = block
     end
     
     def method_added(method)
-      @cached_methods ||= []
-      @cached_methods_enhanced ||= []      
       return unless @cached_methods.include? method        
       return if @cached_methods_enhanced.include? method
       @cached_methods_enhanced << method
