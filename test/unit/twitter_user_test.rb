@@ -27,12 +27,13 @@ class TwitterUserTest < ActiveSupport::TestCase
     end
     
     should "have a history" do
-      @history = (1...10).map{ |n| Factory :twitter_status, :sender => @account }
-      Twitter::Base.any_instance.expects(:user_timeline).returns(@history)
+      @history = [Factory(:twitter_status, :sender => @account), Factory(:twitter_direct_message, :sender => @account)]
+      Twitter::Base.any_instance.expects(:user_timeline).returns(@history[0]) 
+      Twitter::Base.any_instance.expects(:direct_messages).returns(@history[1])
       TwitterStatus.expects(:merge_all).with(@history).returns(@history)
       assert_equal @history, @twitter_user.history
-    end
-    
+    end       
+                                                                        
     should "have mixed sent and recieved direct messages" do
       messages = (0..1).collect { Factory :api_status }
       TwitterUser.any_instance.expects(:direct_messages).returns(messages)

@@ -5,19 +5,23 @@ class TwitterUser < ActiveRecord::Base
   cached( :history, :direct_messages_sent, :direct_messages_recieved, :mentions ) { |twitter_user| twitter_user.screen_name }
 
   def friends_timeline
-    TwitterStatus.merge_all account_api.friends_timeline(:count => 30)
+    TwitterStatus.merge_all account_api.friends_timeline(:count => 30) || []
   end
   
   def direct_messages_sent
-    TwitterDirectMessage.merge_all account_api.direct_messages_sent(:count => 30)
+    TwitterDirectMessage.merge_all account_api.direct_messages_sent(:count => 30) || []
   end
   
   def direct_messages_recieved
-    TwitterDirectMessage.merge_all account_api.direct_messages(:count => 30)
+    TwitterDirectMessage.merge_all account_api.direct_messages(:count => 30) || []
+  end
+  
+  def user_timeline
+    TwitterStatus.merge_all account_api.user_timeline(:count => 30) || []
   end
   
   def history
-    TwitterStatus.merge_all account_api.user_timeline(:count => 30) || []
+    user_timeline
   end
   
   def direct_messages
