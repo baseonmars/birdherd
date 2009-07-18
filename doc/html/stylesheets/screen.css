@@ -257,6 +257,7 @@ textarea {
 	border-width: 1px;
 	padding: 4px 4px 12px 56px;
 	position: relative;
+	min-height: 70px;
 } 
         
 .tweet h4 {

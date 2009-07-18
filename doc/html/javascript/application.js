@@ -10,7 +10,7 @@ var Birdherd = {};
 Birdherd.UI = (function(){         
 	// Init
 	var init;
-
+             
 	init = function() {
 		showHideControls();
 
@@ -96,8 +96,9 @@ Birdherd.UI = (function(){
 				$(this).parents('.tweet').toggleClass('collapsed');} );
 		});
 	}
-
+    
+	// Public
 	return {
-		init: init
+		'init': init
 	};
 }());
