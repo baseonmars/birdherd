@@ -56,7 +56,7 @@ class TwitterUsersControllerTest < ActionController::TestCase
 
     context "showing a twitter account" do
       setup do
-        @history = (1...10).map{ |n| Factory :twitter_status, :poster => @account }
+        @history = (1...10).map{ |n| Factory :twitter_status, :sender => @account }
         TwitterUser.any_instance.expects(:history).returns(@history)
         get :show, :id => @account.id
       end

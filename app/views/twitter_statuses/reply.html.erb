@@ -1,5 +1,5 @@
 <h1>Reply</h1>
-<p><strong>@<%= h @status.poster.screen_name %></strong> <%= h @status.text%></p>
+<p><strong>@<%= h @status.sender.screen_name %></strong> <%= h @status.text%></p>
 <div id="post-status">
 <%= render :partial => 'twitter_statuses/brief_form', 
 	:locals => {:status => @reply, 

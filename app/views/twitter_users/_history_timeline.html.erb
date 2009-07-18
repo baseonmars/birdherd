@@ -1,8 +1,8 @@
 <ul id="history">
 <% @statuses.each do |status| -%>
 <li>
-	<%= twitter_user_profile_image(status.poster)%>
-	<h3><strong><%= twitter_user_link(status.poster) %></strong></h3>
+	<%= twitter_user_profile_image(status.sender)%>
+	<h3><strong><%= twitter_user_link(status.sender) %></strong></h3>
 	<p><%= auto_link(status.text) %></p>
 	<p class="status-time">posted <%= h friendly_time(status.created_at) %></p>
 	<p class="reply-link"><%= link_to "Reply", status_reply_path(@account, status.id) %></p>

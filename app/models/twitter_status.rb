@@ -1,11 +1,11 @@
 class TwitterStatus < ActiveRecord::Base
-  belongs_to :poster, :class_name => "TwitterUser", :foreign_key => "poster_id"
+  belongs_to :sender, :class_name => "TwitterUser", :foreign_key => "sender_id"
   belongs_to :recipient, :class_name => "TwitterUser", :foreign_key => "in_reply_to_user_id"
   belongs_to :birdherd_user, :class_name => 'User', :foreign_key => 'birdherd_user_id'
   has_many :replies, :class_name => "TwitterStatus", :foreign_key => 'in_reply_to_status_id'
   
   def reply
-    TwitterStatus.new(:in_reply_to_status_id => id, :text => "@#{poster.screen_name} ")
+    TwitterStatus.new(:in_reply_to_status_id => id, :text => "@#{sender.screen_name} ")
   end
 
   # TODO - remove
@@ -17,7 +17,7 @@ class TwitterStatus < ActiveRecord::Base
     return if api_status.nil?
     status = TwitterStatus.find_or_initialize_by_id(api_status.id) 
     api_status.each { |k,v| status.send("#{k}=", v) if status.respond_to?("#{k}=") }
-    status.poster = TwitterUser.merge(api_status.user)
+    status.sender = TwitterUser.merge(api_status.user)
     status.save if  status.new_record? or status.changed?
     status
   end
@@ -27,5 +27,14 @@ class TwitterStatus < ActiveRecord::Base
     return [] if api_result.nil?
     api_result.collect { |status| self.merge status }
   end
+    
+  def poster
+    @sender
+  end
+  
+  def poster=(twitter_user)
+    @sender = twitter_user
+  end
+  
                        
 end

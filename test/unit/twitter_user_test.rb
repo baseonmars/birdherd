@@ -27,7 +27,7 @@ class TwitterUserTest < ActiveSupport::TestCase
     end
     
     should "have a history" do
-      @history = (1...10).map{ |n| Factory :twitter_status, :poster => @account }
+      @history = (1...10).map{ |n| Factory :twitter_status, :sender => @account }
       Twitter::Base.any_instance.expects(:user_timeline).returns(@history)
       TwitterStatus.expects(:merge_all).with(@history).returns(@history)
       assert_equal @history, @twitter_user.history

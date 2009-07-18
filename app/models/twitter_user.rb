@@ -1,7 +1,7 @@
 class TwitterUser < ActiveRecord::Base
   extend Ziggy
   has_and_belongs_to_many :users
-  has_many :statuses, :class_name => "TwitterStatus", :foreign_key => "poster_id"
+  has_many :statuses, :class_name => "TwitterStatus", :foreign_key => "sender_id"
   cached( :history, :direct_messages_sent, :direct_messages_recieved, :mentions ) { |twitter_user| twitter_user.screen_name }
 
   def friends_timeline
