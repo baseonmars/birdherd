@@ -6,13 +6,18 @@ module Ziggy2
       @should_be_cached = []
       @cached = []  
       @keygens = {}
+      @expire_after = 2.5.minutes
     end
   end
 
   module ClassMethods
     def cached(*cachable_methods, &block)
+      debugger
+      opts = (cachable_methods.pop if cachable_methods.last.kind_of? Hash) || {}
       @should_be_cached += cachable_methods
       cachable_methods.each{ |m| @keygens[m] = block }
+      @expire_after = opts[:expire_after] || @expire_after
+      debugger
     end
     
     def should_be_cached?(method)
@@ -33,12 +38,17 @@ module Ziggy2
           key = self.class.build_key(self, method, args)
           return Rails.cache.read(key) if Rails.cache.exist?(key)
           result = send(method_without_cache, *args)
-          Rails.cache.write(key, result, :expires_in => 2.5.minutes)
+          Rails.cache.write(key, result, :expires_in => expire_after(method))
           result
         end
       end
+      p "caching added to #{method}"
       logger.debug "Caching added to #{self}.#{method}"
     end    
+    
+    def expire_after(method)
+      @expire_after
+    end
     
     def build_key(instance, method, args)
       invocation_key = "#{method}#{ args.collect{ |a| a.to_s } }"
