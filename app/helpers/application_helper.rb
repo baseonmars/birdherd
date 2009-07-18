@@ -22,6 +22,10 @@ module ApplicationHelper
       else                                            time.strftime("%e %B, %Y")
     end
     
+  end  
+  
+  def de_camelize(str)
+    str.gsub(/([^$])([A-Z])/, '\1_\2').downcase
   end
     
 end

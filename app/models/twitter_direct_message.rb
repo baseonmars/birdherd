@@ -31,5 +31,9 @@ class TwitterDirectMessage < ActiveRecord::Base
     return [] if api_result.nil?
     api_result.collect { |message| self.merge message }
   end
+         
+  def replies
+    []
+  end
   
 end

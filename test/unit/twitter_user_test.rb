@@ -36,11 +36,28 @@ class TwitterUserTest < ActiveSupport::TestCase
       Twitter::Base.any_instance.expects(:direct_messages_sent).returns([])
       Twitter::Base.any_instance.expects(:direct_messages).returns([api_message])          
                             
-      history = [status, message]
-                                          
-      assert_equal history, @twitter_user.history                                                                      
+      history = [message,status]
+      user_history = @twitter_user.history
+      assert history.all? {|item| user_history.include?(item)}
     end                                                        
-                                                          
+    
+    should "should have a sorted history" do                                                                               
+      earlier_status     = Factory :twitter_status, :created_at => 5.minutes.ago
+      later_status       = Factory :twitter_status, :created_at => 1.minutes.ago
+      message            = Factory :twitter_direct_message, :created_at => 3.minutes.ago
+      
+      earlier_api_status = Factory :api_status, earlier_status.attributes
+      later_api_status   = Factory :api_status, later_status.attributes      
+      api_message        = Factory :api_message, message.attributes
+
+      Twitter::Base.any_instance.expects(:user_timeline).returns([earlier_api_status, later_api_status]) 
+      Twitter::Base.any_instance.expects(:direct_messages_sent).returns([])
+      Twitter::Base.any_instance.expects(:direct_messages).returns([api_message])          
+                
+      history = [earlier_status, message, later_status]
+      assert_equal history, @twitter_user.history                                                                      
+    end    
+
     should "have mixed sent and recieved direct messages" do
       messages = (0..1).collect { Factory :api_status }
       TwitterUser.any_instance.expects(:direct_messages).returns(messages)

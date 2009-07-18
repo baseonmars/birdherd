@@ -1,0 +1,7 @@
+<div class="dm-profile-pics profile-image"><%= twitter_user_profile_image(message.sender)%>
+	<%= twitter_user_profile_image(message.recipient, :class => 'dm-recipient') %>
+</div>
+<h3><%= twitter_user_link(message.sender) %></h3>
+<p><strong>@<%= message.recipient.screen_name %>:</strong> <%= auto_link(message.text) %></p>
+<p class="status-time">sent <%= h friendly_time(message.created_at) %></p>
+<p class="birdherd-user"><%= "posted by: #{h message.birdherd_user.login}" unless message.birdherd_user.nil?%></p>

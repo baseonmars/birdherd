@@ -21,7 +21,7 @@ class TwitterUser < ActiveRecord::Base
   end
   
   def history
-    user_timeline + direct_messages
+    (user_timeline + direct_messages).sort {|a,b| a.created_at.to_i <=> b.created_at.to_i}
   end
   
   def direct_messages

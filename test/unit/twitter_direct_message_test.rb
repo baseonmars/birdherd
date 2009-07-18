@@ -8,6 +8,10 @@ class TwitterDirectMessageTest < ActiveSupport::TestCase
 
     should_belong_to :sender
     should_belong_to :recipient
+                                 
+    should "have no replies" do
+      assert @message.replies.empty?
+    end
 
     context "that has been merged" do
       setup do
