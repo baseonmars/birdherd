@@ -5,13 +5,14 @@ module Ziggy2
     base.instance_eval do
       @should_be_cached = []
       @cached = []  
+      @keygens = {}
     end
   end
 
   module ClassMethods
     def cached(*cachable_methods, &block)
       @should_be_cached += cachable_methods
-      @keygen = block
+      cachable_methods.each{ |m| @keygens[m] = block }
     end
     
     def should_be_cached?(method)
@@ -38,13 +39,10 @@ module Ziggy2
       end
       logger.debug "Caching added to #{self}.#{method}"
     end    
-
-    def keygen
-      @keygen
-    end
     
     def build_key(instance, method, args)
       invocation_key = "#{method}#{ args.collect{ |a| a.to_s } }"
+      keygen = @keygens[method]
       differentiator = (keygen.call(instance) unless keygen.nil?) || ""
       differentiator + invocation_key
     end    
