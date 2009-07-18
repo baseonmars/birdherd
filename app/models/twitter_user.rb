@@ -16,12 +16,12 @@ class TwitterUser < ActiveRecord::Base
     TwitterDirectMessage.merge_all account_api.direct_messages(:count => 30) || []
   end
   
-  def user_timeline
+  def user_timeline         
     TwitterStatus.merge_all account_api.user_timeline(:count => 30) || []
   end
   
   def history
-    user_timeline
+    user_timeline + direct_messages
   end
   
   def direct_messages
