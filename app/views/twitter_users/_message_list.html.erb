@@ -1,10 +1,11 @@
-<div class="message-list">
-	<h2><%= h title %></h2>
-	<ul id="<%= list_id %>">
-		<% messages.each do |message| -%>
-		<li>
-			<%= render_message account, message %>
-		</li>
-		<% end -%>
-	</ul>
+<div id="<%= type %>" class="column">
+	<h3><%= type.titlecase%></h3>
+
+	 <ul class="stack">
+			<% messages.each do |message| -%>
+			<li class="tweet">
+				<%= render_message account, message %>
+			</li>
+			<% end -%>
+		</ul>
 </div>

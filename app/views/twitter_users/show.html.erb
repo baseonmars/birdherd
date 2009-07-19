@@ -1,28 +1,43 @@
-<h2><%= h @account.screen_name %></h2>
+<div id="status-update">
+	<p id="feedback-link"><a href="/feedback" title="Report bugs or make suggestions">Send feedback</a></p>
+	
+	<% form_for([@account, @status], :id => 'status-create') do |f| %>
+	<%= f.error_messages %>
+	<%= f.hidden_field :in_reply_to_status_id %> 
+	<fieldset>
+		<legend>Status update</legend>
+		<%= f.label :text, 'What are you doing', :id => 'what-are-you-doing' %>
+		<%= f.text_area :text, :size => '40x4' %>
 
-<div id="post-status">
-<%= render :partial => 'twitter_statuses/brief_form', 
-	:locals => {:status => @status, 
-	:twitter_account => @account  } %>
+		<fieldset id="status-actions">
+			<div class="shorten-links">
+				<label class="checkbox">Shorten links? <input type="checkbox" value="true" /></label>
+				<button type="button" title="Shorten links now">now</button>
+			</div>
+			<button type="submit" class="update">Update</button>
+		</fieldset>
+	</fieldset>
+	<% end -%>
+	<%= observe_field :twitter_status_text,
+		:frequency => 0.3,
+		:function => "$('count').innerHTML = value.length; 
+		if ( value.length > 140) { 
+			$('charcount').setStyle({color: 'red'});
+		} else { 
+		 $('charcount').setStyle({color: 'inherit'});
+		}" %>
+	
+	    
+	<p id="posting-style">Keep your posting style fun and informal, encourage public conversation. Post sites you think are great.</p>
+
 </div>
 
-<%= render :partial => 'message_list', 
-	:locals => { :messages => @mentions, 
-	:account => @account, 
-	:title => "Replies",	
-	:list_id => 'mentions' } %>
-<%= periodic_list_update twitter_user_mentions_url(@account) %>
-	                      
-<%= render :partial => 'message_list',
-	:locals => { :messages => @direct_messages, 
-	:account => @account, 
-	:title => "Direct Messages",	
-	:list_id => 'direct_messages' } %>
-<%= periodic_list_update direct_messages_url(@account) %>
-	
-<%= render :partial => 'message_list', 
-	:locals => { :messages => @history, 
-	:account => @account,	
-	:title => "#{@account.screen_name}'s History", 
-	:list_id => 'history' } %>
-<%= periodic_list_update history_url(@account) %>
+<div id="toggle-status-update" >
+</div>             
+
+<div id="columns">
+	                
+	<%= render :partial => 'message_list', :locals => {:type => 'mentions', :messages => @mentions, :account => @account } %>
+         
+</div>
+

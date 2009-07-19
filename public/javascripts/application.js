@@ -63,16 +63,9 @@ Birdherd.UI = (function(){
 		$('#toggle-status-update').live('click',function (){
 			$('#status-update').toggle('fast',function(){
 				if ($(this).css('display') === 'none') {
-					$('#toggle-status-update').css('margin-top', '-2px').find('span').css({
-						'background-image': 'url(images/show-post-update.gif)',
-						'position': 'relative',
-						'top': '-5px'
-					});
+					$('#toggle-status-update').removeClass('up').addClass('down')
 				} else {
-					$('#toggle-status-update').css('margin-top', '0').find('span').css({
-						'background-image': 'url(images/hide-post-update.gif)',
-						'top': '-1px'
-					});
+					$('#toggle-status-update').removeClass('down').addClass('up');
 				}
 			});
 		});

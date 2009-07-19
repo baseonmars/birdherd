@@ -213,7 +213,7 @@ a img {border:0px none;}
 	position: relative;  
 } 
 
-#status-create {
+#status-update #new_twitter_status {
 	width: 460px;
 	padding-right: 20px; 
 	position: relative;   
@@ -221,11 +221,11 @@ a img {border:0px none;}
 	vertical-align: middle;
 }
 
-#status-create legend {
+#status-update #new_twitter_status legend {
 	display: none;
 }         
 
-#status-create #what-are-you-doing {
+#status-update #new_twitter_status #what-are-you-doing {
 	font-size: 1.1667em;
 	text-align: left;
 }    
@@ -253,12 +253,12 @@ a img {border:0px none;}
 	margin-left: 0.5em;
 }
 
-#status-create .update {
+#status-update #new_twitter_status .update {
 	margin-right: 20px;
 	font-size: 1.4em;
 }                     
 
-#status-create textarea {
+#status-update #new_twitter_status textarea {
 	width: 460px; 
 	margin-right: 20px;
 } 
@@ -274,28 +274,41 @@ a img {border:0px none;}
 }      
 
 #toggle-status-update {
-	background: #888 url(../images/post-update-bg.gif) repeat-x 0 2px; 
+	background: #888 url(/images/post-update-bg.gif) repeat-x 0 2px; 
 	display: block;
-	height: 28px;   
+	height: 29px;   
 	padding-top:2px;
 	text-align: center;   
 	clear: right;
 } 
 
 .show-status {                                                       
-	background: #888 url(../images/show-update-bg.gif) repeat-x 0 2px; 
+	background: #888 url(/images/show-update-bg.gif) repeat-x 0 2px; 
 }
 
 #toggle-status-update span {
 	display: inline-block;
-	background: transparent url(../images/hide-post-update.gif) no-repeat 0 0.15em;
-	height: 28px;
+	background: transparent url(/images/hide-post-update.gif) no-repeat 0 2px;
+	height: 29px;
 	width: 43px;
 	text-indent: -999px;
 	overflow: hidden;
 	z-index: 0; 
 	position: relative;
-	top: -1px;
+	top: -2px;
+}  
+
+#toggle-status-update.down span {
+	background-image: url(/images/show-post-update.gif);
+	position: relative;
+	top: -6px;
+}
+
+#toggle-status-update.up {
+	margin-top: 0;
+}
+#toggle-status-update span.up {
+	background-image: url(/images/hide-post-update.gif);
 }
 
 /* Forms
@@ -429,7 +442,7 @@ textarea {
 .tweet .hide-tweet {
 	overflow: hidden;
 	text-indent: -999px;
-	background: transparent url(../images/icons/arrow_090_small.png) no-repeat bottom right;
+	background: transparent url(/images/icons/arrow_090_small.png) no-repeat bottom right;
 	margin-bottom: -12px;
 	position: absolute;
 	bottom: 10px;
@@ -456,11 +469,11 @@ textarea {
 }                                                                  
           
 .birdherd-info .posted-by {
-	background: transparent url(../images/icons/plus_shield.png) no-repeat; 
+	background: transparent url(/images/icons/plus_shield.png) no-repeat; 
 }         
 
 .birdherd-info .replied-by {
-	background: transparent url(../images/icons/reply.png) no-repeat;
+	background: transparent url(/images/icons/reply.png) no-repeat;
 }
     
 .birdherd-info span {
@@ -490,7 +503,7 @@ textarea {
 	-webkit-border-top-left-radius: 4px;
 	-moz-border-radius-topright: 4px;
 	-webkit-border-top-right-radius: 4px;
-	background: #DDD url(../images/action-button-up.png) repeat-x; 
+	background: #DDD url(/images/action-button-up.png) repeat-x; 
 } 
 
 .actions li a {
@@ -504,7 +517,7 @@ textarea {
 } 
 
 .actions li.down {
-	background: #DDD url(../images/action-button-down.png) repeat-x;
+	background: #DDD url(/images/action-button-down.png) repeat-x;
 	border-bottom: 2px solid #efefef;
 	margin-bottom: -2px;
 	position: relative;
@@ -598,5 +611,5 @@ textarea {
 /* Misc Styles
 ------------------------------*/
 
-#feedback-link{text-align:right;display:inline-block;background:transparent url(../images/icons/exclamation.png) no-repeat scroll left center;float:right;padding:0 0 0 20px;}
+#feedback-link{text-align:right;display:inline-block;background:transparent url(/images/icons/exclamation.png) no-repeat scroll left center;float:right;padding:0 0 0 20px;}
 
