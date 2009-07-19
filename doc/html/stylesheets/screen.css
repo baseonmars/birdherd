@@ -257,7 +257,7 @@ textarea {
 	border-width: 1px;
 	padding: 4px 4px 12px 56px;
 	position: relative;
-	min-height: 70px;
+	min-height: 50px;
 } 
         
 .tweet h4 {
@@ -321,18 +321,16 @@ textarea {
 	margin: 0.5em; 
 	background-position: middle left;
 	font-weight: bold;
+	padding-left: 18px;
+	margin-left: -18px;
 }                                                                  
           
 .birdherd-info .posted-by {
 	background: transparent url(../images/icons/plus_shield.png) no-repeat; 
-	padding-left: 18px;
-	margin-left: -18px;
 }         
 
 .birdherd-info .replied-by {
 	background: transparent url(../images/icons/reply.png) no-repeat;
-	padding-left: 18px;
-	margin-left: -18px;
 }
     
 .birdherd-info span {
@@ -408,6 +406,7 @@ textarea {
            
 .tweet.collapsed {
 	padding-bottom: 2px;
+	padding-right: 20px;
 }
 
 .tweet.collapsed .actions {
@@ -416,10 +415,18 @@ textarea {
 
 .tweet.collapsed .birdherd-info {
 	position: absolute;
-	left: 24px;
-	top: 52px;
+	right: 4px;
+	top: 4px;                       
+	width: 18px;
 	display: inline-block;
+}                          
+
+.tweet.collapsed .birdherd-info li {
+	margin: 0;
+	padding: 0;                   
+	background-position: top right;
 }
+
 
 .tweet.collapsed .birdherd-info li {
 	text-indent: -999px;
