@@ -14,7 +14,7 @@ Birdherd.UI = (function(){
 	init = function() {
 		showHideControls();
 
-		setupToggleExtendedTweet();
+		setupHideStickyTweet();
 		setupTweetHover();
 
 		setResponseAction('direct_message', function(el) {
@@ -91,11 +91,11 @@ Birdherd.UI = (function(){
 		});                                                                   
 	};
 
-	setupToggleExtendedTweet = function() {
+	setupHideStickyTweet = function() {
 		$('.tweet').each(function(){
-			$(this).append('<p class="toggle">toggle</p>');
+			$(this).append('<p class="hide-tweet">Hide</p>');
 		});
-		$('.tweet .toggle').live('click', function() { 
+		$('.tweet .hide-tweet').live('click', function() { 
 			$(this).parents('.tweet').addClass('collapsed').removeClass('sticky');
 		});	
 	}  
@@ -118,7 +118,7 @@ Birdherd.UI = (function(){
 				$(that).removeClass('active').addClass('collapsed');
 				$('.actions', that).removeClass('inactive');
 				$('.actions li', that).removeClass('down');	
-				}, 300
+				}, 50
 			);
 		}); 
 	}

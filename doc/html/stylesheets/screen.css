@@ -246,7 +246,7 @@ textarea {
 
 .stack {       
 	background-color: #737373;
-	padding: 2px 4px;
+	padding: 1px 4px 4px 4px;  
 	text-align: left;  
 }              
 
@@ -258,8 +258,9 @@ textarea {
 	padding: 4px 4px 0px 56px;
 	position: relative;
 	min-height: 50px;
-	margin: 2px 0; 
-	-webkit-box-shadow: 0px 0px 8px #333
+	margin-top: 4px; 
+	-webkit-box-shadow: 0px 0px 12px #111;
+	-moz-box-shadow: 0px 0px 12px #111;
 } 
         
 .tweet h4 {
@@ -295,13 +296,10 @@ textarea {
 	margin: -2px 0 0 -2px;
 }                    
                                                                                          
-.tweet .toggle {
+.tweet .hide-tweet {
 	overflow: hidden;
 	text-indent: -999px;
 	background: transparent url(../images/icons/arrow_090_small.png) no-repeat bottom right;
-/*	margin-top: -12px;
-	margin-botton: -8px;
-	margin-right: -6px; */
 	margin-bottom: -12px;
 	position: absolute;
 	bottom: 10px;
@@ -401,12 +399,26 @@ textarea {
 .actions .update {
 	float: right;
 }
+   
+/* Active Tweet
+------------------------------*/
+
+.tweet.active .hide-tweet {
+	display: none;
+}
+.tweet.active {
+	background-color: #fff;
+}               
 
 /* Sticky Tweet
 ------------------------------*/
 
 .tweet.sticky {
 	padding-bottom: 4px;
+}    
+
+.tweet.sticky .hide-tweet {
+	display: block;
 }
 
 /* Collapsed Tweet
@@ -415,7 +427,8 @@ textarea {
 .tweet.collapsed {
 	padding-bottom: 2px;
 	padding-right: 20px;
-	-webkit-box-shadow: 0px 0px 0px #000
+	-webkit-box-shadow: 0px 0px 0px #000;
+	-moz-box-shadow: 0px 0px 0px #000;
 }
 
 .tweet.collapsed .actions {
@@ -448,7 +461,7 @@ textarea {
 	display: inline-block;
 }
    
-.tweet.collapsed .toggle {
+.tweet.collapsed .hide-tweet {
 	display: none;
 }
 
