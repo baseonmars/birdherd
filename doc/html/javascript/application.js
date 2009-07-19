@@ -83,7 +83,7 @@ Birdherd.UI = (function(){
 			var parents = $(this).parents('.tweet');
 			parents.find('.status_text').text(formatter(this, parents.find('.text').focus().text())); 
 			parents.find('.actions li').removeClass('down');
-			// parents.find('.send_response').show();
+			parents.addClass('sticky');
 			$('.actions',parents).removeClass('inactive');
 			setCaretToEnd(parents.find('.status_text').get(0));
 			$(this).addClass('down');
@@ -96,7 +96,7 @@ Birdherd.UI = (function(){
 			$(this).append('<p class="toggle">toggle</p>');
 		});
 		$('.tweet .toggle').live('click', function() { 
-			$(this).parents('.tweet').toggleClass('collapsed');
+			$(this).parents('.tweet').addClass('collapsed').removeClass('sticky');
 		});	
 	}  
 	
@@ -104,17 +104,20 @@ Birdherd.UI = (function(){
 		$('.tweet').live('mouseover', function() {
 			if ($(this).hasClass('active')) {
 				clearTimeout(this.hideTimer);
-				return
+				return;
 			}                                       
-			$(this).addClass('active');
-			$(this).removeClass('collapsed');
+			$(this).addClass('active').removeClass('collapsed');
 			$('.actions', this).addClass('inactive');
 		});
 		$('.tweet').live('mouseout', function() {
 			var that = this;
-			that.hideTimer =  setTimeout(function(){			 
+			that.hideTimer =  setTimeout(function(){
+				if ($(that).hasClass('sticky')) {
+					return;
+				} 		 
 				$(that).removeClass('active').addClass('collapsed');
-				$('.actions', that).removeClass('inactive');	
+				$('.actions', that).removeClass('inactive');
+				$('.actions li', that).removeClass('down');	
 				}, 300
 			);
 		}); 
