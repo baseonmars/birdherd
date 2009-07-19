@@ -147,8 +147,62 @@ a img {border:0px none;}
 }
 #nav .first:before {
 	content: "";
+}    
+                       
+#nav .account-list {
+	display: inline-block; 
+	vertical-align: middle;
+	line-height: 1;
+	padding-right: 16px;
+	background: transparent url(/images/icons/control_270_small.png) no-repeat right top;
+}     
+
+#nav .account-list a {
+	background: transparent;
+	text-decoration: none;
+	display: block;        
+	margin: -2px -18px -2px -2px;
+	padding: 2px 18px 2px 2px;                                                        
+	-webkit-border-radius: 2px;
+	-moz-border-radius: 2px;
 }
 
+#nav .account-list li {
+	display: block;
+	padding: 1px 2px;
+	visibility: hidden;
+	height: 0;  
+}                       
+
+#nav .account-list:hover {
+	background-color: #333;
+	background-image: none; 
+}
+
+#nav .account-list:hover li {
+	display: block !important;
+	visibility: visible;
+	height: auto; 
+	line-height: 1.5 !important;
+}             
+
+#nav .account-list li a:hover {
+	background-color: #111;
+	display: block; 
+	-moz-border-radius: 2px;
+	-webkit-border-radius: 2px;
+}
+
+#nav .account-list li:before {
+	content:'';
+}
+
+#nav .account-list li.current {
+	display: inline-block;
+	visibility: visible;
+	height: auto;        
+	text-decoration: underline;
+}
 
 /* Status update area
 ------------------------------*/

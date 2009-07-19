@@ -26,6 +26,23 @@ module ApplicationHelper
   
   def de_camelize(str)
     str.gsub(/([^$])([A-Z])/, '\1_\2').downcase
+  end    
+  
+  def account_menu(active_account, user)    
+    acc_list = user.twitter_users.sort_by {|tu| tu.screen_name}
+
+    if active = acc_list.delete(active_account)
+      acc_list.unshift active
+    else
+      active = acc_list.first 
+    end
+
+    acc_list_html = acc_list.inject("") do |list,account| 
+      list << content_tag(:li, link_to(account.screen_name, twitter_user_path(account)), 
+      :class => account.screen_name.eql?(active.screen_name) ? 'current' : '')
+    end
+
+    content_tag(:ul,acc_list_html, :class => 'account-list')
   end
     
 end

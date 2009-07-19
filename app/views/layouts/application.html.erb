@@ -5,27 +5,49 @@
 <head>
   <meta http-equiv="content-type" content="text/html;charset=UTF-8" />
   <title><%= controller.controller_name %>: <%= controller.action_name %> - Birdherd</title>
-  <%= stylesheet_link_tag 'reset-min', 'screen', :cache => true %>               
+  <%= stylesheet_link_tag 'reset-min', 'screen' %>               
 	<!--[if lt IE 8]><link rel="stylesheet" href="stylesheets/ie.css" type="text/css" charset="utf-8"><![endif]-->
 	<%= javascript_include_tag "http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js" %>
-  <%= javascript_include_tag :all, :cache => true %>
+  <%= javascript_include_tag :all %>
 </head>
 <body>
 
-<h1>Birdherd</h1>
-<ul id="primary-nav">
-<% if !current_user %>
-<% if controller.controller_name == 'users' && controller.action_name == 'new' -%>
-	<li><%= link_to "Sign in", new_user_session_path %></li>
-<% end -%>
-</ul>
-<% else %>
-	<li class="first">Logged in as <strong><%= link_to current_user.login, edit_user_path %></strong></li>
-	<li><%= link_to "Twitter Accounts", user_twitter_users_path %></li>
-  <li><%= link_to "Sign out", user_session_path, :method => :delete, :confirm => "Are you sure you want to logout?" %></li>
-</ul>
-<% end %>
+	<div id="header">
+		<div id="titles">
+			<h1>The Birdherd</h1>
 
+			<%if @account-%>
+				<h2 id="account-name">@<%= h @account.screen_name %></h2>
+			 <%end-%>
+		</div>
+
+		<div id="info-and-nav">
+			<%if @account-%>
+			<dl id="friends-followers">
+				<dt>Followers</dt>
+				<dd><%= h @account.followers_count %></dd>
+				<dt>Following</dt>
+				<dd><%= h @account.friends_count %></dd>
+			</dl>          
+			<%end-%>
+
+			<ul id="nav">
+				<%if current_user-%>
+					<li class="first">Logged in as <%= current_user.login%></li>
+					<li><a href="/account/settings">Settings</a></li>
+					<%= content_tag :li, account_menu(@account, current_user) %>
+					<li>
+						<%= link_to "Sign out", 
+						user_session_path, 
+						:method => :delete, 
+						:confirm => "Are you sure you want to logout?" %>
+					</li>
+				<%else-%>
+					<li class="first"><%= link_to "Log in", new_user_session_path %></li>
+				<%end-%>
+		</ul>               
+	</div>
+</div>
 
 
 <p style="color: green"><%= flash[:notice] %></p>

@@ -25,7 +25,7 @@ module TwitterUsersHelper
     message_type = de_camelize message.class.name     
     render :partial => "#{message_type.pluralize}/#{message_type}", 
            :locals  => {:account => account, :message => message}
-  end 
+  end
   
   private
     def profile_text(twitter_user)
