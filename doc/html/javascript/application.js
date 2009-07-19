@@ -59,7 +59,7 @@ Birdherd.UI = (function(){
 	showHideControls = function () {
 		$('#toggle-status-update').replaceWith('<div id="toggle-status-update" ><span>Toggle status updates</span></div>')
 
-		$('#toggle-status-update').click(function (){
+		$('#toggle-status-update').live('click',function (){
 			$('#status-update').toggle('fast',function(){
 				if ($(this).css('display') === 'none') {
 					$('#toggle-status-update').css('margin-top', '-2px').find('span').css({
@@ -78,7 +78,7 @@ Birdherd.UI = (function(){
 	};
 
 	setResponseAction = function (type, formatter) {
-		$('.'+type).click( function (){
+		$('.'+type).live('click', function (){
 			var parents = $(this).parents('.tweet');
 			parents.find('.status_text').text(formatter(this, parents.find('.text').focus().text())); 
 			parents.find('.actions li').removeClass('down');
@@ -91,10 +91,11 @@ Birdherd.UI = (function(){
 
 	setupToggleExtendedTweet = function() {
 		$('.tweet').each(function(){
-			$(this).append('<p class="toggle">toggle</p>')
-			$(this).find('.toggle').click( function(ev) { 
-				$(this).parents('.tweet').toggleClass('collapsed');} );
+			$(this).append('<p class="toggle">toggle</p>');
 		});
+		$('.tweet .toggle').live('click', function() { 
+			$(this).parents('.tweet').toggleClass('collapsed');
+		});	
 	}
     
 	// Public

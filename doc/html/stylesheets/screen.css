@@ -246,7 +246,7 @@ textarea {
 
 .stack {       
 	background-color: #737373;
-	padding: 4px;   
+	padding: 2px 4px;
 	text-align: left;  
 }              
 
@@ -258,6 +258,7 @@ textarea {
 	padding: 4px 4px 12px 56px;
 	position: relative;
 	min-height: 50px;
+	margin: 2px 0;
 } 
         
 .tweet h4 {
