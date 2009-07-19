@@ -2,13 +2,13 @@
 <h2>Sign in</h2>
 <% form_for @user_session, :url => user_session_path do |f| %>
   <%= f.error_messages %>
-  <%= f.label :login %><br />
+  <%= f.label :login %>
   <%= f.text_field :login %><br />
   <br />
-  <%= f.label :password %><br />
+  <%= f.label :password %>
   <%= f.password_field :password %><br />
   <br />
-  <%= f.check_box :remember_me %><%= f.label :remember_me %><br />
+  <%= f.label :remember_me, "Remember me? #{f.check_box(:remember_me)}", :class => 'checkbox' %><br />
   <br />
   <%= f.submit "Sign in" %>
 <% end %>
@@ -19,8 +19,8 @@
 <% form_for @user, :url => user_path do |f| %>
   <%= f.error_messages %>
   <%= render :partial => "/users/form", :object => f %>
+	<br />
   <%= f.submit "Sign up" %>
 <% end %>
 
 </div>
-<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>

@@ -1,12 +1,18 @@
-body {
-	font-family: sans-serif;
-	font-size: 62.5%;
-	background-color: #fff;
-	color: #333;
+html, body {
+	background-color: #888;
 }
+body {        
+	font: 62.5%/1.5 "Lucida Sans", Arial, Helvetica, sans-serif;
+	color: #222222;  
+}       
+          
+a:link, a:visited {
+	color: #000;
+}                                  
 
-body, p, ol, ul, td {
-  line-height: 1.5;
+a:hover, a:active {
+	color: #fff;
+	background-color: #000;
 }
 
 pre {
@@ -57,45 +63,6 @@ a img {border:0px none;}
   list-style: square;
 }
 
-.profile-image {
-	float: left;
-	margin: 0.5em 8px 8px 0;
-	width: 50px;
-	height: 50px;
-	overflow: hidden;
-}
-
-.reply-link {
-	text-align: left;
-	padding: 0;
-	margin: -1em 0 1em 0;
-}
-
-/* Navigation
-------------------------*/
-
-#primary-nav {
-	margin: 0;
-	padding: 10px;
-	position: absolute;
-	top: 0;
-	right: 0;
-}
-
-#primary-nav li {
-	display: inline-block;
-	padding: 0;
-	margin: 0;
-}
-
-#primary-nav li:before {
-	content: ' | ';
-}
-
-#primary-nav .first:before {
-	content: '';
-}
-
 /* Sign in/up process
 ------------------------*/
 
@@ -124,95 +91,458 @@ a img {border:0px none;}
 #signin-form * {
 	text-align: left;
 }
+    
+/* Header
+------------------------------*/
 
-/* status/message lists
-------------------------*/
-
-.message-list {
+#header {
+	background-color: #000;
+	color: #eee;
+	position: relative;
+	line-height: 30px;
+	padding: 0 8px;
+	position: relative;
+	z-index: 1;
+}
+#header a:link,#header a:visited {
+	color: #eee;
+}
+#header a:hover,#header a:active {
+	color: #fff;
+}
+#header #titles,#header h1,#account-name,#friends-followers,#header dl,#header dd,#header dt,#nav,#nav li {
 	display: inline-block;
-	width: 30%;
-	margin: 0 1%;
 	vertical-align: top;
-	overflow: hidden;
 }
-
-.message-list h3 {
-	font-size: 1.2em;
-	margin: 0;
-	padding: 0;
-}
-
-.message-list h3 a {
-	color: #333;
-}
-
-.message-list a {
-	text-decoration: none;
-}
-
-.message-list p {
-	overflow: hidden;
-	font-size: 1em;
-	margin: 0;
-	padding: 0;
-}
-
-.message-list ul {
-	margin: 0;
-	padding: 0;
-}
-
-.message-list li {
-	list-style: none;
-	padding: 8px 0;
-	margin: 0;
-	display: block;
-	overflow: hidden;
-	border-bottom: 1px solid #ccc;
-	min-height: 6em;
+#titles {
+	width: 480px;
 	position: relative;
 }
-
-.message-list .dm-profile-pics {
-	width: 50px;
-	height: 50px;
-	position: relative;
+#account-name {
+	font-size: 1.8em;
+	position: absolute;
+	right: 20px;
+	top: 0;
+}
+#info-and-nav {
+	display: inline-block;
+	position: absolute;
+	right: 0;
+	top: 0;
+	left: 488px;
+	min-width: 48em;
+}
+#friends-followers {
+	font-size: 1.8em;
+	width: 480px;
 	float: left;
 }
-.dm-profile-pics a {
-	vertical-align: top;
-	width: 50px;
-	height: 50px;
-	margin: 0;
-	padding: 0;
-	botrder: 0px none;
-}
-
-.message-list .dm-recipient {
+#nav {
 	position: absolute;
-	left: 30px;
-	top: 30px;
-	height: 18px;
-	width: 18px;
-	border: 1px solid #fff;
-}
-
-.dm-recipient img {
-	width: 20px;
-	height: 20px;
-}
-
-.message-list .reply-link {
-	position: absolute;
+	right: 8px;
 	top: 0;
-	right: 0;
+}
+#nav li:before {
+	content: "| ";
+}
+#nav .first:before {
+	content: "";
 }
 
 
-/* Statuses
-------------------------*/
+/* Status update area
+------------------------------*/
 
-.status-time {
-	margin-left: 60px;
+#status-update {      
+	font-size: 1.2em;
+	padding: 8px 8px 0 8px; 
+	position: relative;  
+} 
+
+#status-create {
+	width: 460px;
+	padding-right: 20px; 
+	position: relative;   
+	text-align: right;
+	vertical-align: middle;
+}
+
+#status-create legend {
+	display: none;
+}         
+
+#status-create #what-are-you-doing {
+	font-size: 1.1667em;
+	text-align: left;
+}    
+
+#status-actions {
+	display: block;
+	margin-top: 0.8em; 
+}                        
+
+.shorten-links { 
+	display: inline-block;
+	text-align: left;
+	width: 50%;              
+	float: left;
+	position: relative;
+	top: 3px;
+}
+
+#status-actions > * {
+	vertical-align: middle;
+}
+
+#status-actions button {
+	font-size: 1em;    
+	margin-left: 0.5em;
+}
+
+#status-create .update {
+	margin-right: 20px;
+	font-size: 1.4em;
+}                     
+
+#status-create textarea {
+	width: 460px; 
+	margin-right: 20px;
+} 
+
+#posting-style {
+	position: absolute;
+	left: 488px;
+	top: 2em;
+	font-size: 1.2em; 
+	font-style: italic; 
+	width: 360px;
+	color: #333;
+}      
+
+#toggle-status-update {
+	background: #888 url(../images/post-update-bg.gif) repeat-x 0 2px; 
+	display: block;
+	height: 28px;   
+	padding-top:2px;
+	text-align: center;   
+	clear: right;
+} 
+
+.show-status {                                                       
+	background: #888 url(../images/show-update-bg.gif) repeat-x 0 2px; 
+}
+
+#toggle-status-update span {
+	display: inline-block;
+	background: transparent url(../images/hide-post-update.gif) no-repeat 0 0.15em;
+	height: 28px;
+	width: 43px;
+	text-indent: -999px;
+	overflow: hidden;
+	z-index: 0; 
+	position: relative;
+	top: -1px;
+}
+
+/* Forms
+------------------------------*/
+
+form {
+	display: block;
+}
+
+label {
+	display: block;
+}                
+
+label.checkbox {
+	display: inline-block;
+	text-indent: 2px;   
+	vertical-align: baseline;
+	position: relative;  
+	padding-left: 15px;
+	line-height: inherit;
+}                    
+
+input[type=checkbox] {
+	width: 1.5em;
+	height: 1.5em;
+	position: absolute; 
+  left: 0;
+	bottom: 0;
+	margin-bottom: 2px;
+	line-height: inherit;
+}  
+
+button {
+	padding: 2px;       
+	-webkit-border-radius: 2px;
+	-moz-border-radius: 2px;
+	border-width: 1px;      
+	margin: 0;
+} 
+
+textarea {
+	border: 1px solid #666;
+	overflow: auto;
+}
+     
+/* Tweet Stacks
+------------------------------*/  
+     
+#columns {
+	padding: 8px 6px 0 6px; 
+	min-width: 1242px;
+}
+
+.column {
+	display: inline-block;
+	width: 300px;                   
+	text-align: right;
+	margin: 0 4px;     
+	vertical-align: top;
+}    
+
+.column h3 { 
+	font-size: 1.4em;
+	line-height: 1;
+	margin: 0;
+	font-weight: bold;
+	width: 232px;
+	background-color: #737373;      
+	display: inline-block;  
+	padding: 4px 8px;
+	text-align: left;
+	-moz-border-radius-topleft: 4px;
+	-webkit-border-top-left-radius: 4px;
+	-moz-border-radius-topright: 4px;
+	-webkit-border-top-right-radius: 4px; 
+	border-width: 1px;
+}
+
+.stack {       
+	background-color: #737373;
+	padding: 1px 4px 4px 4px;  
+	text-align: left;  
+}              
+
+.tweet {
+	background: #eee;
+	-webkit-border-radius: 2px;
+	-moz-border-radius: 2px;
+	border-width: 1px;
+	padding: 4px 4px 0px 56px;
+	position: relative;
+	min-height: 50px;
+	margin-top: 4px; 
+	-webkit-box-shadow: 0px 0px 12px #111;
+	-moz-box-shadow: 0px 0px 12px #111;
+} 
+        
+.tweet h4 {
+	font-size: 1.4em;
+	line-height: 0.8333;  
+	margin-bottom: 0.333em;
+}
+
+.tweet h4 a {
+	text-decoration: none;
+}                       
+
+.tweet .profile-image {
+	position: absolute;
+	left: 4px;
+	top: 4px;    
+	text-decoration: none;
+	background-color: transparent; 
+	height: 48px;
+	width: 48px;
+}     
+
+.tweet .profile-image:hover {
+	border: 2px solid #222;
+	height: 44px;
+	width: 44px;
+	overflow: hidden;
+	top: 4px;
+	left: 4px;
+}           
+
+.tweet .profile-image:hover img {
+	margin: -2px 0 0 -2px;
+}                    
+                                                                                         
+.tweet .hide-tweet {
+	overflow: hidden;
+	text-indent: -999px;
+	background: transparent url(../images/icons/arrow_090_small.png) no-repeat bottom right;
+	margin-bottom: -12px;
+	position: absolute;
+	bottom: 10px;
+	left: 0px;
+	height: 16px;
+	width: 16px;
+}
+  
+.tweet .text {
+}
+
+.tweet .time {
 	font-style: italic;
+	color: #666;
 }
+
+.birdherd-info li {
+	min-height: 18px;
+	margin: 0.5em; 
+	background-position: center left;
+	font-weight: bold;
+	padding-left: 18px;
+	margin-left: -18px;
+}                                                                  
+          
+.birdherd-info .posted-by {
+	background: transparent url(../images/icons/plus_shield.png) no-repeat; 
+}         
+
+.birdherd-info .replied-by {
+	background: transparent url(../images/icons/reply.png) no-repeat;
+}
+    
+.birdherd-info span {
+	font-weight: normal;
+}
+.birdherd-info span:before {
+	content: ': ';
+}    
+
+.actions textarea {
+	width: 230px;
+	border: 1px solid #999; 
+	background-color: #efefef;
+}
+
+.actions ul {
+	display: inline-block;
+}
+
+.actions ul li {
+	display: inline-block;
+	vertical-align: top;
+	padding: 2px 4px;                     
+	border: 1px solid #999;
+	border-bottom: none;
+	-moz-border-radius-topleft: 4px;
+	-webkit-border-top-left-radius: 4px;
+	-moz-border-radius-topright: 4px;
+	-webkit-border-top-right-radius: 4px;
+	background: #DDD url(../images/action-button-up.png) repeat-x; 
+} 
+
+.actions li a {
+	text-decoration: none; 
+	color: #555;
+	background-color: transparent;
+} 
+
+.actions li a:hover,.actions li a:active {
+	color: #999;
+} 
+
+.actions li.down {
+	background: #DDD url(../images/action-button-down.png) repeat-x;
+	border-bottom: 2px solid #efefef;
+	margin-bottom: -2px;
+	position: relative;
+	z-index: 1;
+}
+
+.actions label {
+	display: none;
+}
+           
+.send_response {
+	position: relative;
+}
+
+.remaining {
+	position: absolute;
+	top: -1.6em;
+	right: 0;
+	text-align: right;
+}   
+
+.actions .update {
+	float: right;
+}
+   
+/* Active Tweet
+------------------------------*/
+
+.tweet.active .hide-tweet {
+	display: none;
+}
+.tweet.active {
+	background-color: #fff;
+}               
+
+/* Sticky Tweet
+------------------------------*/
+
+.tweet.sticky {
+	padding-bottom: 4px;
+}    
+
+.tweet.sticky .hide-tweet {
+	display: block;
+}
+
+/* Collapsed Tweet
+------------------------------*/
+           
+.tweet.collapsed {
+	padding-bottom: 2px;
+	padding-right: 20px;
+	-webkit-box-shadow: 0px 0px 0px #000;
+	-moz-box-shadow: 0px 0px 0px #000;
+}
+
+.tweet.collapsed .actions {
+	 display: none;
+} 
+
+.tweet .actions.inactive .send_response {
+	display: none;
+}
+
+.tweet.collapsed .birdherd-info {
+	position: absolute;
+	right: 4px;
+	top: 4px;                       
+	width: 18px;
+	display: inline-block;
+}                          
+
+.tweet.collapsed .birdherd-info li {
+	margin: 0;
+	padding: 0;                   
+	background-position: top right;
+}
+
+
+.tweet.collapsed .birdherd-info li {
+	text-indent: -999px;
+	overflow: hidden;
+	width: 18px;
+	display: inline-block;
+}
+   
+.tweet.collapsed .hide-tweet {
+	display: none;
+}
+
+/* Misc Styles
+------------------------------*/
+
+#feedback-link{text-align:right;display:inline-block;background:transparent url(../images/icons/exclamation.png) no-repeat scroll left center;float:right;padding:0 0 0 20px;}
+
