@@ -402,6 +402,13 @@ textarea {
 	float: right;
 }
 
+/* Sticky Tweet
+------------------------------*/
+
+.tweet.sticky {
+	padding-bottom: 4px;
+}
+
 /* Collapsed Tweet
 ------------------------------*/
            
