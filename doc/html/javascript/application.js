@@ -15,6 +15,7 @@ Birdherd.UI = (function(){
 		showHideControls();
 
 		setupToggleExtendedTweet();
+		setupTweetHover();
 
 		setResponseAction('direct_message', function(el) {
 			return 'd '+getScreenName(el).replace(/@/,'')+' ';
@@ -29,7 +30,7 @@ Birdherd.UI = (function(){
 
 	//Private
 	var getScreenName, setupResponse, setCaretToEnd, showHideControls, setupResponse,
-	setupToggleExtendedTweet;
+	setupToggleExtendedTweet,setupHoverBehaviour;
 
 	getScreenName = function(el) {
 		return $(el).parents('.tweet').find('.sender').attr('title')
@@ -82,7 +83,8 @@ Birdherd.UI = (function(){
 			var parents = $(this).parents('.tweet');
 			parents.find('.status_text').text(formatter(this, parents.find('.text').focus().text())); 
 			parents.find('.actions li').removeClass('down');
-			parents.find('.send_response').show();
+			// parents.find('.send_response').show();
+			$('.actions',parents).removeClass('inactive');
 			setCaretToEnd(parents.find('.status_text').get(0));
 			$(this).addClass('down');
 			return false;                            
@@ -96,6 +98,26 @@ Birdherd.UI = (function(){
 		$('.tweet .toggle').live('click', function() { 
 			$(this).parents('.tweet').toggleClass('collapsed');
 		});	
+	}  
+	
+	setupTweetHover = function() {
+		$('.tweet').live('mouseover', function() {
+			if ($(this).hasClass('active')) {
+				clearTimeout(this.hideTimer);
+				return
+			}                                       
+			$(this).addClass('active');
+			$(this).removeClass('collapsed');
+			$('.actions', this).addClass('inactive');
+		});
+		$('.tweet').live('mouseout', function() {
+			var that = this;
+			that.hideTimer =  setTimeout(function(){			 
+				$(that).removeClass('active').addClass('collapsed');
+				$('.actions', that).removeClass('inactive');	
+				}, 300
+			);
+		}); 
 	}
     
 	// Public

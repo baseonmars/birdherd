@@ -258,7 +258,8 @@ textarea {
 	padding: 4px 4px 12px 56px;
 	position: relative;
 	min-height: 50px;
-	margin: 2px 0;
+	margin: 2px 0; 
+	-webkit-box-shadow: 0px 0px 8px #333
 } 
         
 .tweet h4 {
@@ -320,7 +321,7 @@ textarea {
 .birdherd-info li {
 	min-height: 18px;
 	margin: 0.5em; 
-	background-position: middle left;
+	background-position: center left;
 	font-weight: bold;
 	padding-left: 18px;
 	margin-left: -18px;
@@ -378,8 +379,7 @@ textarea {
 	background: #DDD url(../images/action-button-down.png) repeat-x;
 	border-bottom: 2px solid #efefef;
 	margin-bottom: -2px;
-	position: relative;  
-	down: 1px;
+	position: relative;
 	z-index: 1;
 }
 
@@ -408,11 +408,16 @@ textarea {
 .tweet.collapsed {
 	padding-bottom: 2px;
 	padding-right: 20px;
+	-webkit-box-shadow: 0px 0px 0px #000
 }
 
 .tweet.collapsed .actions {
 	 display: none;
 } 
+
+.tweet .actions.inactive .send_response {
+	display: none;
+}
 
 .tweet.collapsed .birdherd-info {
 	position: absolute;
