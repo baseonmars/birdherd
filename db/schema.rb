@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20090718181810) do
+ActiveRecord::Schema.define(:version => 20090719224853) do
 
   create_table "twitter_direct_messages", :force => true do |t|
     t.integer  "sender_id"
@@ -52,6 +52,7 @@ ActiveRecord::Schema.define(:version => 20090718181810) do
     t.boolean  "protected",                             :default => false
     t.integer  "followers_count"
     t.integer  "friends_count"
+    t.string   "name"
   end
 
   create_table "twitter_users_users", :id => false, :force => true do |t|
