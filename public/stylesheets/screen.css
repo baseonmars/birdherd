@@ -25,7 +25,21 @@ a { color: #000; }
 a:visited { color: #666; }
 a:hover { color: #fff; background-color:#000; }
 
-a img {border:0px none;}
+a img {border:0px none;}  
+
+.notice {
+	color: green;
+	padding: 4px;
+	font-weight: bold;
+	border: 1px solid green;
+	margin: 8px;
+	display: inline-block;
+	background-color: #d3ecd3
+}
+
+.warning {
+	
+}
 
 .fieldWithErrors {
   padding: 2px;

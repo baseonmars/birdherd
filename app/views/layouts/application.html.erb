@@ -50,8 +50,8 @@
 </div>
 
 
-<p style="color: green"><%= flash[:notice] %></p>
-<p style="color: red"><%= flash[:warning] %> <%= h @errors.join(', ') %></p>
+<%= content_tag(:p, flash[:notice], :class => 'notice') if flash[:notice] %>   
+<%= content_tag(:p, flash[:warning], :class => 'warning') if flash[:warning] %>   
 
 <%= yield  %>
 
