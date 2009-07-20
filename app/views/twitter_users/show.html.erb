@@ -37,7 +37,10 @@
 
 <div id="columns">
 	                
-	<%= render :partial => 'message_list', :locals => {:type => 'mentions', :messages => @mentions, :account => @account } %>
+	<%= render :partial => 'message_list', :locals => {:type => 'mentions', :messages => @mentions, :account => @account } %>      
+	<%= render :partial => 'message_list', :locals => {:type => 'direct_messages', :messages => @direct_messages, :account => @account } %>      	
+	<%= render :partial => 'message_list', :locals => {:type => 'timeline', :messages => @timeline, :account => @account } %>      	
+	<%= render :partial => 'message_list', :locals => {:type => 'history', :messages => @history, :account => @account } %>      
          
 </div>
 
