@@ -94,6 +94,35 @@ class TwitterUserTest < ActiveSupport::TestCase
     should "has many mentions" do
       assert @twitter_user.respond_to?(:mentions)
     end
+
+    should "have methods that return tweets limitable" do
+      assert_nothing_raised do
+        # methods calling api
+        [ [:direct_messages_sent,:direct_messages_sent],
+        [:direct_messages_recieved,:direct_messages],
+        [:friends_timeline,:friends_timeline],
+        [:user_timeline,:user_timeline],
+        [:mentions, :replies]].each do |method,api|
+          [api].flatten.each do |api_method|
+            Twitter::Base.any_instance.expects(api_method).with(:count => 360).returns(nil) 
+          end
+          @twitter_user.send(method, :limit => 360) 
+        end                    
+      end                    
+    end
+    
+    should "have limit history by given limit" do
+      Twitter::Base.any_instance.expects(:user_timeline).returns([Factory(:api_status)])
+      Twitter::Base.any_instance.expects(:direct_messages_sent).returns([Factory(:api_message)])
+      assert_equal 1, @twitter_user.history(:limit => 1).length
+    end
+    
+    should "have limit combined direct_messages by given limit" do
+      Twitter::Base.any_instance.expects(:direct_messages).returns([Factory(:api_message)])
+      Twitter::Base.any_instance.expects(:direct_messages_sent).returns([Factory(:api_message)])
+      assert_equal 1, @twitter_user.direct_messages(:limit => 1).length
+    end     
+    
   end
   
   # Replace this with your real tests.
