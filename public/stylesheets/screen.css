@@ -422,6 +422,14 @@ textarea {
 	overflow: hidden;    
 } 
         
+.tweet.bh_replied {
+ 	background-color: #d7e7f5 !important;
+}   
+
+.tweet.bh_posted {
+	background-color: #d3ecd3 !important;
+}                        
+
 .tweet h4 {
 	font-size: 1.4em;
 	line-height: 0.8333;  

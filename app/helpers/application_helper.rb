@@ -5,8 +5,12 @@ module ApplicationHelper
     users = status.replies.inject([]) { |acc,r| acc << r.birdherd_user }.compact
     reply_string = users.inject([]){ |acc,u| acc << "#{u.login} (#{u.email})" }.join(', ')
     users.blank? ? "" : reply_string
-  end
+  end   
   
+  def message_status_classes(message)
+    (reply_users_string(message).blank? ? "" : " bh_replied")
+  end
+      
   def friendly_time(time)
     
     seconds_ago = Time.now - time
