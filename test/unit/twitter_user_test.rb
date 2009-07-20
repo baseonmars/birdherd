@@ -26,17 +26,17 @@ class TwitterUserTest < ActiveSupport::TestCase
       assert_equal [message], @twitter_user.direct_messages_received
     end
     
-    should "have a history of sent statuses and direct messages" do                                                                               
-      status      = Factory :twitter_status, :sender => @account
-      message     = Factory :twitter_direct_message, :sender => @account
-      api_status  = Factory :api_status, status.attributes
-      api_message = Factory :api_message, message.attributes        
+    should "have a history of sent statuses and sent direct messages" do                                                                               
+      status               = Factory :twitter_status, :sender => @account
+      message_sent         = Factory :twitter_direct_message, :sender => @account
+      api_status           = Factory :api_status, status.attributes
+      api_message_sent     = Factory :api_message, message_sent.attributes         
                                                                                                     
       Twitter::Base.any_instance.expects(:user_timeline).returns([api_status]) 
-      Twitter::Base.any_instance.expects(:direct_messages_sent).returns([])
-      Twitter::Base.any_instance.expects(:direct_messages).returns([api_message])          
+      Twitter::Base.any_instance.expects(:direct_messages_sent).returns([api_message_sent])
+      Twitter::Base.any_instance.expects(:direct_messages).never   
                             
-      history = [message,status]
+      history = [message_sent,status]
       user_history = @twitter_user.history
       assert history.all? {|item| user_history.include?(item)}
     end                                                        
@@ -51,8 +51,7 @@ class TwitterUserTest < ActiveSupport::TestCase
       api_message        = Factory :api_message, message.attributes
 
       Twitter::Base.any_instance.expects(:user_timeline).returns([earlier_api_status, later_api_status]) 
-      Twitter::Base.any_instance.expects(:direct_messages_sent).returns([])
-      Twitter::Base.any_instance.expects(:direct_messages).returns([api_message])          
+      Twitter::Base.any_instance.expects(:direct_messages_sent).returns([api_message])
                 
       history = [later_status, message, earlier_status]
       assert_equal history, @twitter_user.history                                                                     
