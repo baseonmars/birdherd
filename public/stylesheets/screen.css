@@ -438,19 +438,43 @@ textarea {
 	background-color: transparent; 
 	height: 48px;
 	width: 48px;
-}     
+}                    
 
-.tweet .profile-image:hover {
+.tweet .dm-recipient {
+	border:1px solid black;
+	height:24px;
+	width:24px;                  
+	left:26px;
+	top:26px;                  
+	position:absolute;
+	text-decoration:none;
+}
+                       
+.tweet .dm-recipient img { 
+	width: 24px;
+	height: 24px;
+}
+
+.tweet .profile-image:hover, .tweet .dm-recipient:hover {
 	border: 2px solid #222;
 	height: 44px;
 	width: 44px;
 	overflow: hidden;
-	top: 4px;
-	left: 4px;
-}           
+}  
+
+.tweet .dm-recipient:hover {
+	border: 1px solid #eee;
+	height: 22px;
+	width: 22px;
+	overflow: hidden;
+}         
 
 .tweet .profile-image:hover img {
 	margin: -2px 0 0 -2px;
+}
+
+.tweet .dm-recipient:hover img {
+	margin: -1px 0 0 -1px;
 }                    
                                                                                          
 .tweet .hide-tweet {

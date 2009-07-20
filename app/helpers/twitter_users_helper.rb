@@ -9,10 +9,9 @@ module TwitterUsersHelper
    
   def twitter_user_profile_image(twitter_user, options={}) 
     unless twitter_user.profile_image_url.blank?
-      link_to image_tag(twitter_user.profile_image_url), 
+      link_to image_tag(twitter_user.profile_image_url, :alt => ''), 
         "http://twitter.com/#{twitter_user.screen_name}", 
-        {:alt => '',
-        :title => profile_text(twitter_user),
+        {:title => profile_text(twitter_user),
         :class => 'profile-image' }.merge(options)
     end
   end
