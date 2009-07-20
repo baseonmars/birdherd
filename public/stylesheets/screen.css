@@ -418,7 +418,8 @@ textarea {
 	margin-top: 4px; 
 	-webkit-box-shadow: 0px 0px 12px #111;
 	-moz-box-shadow: 0px 0px 12px #111;      
-	word-wrap: break-word;          
+	word-wrap: break-word;      
+	overflow: hidden;    
 } 
         
 .tweet h4 {
@@ -432,13 +433,13 @@ textarea {
 }                       
 
 .tweet .profile-image {
-	position: absolute;
-	left: 4px;
-	top: 4px;    
-	text-decoration: none;
-	background-color: transparent; 
-	height: 48px;
-	width: 48px;
+	background-color:transparent;
+	float:left;
+	height:48px;
+	width:48px;
+	margin-left:-52px;
+	text-decoration:none;
+	vertical-align:top;
 }                    
 
 .tweet .dm-recipient {
@@ -493,6 +494,10 @@ textarea {
 .tweet .time {
 	font-style: italic;
 	color: #666;
+}    
+
+.birdherd-info {
+	
 }
 
 .birdherd-info li {
