@@ -455,7 +455,7 @@ textarea {
 	height: 24px;
 }
 
-.tweet .profile-image:hover, .tweet .dm-recipient:hover {
+.tweet .profile-image:hover {
 	border: 2px solid #222;
 	height: 44px;
 	width: 44px;
@@ -464,8 +464,8 @@ textarea {
 
 .tweet .dm-recipient:hover {
 	border: 1px solid #eee;
-	height: 22px;
-	width: 22px;
+	height: 24px;
+	width: 24px;
 	overflow: hidden;
 }         
 
@@ -474,7 +474,7 @@ textarea {
 }
 
 .tweet .dm-recipient:hover img {
-	margin: -1px 0 0 -1px;
+
 }                    
                                                                                          
 .tweet .hide-tweet {
@@ -490,6 +490,7 @@ textarea {
 }
   
 .tweet .text {
+	word-wrap: break-word;
 }
 
 .tweet .time {
