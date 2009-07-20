@@ -417,7 +417,8 @@ textarea {
 	min-height: 50px;
 	margin-top: 4px; 
 	-webkit-box-shadow: 0px 0px 12px #111;
-	-moz-box-shadow: 0px 0px 12px #111;
+	-moz-box-shadow: 0px 0px 12px #111;      
+	word-wrap: break-word;          
 } 
         
 .tweet h4 {
@@ -487,10 +488,6 @@ textarea {
 	left: 0px;
 	height: 16px;
 	width: 16px;
-}
-  
-.tweet .text {
-	word-wrap: break-word;
 }
 
 .tweet .time {
