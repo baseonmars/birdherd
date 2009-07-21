@@ -77,6 +77,7 @@ Birdherd.UI = (function(){
 			parents.find('.status_text').text(formatter(this, parents.find('.text').focus().text())); 
 			parents.find('.actions li').removeClass('down');
 			parents.addClass('sticky');
+			parents.removeClass('active');
 			$('.actions',parents).removeClass('inactive');
 			setCaretToEnd(parents.find('.status_text').get(0));
 			$(this).addClass('down');
@@ -95,7 +96,7 @@ Birdherd.UI = (function(){
 	
 	setupTweetHover = function() {
 		$('.tweet').live('mouseover', function() {
-			if ($(this).hasClass('active')) {
+			if ($(this).hasClass('active') || $(this).hasClass('sticky')) {
 				clearTimeout(this.hideTimer);
 				return;
 			}                                       

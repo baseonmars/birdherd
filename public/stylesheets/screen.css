@@ -412,14 +412,15 @@ textarea {
 	-webkit-border-radius: 2px;
 	-moz-border-radius: 2px;
 	border-width: 1px;
-	padding: 4px 4px 0px 56px;
+	padding: 4px 20px 0px 56px;
 	position: relative;
-	min-height: 50px;
+	min-height: 52px;
 	margin-top: 4px; 
 	-webkit-box-shadow: 0px 0px 12px #111;
 	-moz-box-shadow: 0px 0px 12px #111;      
 	word-wrap: break-word;      
-	overflow: hidden;    
+	overflow: hidden;
+	z-index: 2;    
 } 
         
 .tweet.bh_replied {
@@ -448,14 +449,19 @@ textarea {
 	margin-left:-52px;
 	text-decoration:none;
 	vertical-align:top;
+}
+
+.tweet .profile-image img {
+	height: 48px;
+	width: 48px;
 }                    
 
 .tweet .dm-recipient {
-	border:1px solid black;
+	background-color:transparent;
 	height:24px;
 	width:24px;                  
-	left:26px;
-	top:26px;                  
+	left:28px;
+	top:28px;                  
 	position:absolute;
 	text-decoration:none;
 }
@@ -473,9 +479,11 @@ textarea {
 }  
 
 .tweet .dm-recipient:hover {
-	border: 1px solid #eee;
+	border: 1px solid #222;
 	height: 24px;
 	width: 24px;
+	left: 27px;
+	top: 27px;
 	overflow: hidden;
 }         
 
@@ -548,10 +556,10 @@ textarea {
 	padding: 2px 4px;                     
 	border: 1px solid #999;
 	border-bottom: none;
-	-moz-border-radius-topleft: 4px;
-	-webkit-border-top-left-radius: 4px;
-	-moz-border-radius-topright: 4px;
-	-webkit-border-top-right-radius: 4px;
+	-moz-border-radius-topleft: 2px;
+	-webkit-border-top-left-radius: 2px;
+	-moz-border-radius-topright: 2px;
+	-webkit-border-top-right-radius: 2px;
 	background: #DDD url(/images/action-button-up.png) repeat-x; 
 } 
 
@@ -600,7 +608,48 @@ textarea {
 }
 .tweet.active {
 	background-color: #fff;
-}               
+}  
+
+.tweet.active .actions ul {
+	display: block;
+	position: absolute;
+	right: 0;
+	top: -1px;
+	height: 44px;
+	width: 18px;
+}
+
+.tweet.active .actions ul li {
+	display: inline-block;
+	vertical-align: top;
+	padding: 0px 2px;
+	height: 17px;                     
+	border: 1px solid #999;
+	-moz-border-radius-topleft: 0px;
+	-webkit-border-top-left-radius: 0px;
+	-moz-border-radius-bottomleft: 2px;
+	-webkit-border-bottom-left-radius: 2px;
+	background: #DDD url(/images/action-button-up.png) repeat-x; 
+} 
+
+.tweet.active .actions li a {
+	text-decoration: none; 
+	color: #555;
+	background-color: transparent;
+} 
+
+.tweet.active .actions li a:hover,.actions li a:active {
+	color: #999;
+} 
+
+.tweet.active .actions li.down {
+	background: #DDD url(/images/action-button-down.png) repeat-x;
+	margin-bottom: -2px;
+	position: relative;
+	z-index: 1;
+}
+
+             
 
 /* Sticky Tweet
 ------------------------------*/
@@ -617,10 +666,9 @@ textarea {
 ------------------------------*/
            
 .tweet.collapsed {
-	padding-bottom: 2px;
-	padding-right: 20px;
 	-webkit-box-shadow: 0px 0px 0px #000;
 	-moz-box-shadow: 0px 0px 0px #000;
+	z-index: 0;
 }
 
 .tweet.collapsed .actions {
