@@ -18,9 +18,9 @@
 <% form_for [account,TwitterStatus.new], :html => {:class => 'actions'} do |f| %>
 	<%= f.hidden_field :in_reply_to_status_id %> 
 	<ul>
-		<li class="reply"><a href="/reply">Reply</a></li>       
-		<li class="direct_message"><a href="/direct_message">Message</a></li>
-		<li class="re_tweet"><a href="/twitter_status/re_tweet">Re-Tweet</a></li>
+		<li class="reply"><a href="/reply" title="Reply">Re<span>ply</span></a></li>       
+		<li class="direct_message"><a href="/direct_message" title="reply with Direct Messages">D<span>irect </span>M<span>essage</span></a></li>
+		<li class="re_tweet"><a href="/twitter_status/re_tweet" title="Re-Tweet">R<span>e-</span>T<span>weet</span></a></li>
 	</ul>
 
 	<fieldset class="send_response">  
