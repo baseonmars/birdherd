@@ -3,7 +3,6 @@ module TwitterUsersHelper
   def twitter_user_link(twitter_user)
     link_to "#{twitter_user.screen_name}",
      "http://twitter.com/#{twitter_user.screen_name}", 
-     :alt => profile_text(twitter_user),
      :title => profile_text(twitter_user)
   end
    

@@ -15,7 +15,7 @@
 </ul>
                    
 <% form_for [account,message.reply], :html => {:class => 'actions'} do |f| %>
-	<%= f.hidden_field :in_reply_to_status_id %> 
+	<%= f.hidden_field :in_reply_to_status_id, :id => "twitter_status_in_reply_to_status_id[#{message.id}]" %> 
 	<ul>
 		<li class="reply"><a href="/reply" title="Reply">Re<span>ply</span></a></li>       
 		<li class="direct_message"><a href="/direct_message" title="reply with Direct Messages">D<span>irect </span>M<span>essage</span></a></li>
@@ -24,8 +24,8 @@
 
 	<fieldset class="send_response">  
 		<p class="remaining">12/140</p>
-		<%= f.label :text, 'Post a reply' %>         
-		<%= f.text_area :text, :size => '30x5', :class => 'status_text' %>
+		<%= f.label "text[#{message.id}]", 'Post a reply' %>         
+		<%= f.text_area :text, :size => '30x5', :id => "twitter_status_text[#{message.id}]", :class => 'status_text' %>
 
 	  <button type="submit" class="update">Send</button>
 	<fieldset>

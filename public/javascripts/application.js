@@ -37,24 +37,25 @@ Birdherd.UI = (function(){
 	};
 
 	// modified from http://parentnode.org/javascript/working-with-the-cursor-position/
-	setCaretToEnd = function(obj) { 
+	setCaretToEnd = function(obj) {
 		var pos = $(obj).text().length
 		if(obj.createTextRange) { 
+			// NOT USED, CAUSES SCROLL ISSUE IN SAFARI
 			/* Create a TextRange, set the internal pointer to
 			a specified position and show the cursor at this
 			position
 			*/ 
-			var range = obj.createTextRange(); 
-			range.move("character", pos); 
-			range.select(); 
+			// var range = obj.createTextRange(); 
+			// 			range.move("character", pos); 
+			// 			range.select(); 
 		} else if(obj.selectionStart) { 
 			/* Gecko is a little bit shorter on that. Simply
 			focus the element and set the selection to a
 			specified position
 			*/ 
-			obj.focus();         
-			obj.setSelectionRange(pos, pos); 
-		} 
+			obj.setSelectionRange(pos, pos);
+			obj.focus();             
+		}
 	};
 
 	showHideControls = function () {
@@ -80,8 +81,8 @@ Birdherd.UI = (function(){
 			parents.removeClass('active');
 			$('.actions',parents).removeClass('inactive');
 			setCaretToEnd(parents.find('.status_text').get(0));
-			$(this).addClass('down');
-			return false;                            
+			$(this).addClass('down');                          
+			return false;
 		});                                                                   
 	};
 
