@@ -11,10 +11,18 @@ class TwitterStatus < ActiveRecord::Base
   # TODO - remove
   def update_from_twitter(api_status)
     TwitterStatus.merge(api_status)
+  end                        
+  
+  def update_from_api(api_status)
+    api_status.delete :id
+    api_status.each { |k,v| self.send("#{k}=", v) if self.respond_to?("#{k}=") }
+    self.sender = TwitterUser.merge(api_status.user)
+    self.save if self.changed?
+    self
   end
 
   def self.merge(api_status)                                     
-    return if api_status.nil?
+    return nil if api_status.nil?
     status = TwitterStatus.find_or_initialize_by_id(api_status.id) 
     api_status.each { |k,v| status.send("#{k}=", v) if status.respond_to?("#{k}=") }
     status.sender = TwitterUser.merge(api_status.user)
@@ -22,10 +30,18 @@ class TwitterStatus < ActiveRecord::Base
     status
   end
   
-  def self.merge_all(api_result)
-    # TODO check response for errors
+  def self.merge_all(api_result) 
     return [] if api_result.nil?
-    api_result.collect { |status| self.merge status }
+    # TODO check response for errors
+    ids = api_result.collect { |status| status[:id] }
+    messages = TwitterStatus.all :conditions => "id in (#{ids.join(',')})", :include => [:replies, :sender]
+    api_result.collect do |api_message|
+      if message = messages.find { |m| m.id == api_message.id}
+        message.update_from_api api_message
+      else 
+        self.merge api_message
+      end
+    end    
   end
     
   def poster

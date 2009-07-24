@@ -12,6 +12,18 @@ class TwitterDirectMessage < ActiveRecord::Base
     self
   end
   
+  def update_from_api(api_message)
+    api_message.delete :id       
+    api_message.each do |k,v| 
+      next if ['sender','recipient'].include?(k)
+      self.send("#{k}=", v) if self.respond_to?("#{k}=") 
+    end
+    self.sender = TwitterUser.merge(api_message.sender)
+    self.recipient = TwitterUser.merge(api_message.recipient)
+    self.save if self.changed?
+    self
+  end
+  
   def self.merge(api_message)
     return if api_message.nil?
     message = TwitterDirectMessage.find_or_initialize_by_id(api_message.id)
@@ -28,8 +40,16 @@ class TwitterDirectMessage < ActiveRecord::Base
   
   def self.merge_all(api_result)
     # TODO check response for errors
-    return [] if api_result.nil?
-    api_result.collect { |message| self.merge message }
+    return [] if api_result.nil?    
+    ids = api_result.collect { |status| status[:id] }
+    messages = TwitterDirectMessage.all :conditions => "id in (#{ids.join(',')})", :include => [:sender, :recipient]
+    api_result.collect do |api_message|
+      if message = messages.find { |m| m.id == api_message.id}
+        message.update_from_api api_message
+      else 
+        self.merge api_message
+      end
+    end
   end
          
   def replies
