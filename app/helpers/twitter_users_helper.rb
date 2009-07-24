@@ -19,10 +19,14 @@ module TwitterUsersHelper
     periodically_call_remote(:url => url,:method => :get, :frequency => 60)
   end 
   
-  def render_message(account, message, type)
+  def render_message(account, message, type, opts={})
+    options = { :html_class => ""}.merge opts
     message_type = de_camelize message.class.name     
     render :partial => "#{message_type.pluralize}/#{message_type}", 
-           :locals  => {:account => account, :message => message, :type => type}
+           :locals  => {:account => account, 
+             :message => message, 
+             :type => type, 
+             :html_class => options[:html_class]}
   end
   
   private

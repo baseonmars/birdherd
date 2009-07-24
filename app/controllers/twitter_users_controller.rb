@@ -40,20 +40,21 @@ class TwitterUsersController < ApplicationController
   end  
 
   def history
-    @account = TwitterUser.find(params[:twitter_user_id])
-    @statuses = @account.history
-
-    render :update do |page|
-      page.visual_effect :highlight, "history", :durations => 0.4
-      page.delay(0.4) do
-        page.replace "history", :partial => "history_timeline", :locals => { :statuses => @statuses, 
-          :account => @account,
-          :list_id => 'history'}
-        end   
-      end
-      return
-  end     
+    render_stack_update(:history)
+  end
   
+  def friends_timeline
+    render_stack_update(:friends_timeline)
+  end
+  
+  def mentions      
+    render_stack_update(:mentions)
+  end   
+  
+  def direct_messages
+    render_stack_update(:direct_messages)      
+  end
+
   def callback
     begin                         
       @account = TwitterUser.get_verified_user(*fetch_authorized_tokens)
@@ -85,5 +86,21 @@ class TwitterUsersController < ApplicationController
       @account = nil
     end
   end 
+  
+  def render_stack_update(type) 
+    options = params.key?(:since_id) ? {:since_id => params[:since_id].to_i} : {}                                 
+    @account = TwitterUser.find(params[:twitter_user_id])
+
+    unless @account.owned_by?(@current_user)
+      redirect_back_or_default(user_twitter_users_url) and return 
+    end
+
+    @messages = @account.send type, options
+    render(:update) do |page|     
+      page.insert_html :top, "#{type}_stack", @messages.map { |message| 
+        render_message(@account, message, type, :html_class => 'collapsed')   
+      }
+    end
+  end    
 
 end

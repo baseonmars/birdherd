@@ -1,4 +1,4 @@
-<li class="tweet<%= message_status_classes(message) %>">
+<li class="tweet<%= message_status_classes(message, html_class) %>">
 <%= twitter_user_profile_image(message.sender)%>
 <%= twitter_user_profile_image(message.recipient, :class => 'dm-recipient') %>
 <h4 class="sender" title="@<%= message.sender.screen_name %>"><%= twitter_user_link(message.sender) %> -> <%= twitter_user_link(message.recipient) %></h4>

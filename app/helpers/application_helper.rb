@@ -7,8 +7,8 @@ module ApplicationHelper
     users.blank? ? "" : reply_string
   end   
   
-  def message_status_classes(message)
-    (reply_users_string(message).blank? ? "" : " bh_replied")
+  def message_status_classes(message, html_class="")
+    (reply_users_string(message).blank? ? " " : " bh_replied ") + html_class 
   end
       
   def friendly_time(time)

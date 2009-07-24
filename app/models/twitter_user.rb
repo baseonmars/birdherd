@@ -5,31 +5,26 @@ class TwitterUser < ActiveRecord::Base
   cached( :history, :direct_messages_sent, :direct_messages_recieved, :mentions, :expire_after => 1.minutes ) { |twitter_user| twitter_user.screen_name }
    
   LIMIT = 30
-
-  def friends_timeline(options={})
-    opts = {:limit => LIMIT}.merge options
-    TwitterStatus.merge_all account_api.friends_timeline(:count => opts[:limit]) || []
+ 
+  def direct_messages_sent(opts={})
+    retrieve_direct_messages :direct_messages_sent, opts
   end
   
-  def direct_messages_sent(options={})
-    opts = {:limit => LIMIT}.merge options
-    TwitterDirectMessage.merge_all account_api.direct_messages_sent(:count => opts[:limit]) || []
+  def direct_messages_recieved(opts={})
+    retrieve_direct_messages :direct_messages, opts
   end
   
-  def direct_messages_recieved(options={})
-    opts = {:limit => LIMIT}.merge options
-    TwitterDirectMessage.merge_all account_api.direct_messages(:count => opts[:limit]) || []
+  def friends_timeline(opts={})
+    retrieve_statuses(:friends_timeline, opts)
   end
   
-  def user_timeline(options={})
-    opts = {:limit => LIMIT}.merge options       
-    TwitterStatus.merge_all account_api.user_timeline(:count => opts[:limit]) || []
+  def user_timeline(opts={})
+    retrieve_statuses :user_timeline, opts
   end 
-  
-  def mentions(options={})
-    opts = {:limit => LIMIT}.merge options
-    TwitterStatus.merge_all account_api.replies(:count => opts[:limit])
-  end
+                                                                       
+  def mentions(opts={})
+    retrieve_statuses :replies, opts
+  end   
   
   def history(options={})
     opts = {:limit => LIMIT}.merge options
@@ -73,7 +68,8 @@ class TwitterUser < ActiveRecord::Base
   def merge!(api_user)
     raise "Id's do not match" if id != api_user[:id]
     return if api_user.nil?
-    api_user.each { |k,v| self.send("#{k}=", v) if self.respond_to?("#{k}=") }
+    api_user.each { |k,v| 
+      self.send("#{k}=", v) if self.respond_to?("#{k}=") }
   end
   
   def self.get_verified_user(a_token, a_secret)
@@ -105,6 +101,18 @@ class TwitterUser < ActiveRecord::Base
       oauth = oauth_client
       oauth.authorize_from_access(access_token, access_secret)
       Twitter::Base.new(oauth)
+    end
+    
+    def retrieve_statuses(type, opts)
+      options = opts.key?(:limit) ? {:count => opts.delete(:limit)} : {:count => LIMIT}
+      options.merge! opts unless opts.nil?
+      TwitterStatus.merge_all(account_api.send(type, options)) || []
+    end
+
+    def retrieve_direct_messages(type, opts)                        
+      options = opts.key?(:limit) ? {:count => opts.delete(:limit)} : {:count => LIMIT}
+      options.merge! opts unless opts.nil?
+      TwitterDirectMessage.merge_all(account_api.send(type, options)) || []
     end     
 
 end

@@ -73,14 +73,27 @@ class TwitterUsersControllerTest < ActionController::TestCase
         assert_equal @history, assigns(:history)
       end
       
-      should "update the mentions on the twitter user" do
-        assert_equal assigns('account').mentions.length, 4
-        assert_equal assigns('mentions').length, 4
-      end
+      # should "update the mentions on the twitter user" do
+      #         assert_equal assigns('account').mentions.length, 4
+      #         assert_equal assigns('mentions').length, 4
+      #       end
      
       should "update the direct messages on the twitter user" do
         assert_equal assigns('account').direct_messages.length, 3
       end      
+    end
+    
+    context "getting new updates" do
+      setup do                                                        
+        @api_mentions = (1..10).map{|n| Factory :api_status}
+        Twitter::Base.any_instance.expects(:replies).with(:count => 30, :since_id => @api_mentions[4].id).returns(@api_mentions[0..4])
+      end
+      
+      should "only get mentions since specified id" do                     
+        since_id = @api_mentions[4].id
+        get :mentions, :twitter_user_id => @account.id, :since_id => since_id
+        assert_equal 5, assigns(:messages).length
+      end
     end
     
     context "when account is created" do

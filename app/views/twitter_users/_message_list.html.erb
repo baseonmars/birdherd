@@ -1,9 +1,12 @@
 <div id="<%= type %>" class="column">
 	<h3><%= type.titlecase%></h3>
 
-	 <ul class="stack">
+	<ul class="stack" id="<%= "#{type}_stack" %>">            
+		<% cache(:key => "#{account.screen_name}:#{type}:#{messages.first.id}:#{messages.last.id}") do -%>
 			<% messages.each do |message| -%>
 				<%= render_message account, message, type %>
-			<% end -%>
-		</ul>
+			<% end -%>                                                                         
+		<% end -%>                                                                         
+	</ul>
+	<%=	periodically_call_remote(:url => { :action => type, :twitter_user_id => account.id, :since_id => "2796788977" }, :frequency => '5') %>
 </div>

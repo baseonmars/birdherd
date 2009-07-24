@@ -34,7 +34,7 @@ class TwitterStatus < ActiveRecord::Base
     return [] if api_result.nil?
     # TODO check response for errors
     ids = api_result.collect { |status| status[:id] }
-    messages = TwitterStatus.all :conditions => "id in (#{ids.join(',')})", :include => [:replies, :sender]
+    messages = TwitterStatus.all :conditions => "id in (#{ids.join(',')})", :include => [:replies, :sender, :recipient]
     api_result.collect do |api_message|
       if message = messages.find { |m| m.id == api_message.id}
         message.update_from_api api_message
