@@ -1,6 +1,8 @@
+<% unless controller.action_name == 'edit' -%>
 <%= form.label :login %>
 <%= form.text_field :login %><br />
 <br />
+<% end -%>
 <%= form.label :email %>
 <%= form.text_field :email %><br />
 <br />
@@ -9,7 +11,9 @@
 <br />
 <%= form.label :password_confirmation %>
 <%= form.password_field :password_confirmation %><br />
-<br />
+<br />  
+<% unless controller.action_name == 'edit' -%> 
 <%= label :entry_code, 'Enter the alpha entry code' %>
-<%= text_field_tag :entry_code %>
-<br />
+<%= password_field_tag :entry_code %>
+<br />                                         
+<% end -%>
