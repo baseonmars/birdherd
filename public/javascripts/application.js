@@ -80,7 +80,7 @@ Birdherd.UI = (function(){
 			parents.addClass('sticky');
 			parents.removeClass('active');
 			$('.actions',parents).removeClass('inactive');
-			setCaretToEnd(parents.find('.status_text').get(0));
+			// setCaretToEnd(parents.find('.status_text').get(0));
 			$(this).addClass('down');                          
 			return false;
 		});                                                                   

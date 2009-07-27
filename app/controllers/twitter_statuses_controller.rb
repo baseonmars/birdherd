@@ -24,12 +24,10 @@ class TwitterStatusesController < ApplicationController
       status = twitter_user.statuses.new(params[:twitter_status])
       raise "can't post dm's to self" if status.text =~ /^d #{twitter_user.screen_name}\s/i
       
-      @tweet = twitter_user.post_update(status, current_user)
-      flash[:notice] = "Posted!"
-      redirect_to user_twitter_user_url(twitter_user) and return
+      @tweet           = twitter_user.post_update(status, current_user)
+      render :text => "", :status => 200 and return
     rescue
-      flash[:warning] = "could not post status: #{$!}"
-      redirect_to user_twitter_user_url(twitter_user) and return
+      render :text => "{error: '#{$1}'}", :status => 500
     end
   end
 

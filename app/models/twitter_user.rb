@@ -26,16 +26,25 @@ class TwitterUser < ActiveRecord::Base
     retrieve_statuses :replies, opts
   end   
   
-  def history(options={})
-    opts = {:limit => LIMIT}.merge options
-    (user_timeline + direct_messages_sent).sort {|a,b| 
-      b.created_at.to_i <=> a.created_at.to_i}[0...opts[:limit]]
+  def history(opts={})
+    limit = opts[:limit] || LIMIT
+    messages = (user_timeline({:limit => limit}) + 
+      direct_messages_sent({:limit => limit})).sort {|a,b| 
+      b.created_at.to_i <=> a.created_at.to_i}[0...limit]
+    found = false
+    messages.reject { |message|
+      if found
+        true
+      else
+        found = message.id == opts[:since_id] ? true : false 
+      end
+      } || []   
   end
   
-  def direct_messages(options={})
-    opts = {:limit => LIMIT}.merge options
-    messages = (direct_messages_sent + direct_messages_recieved).sort {|a,b|
-      b.created_at <=> a.created_at}[0...opts[:limit]]
+  def direct_messages(opts={})
+    limit = opts[:limit] || LIMIT
+    messages = (direct_messages_sent(opts.dup) + direct_messages_recieved(opts.dup)).sort {|a,b|
+      b.created_at <=> a.created_at}[0...limit]
   end  
   
   def post_update(tweet, bh_user)
@@ -103,15 +112,15 @@ class TwitterUser < ActiveRecord::Base
       Twitter::Base.new(oauth)
     end
     
-    def retrieve_statuses(type, opts)
-      options = opts.key?(:limit) ? {:count => opts.delete(:limit)} : {:count => LIMIT}
-      options.merge! opts unless opts.nil?
+    def retrieve_statuses(type, opts={})
+      options = opts[:limit] ? {:count => opts.delete(:limit)} : {:count => LIMIT} 
+      options.merge! opts
       TwitterStatus.merge_all(account_api.send(type, options)) || []
     end
 
-    def retrieve_direct_messages(type, opts)                        
-      options = opts.key?(:limit) ? {:count => opts.delete(:limit)} : {:count => LIMIT}
-      options.merge! opts unless opts.nil?
+    def retrieve_direct_messages(type, opts={})                       
+      options = opts[:limit] ? {:count => opts.delete(:limit)} : {:count => LIMIT} 
+      options.merge! opts
       TwitterDirectMessage.merge_all(account_api.send(type, options)) || []
     end     
 

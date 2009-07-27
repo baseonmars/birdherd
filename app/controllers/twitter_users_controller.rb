@@ -96,10 +96,11 @@ class TwitterUsersController < ApplicationController
     end
 
     @messages = @account.send type, options
+    render :text => '' and return if @messages.empty?
     render(:update) do |page|     
       page.insert_html :top, "#{type}_stack", @messages.map { |message| 
         render_message(@account, message, type, :html_class => 'collapsed')   
-      }
+      } << "<script>Birdherd.#{type}_first_id=#{@messages.first.id}</script>"
     end
   end    
 

@@ -8,5 +8,15 @@
 			<% end -%>                                                                         
 		<% end -%>                                                                         
 	</ul>
-	<%=	periodically_call_remote(:url => { :action => type, :twitter_user_id => account.id, :since_id => "2796788977" }, :frequency => '5') %>
+	<script type="text/javascript">
+	Birdherd.<%= type %>_first_id = <%= messages.first.id %>
+	setInterval(function() {$.ajax({
+		data:'authenticity_token=' + encodeURIComponent('I1rJxVT+cVDZ+YCDkOovLVlwlukR7XWViWP6PYicyus='), 
+		dataType:'script', 
+		type:'get', 
+		url:'/twitter_users/<%= account.id %>/<%= type %>?since_id='+Birdherd.<%= type %>_first_id
+	}
+	)}, 
+	45 * 1000)
+	</script>
 </div>
