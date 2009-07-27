@@ -8,7 +8,7 @@ module Twitter
         return Rails.cache.read(key)
       else
         response = perform_get_nocache(path, options)
-        Rails.cache.write(key, response, :expires_in => 1.minutes)
+        Rails.cache.write(key, response, :expires_in => 2.minutes)
         return response
       end
     end
