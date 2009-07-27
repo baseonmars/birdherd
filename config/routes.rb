@@ -7,12 +7,12 @@ ActionController::Routing::Routes.draw do |map|
     twitter_user.resources :twitter_statuses, :as => 'statuses'
     twitter_user.mentions 'mentions', :controller => 'twitter_users', :action => 'mentions'
     twitter_user.history 'history', :controller => 'twitter_users', :action => 'history'
-    twitter_user.friends_timeine 'friends_timeline', :controller => 'twitter_users', :action => 'friends_timeline'
+    twitter_user.friends_timeline 'friends_timeline', :controller => 'twitter_users', :action => 'friends_timeline' 
+    twitter_user.direct_messages 'direct_messages', :controller => 'twitter_users', :action => 'direct_messages'
   end
   map.resources :twitter_statuses,:as => 'statuses'
 
   map.resource :user_session  
-  map.direct_messages '/twitter_users/:twitter_user_id/direct_messages', :controller => 'twitter_direct_messages', :action => 'index'
   map.connect 'logout' , :controller => 'user_sessions', :action => 'destroy'
   map.connect '/oauth_callback', :controller => 'twitter_users', :action => 'callback'
   map.status_reply '/accounts/:account_id/statuses/:status_id/reply', :controller => 'twitter_statuses', :action =>'reply'
