@@ -1,5 +1,6 @@
 html, body {
 	background-color: #888;
+	height: 100%;
 }
 body {        
 	font: 62.5%/1.5 "Lucida Sans", Arial, Helvetica, sans-serif;
@@ -224,7 +225,9 @@ a img {border:0px none;}
 #status-update {      
 	font-size: 1.2em;
 	padding: 8px 8px 0 8px; 
-	position: relative;  
+	position: relative; 
+	background-color: #888;
+	z-index: 1; 
 } 
 
 #status-update #new_twitter_status {
@@ -288,16 +291,18 @@ a img {border:0px none;}
 }      
 
 #toggle-status-update {
-	background: #888 url(/images/post-update-bg.gif) repeat-x 0 2px; 
+	background: transparent url(/images/post-update-bg.gif) repeat-x 0 2px; 
 	display: block;
 	height: 29px;   
 	padding-top:2px;
 	text-align: center;   
 	clear: right;
+	z-index: 2;
+	position: relative;
 } 
 
 .show-status {                                                       
-	background: #888 url(/images/show-update-bg.gif) repeat-x 0 2px; 
+	background: transparent url(/images/show-update-bg.gif) repeat-x 0 2px; 
 }
 
 #toggle-status-update span {
@@ -374,6 +379,13 @@ textarea {
 #columns {
 	padding: 8px 6px 0 6px; 
 	min-width: 1242px;
+	overflow: auto; 
+	position: absolute;
+	right: 0;
+	left:0;
+	bottom: 0;
+	top: 18em;
+	z-index: 0;
 }
 
 .column {
