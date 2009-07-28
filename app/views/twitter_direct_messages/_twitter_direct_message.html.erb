@@ -15,8 +15,8 @@
 	<% end -%>                  
 </ul>
                    
-<% remote_form_for([account,TwitterStatus.new], {:html => {:class => 'actions', :id => "response_" + type + message.id.to_s},
-	:complete => "$('#response_" + type + message.id.to_s + " textarea').animate({'opacity': 'toggle'},{duration: 'fast'}).text('').animate({'opacity':'toggle'},{duration: 'fast'}).parents('.tweet').removeClass('sticky').addClass('collapsed')",
+<% remote_form_for([account,TwitterStatus.new], {:html => {:class => 'actions', :id => "response_" + type.to_s + message.id.to_s},
+	:success => "$('#response_" + type.to_s + message.id.to_s + " textarea').text('').parents('.tweet').removeClass('sticky').addClass('collapsed').highlight('slow')",
 	:error => "alert('message could not be posted');"}) do |f| %>
 <%= f.hidden_field :in_reply_to_status_id, :id => "twitter_status_in_reply_to_status_id[#{type}#{message.id}]" %> 
 	<ul>
@@ -29,8 +29,9 @@
 		<p class="remaining">12/140</p>
 		<%= f.label "text[#{type}#{message.id}]", 'Post a reply' %>         
 		<%= f.text_area :text, :size => '30x5', :id => "twitter_status_text[#{type}#{message.id}]", :class => 'status_text' %>
-
+		
 	  <button type="submit" class="update">Send</button>
 	<fieldset>
 <% end -%>
-</li>
+</li>                                                                                        
+

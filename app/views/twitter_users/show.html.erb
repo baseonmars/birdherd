@@ -2,7 +2,7 @@
 	<p id="feedback-link"><a href="/feedback" title="Report bugs or make suggestions">Send feedback</a></p>
 	
 	<% remote_form_for([@account, @status],
-			 :complete => '$("#twitter_status_text").animate({"opacity": "toggle"},{duration: "fast"}).text("").animate({"opacity":"toggle"},{duration: "fast"})',
+			 :success => '$("#twitter_status_text").text("").highlight("slow")',
 			 :error => 'alert("message could not be posted");') do |f| %>
 	<%= f.error_messages %>
 	<%= f.hidden_field :in_reply_to_status_id %> 

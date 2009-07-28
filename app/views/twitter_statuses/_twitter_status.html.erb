@@ -14,8 +14,8 @@
 	<% end -%>                  
 </ul>
                    
-<% remote_form_for( [account,message.reply], {:html => {:class => 'actions', :id => "response_" + type + message.id.to_s},
-	:complete => "$('#response_" + type + message.id.to_s + " textarea').animate({'opacity': 'toggle'},{duration: 'fast'}).text('').animate({'opacity':'toggle'},{duration: 'fast'}).parents('.tweet').removeClass('sticky').addClass('collapsed')",
+<% remote_form_for( [account,message.reply], {:html => {:class => 'actions', :id => "response_" + type.to_s + message.id.to_s},
+	:success => "$('#response_" + type.to_s + message.id.to_s + " textarea').text('').parents('.tweet').removeClass('sticky').addClass('collapsed').highlight('slow')",
 	:error => "alert('message could not be posted');"}) do |f| %>
 	<%= f.hidden_field :in_reply_to_status_id, :id => "twitter_status_in_reply_to_status_id[#{message.id}]" %> 
 	<ul>
