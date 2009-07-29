@@ -40,7 +40,7 @@ class TwitterDirectMessage < ActiveRecord::Base
   
   def self.merge_all(api_result)
     # TODO check response for errors
-    return [] if api_result.nil?    
+    return [] if api_result.nil? or api_result.empty?   
     ids = api_result.collect { |status| status[:id] }
     messages = TwitterDirectMessage.all :conditions => "id in (#{ids.join(',')})", :include => [:sender, :recipient]
     api_result.collect do |api_message|
