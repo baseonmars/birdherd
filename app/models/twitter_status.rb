@@ -31,7 +31,7 @@ class TwitterStatus < ActiveRecord::Base
   end
   
   def self.merge_all(api_result) 
-    return [] if api_result.nil?
+    return [] if api_result.nil? or api_result.empty?
     # TODO check response for errors
     ids = api_result.collect { |status| status[:id] }
     messages = TwitterStatus.all :conditions => "id in (#{ids.join(',')})", :include => [:replies, :sender, :recipient]
