@@ -2,7 +2,7 @@
 	<h3><%= type.titlecase%></h3>
 
 	<ul class="stack" id="<%= "#{type}_stack" %>">            
-		<% cache(:key => "#{account.screen_name}:#{type}:#{messages.first.id}:#{messages.last.id}") do -%>
+		<% cache(:key => "#{account.screen_name}:#{type}:#{messages.first.id}:#{messages.last.id}", :expires_in => 30.minutes) do -%>
 			<% messages.each do |message| -%>
 				<%= render_message account, message, type %>
 			<% end -%>                                                                         

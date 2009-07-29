@@ -43,7 +43,12 @@ a img {border:0px none;}
 	border: 1px solid green;
 	margin: 8px;
 	display: inline-block;
-	background-color: #d3ecd3
+	background-color: #d3ecd3;
+	position: absolute;
+	right: 20px;
+	top: 60px;
+	z-index: 10;
+	
 }
 
 .warning {
@@ -254,7 +259,11 @@ a img {border:0px none;}
 	position: relative; 
 	background-color: #888;
 	z-index: 1; 
-} 
+}      
+#status-update .charcount {
+ margin-top: 1.5em;
+margin-right: 22px;
+}
 
 #status-update #new_twitter_status {
 	width: 460px;
@@ -629,7 +638,7 @@ textarea {
 	position: relative;
 }
 
-.remaining {
+.charcount {
 	position: absolute;
 	top: -1.6em;
 	right: 0;

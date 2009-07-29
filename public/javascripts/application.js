@@ -15,7 +15,8 @@ Birdherd.UI = (function(){
 		showHideControls();
 
 		setupHideStickyTweet();
-		setupTweetHover();
+		setupTweetHover();                                             
+		setupCharacterCounts();
 
 		setResponseAction('direct_message', function(el) {
 			return 'd '+getScreenName(el).replace(/@/,'')+' ';
@@ -30,7 +31,7 @@ Birdherd.UI = (function(){
 
 	//Private
 	var getScreenName, setupResponse, setCaretToEnd, showHideControls, setupResponse,
-	setupToggleExtendedTweet,setupHoverBehaviour;
+	setupToggleExtendedTweet,setupHoverBehaviour,setupCharacterCounts;
 
 	getScreenName = function(el) {
 		return $(el).parents('.tweet').find('.sender').attr('title')
@@ -118,6 +119,31 @@ Birdherd.UI = (function(){
 				}, 50
 			);
 		}); 
+	} 
+	
+	setupCharacterCounts = function () { 
+		$('.tweet_post_form textarea').each(function(){  
+		    // get current number of characters  
+		    var length = $(this).val().length;  
+		    // get current number of words  
+		    //var length = $(this).val().split(/\b[\s,\.-:;]*/).length;  
+		    // update characters  
+		    $(this).parent().find('.count').html(length);  
+		    // bind on key up event  
+		    $(this).keyup(function(){  
+		        // get new length of characters  
+		        var new_length = $(this).val().length;  
+		        // get new length of words  
+		        //var new_length = $(this).val().split(/\b[\s,\.-:;]*/).length;  
+		        // update  
+		        $(this).parent().find('.count').html(new_length);   
+						if ( tweet_length > 140) { 
+							$(this).parents('.charcount .count').css({color: 'red'});
+						} else { 
+							$(this).parents('.charcount .count').css({color: 'inherit'});
+						}
+		    });  
+		});
 	}
     
 	// Public

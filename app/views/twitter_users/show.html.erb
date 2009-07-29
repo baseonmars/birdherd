@@ -1,34 +1,28 @@
 <div id="status-update">
 	<p id="feedback-link"><a href="mailto:dan@baseonmars.co.uk?subject=Birdherd Feedback&amp;body=Please provide as much detail as possible" title="Report bugs or make suggestions">Send feedback</a></p>
 	
-	<% remote_form_for([@account, @status],
-			 :success => '$("#twitter_status_text").text("").highlight("slow")',
-			 :error => 'alert("message could not be posted");') do |f| %>
+	<% remote_form_for([@account, @status], :success => '$("#twitter_status_text").text("").highlight("slow")',
+			 :error => 'alert("message could not be posted");',
+			:html => {:class => 'tweet_post_form'}) do |f| %>
 	<%= f.error_messages %>
 	<%= f.hidden_field :in_reply_to_status_id %> 
 	<fieldset>
 		<legend>Status update</legend>
 		<%= f.label :text, 'What are you doing', :id => 'what-are-you-doing' %>
-		<%= f.text_area :text, :size => '40x4' %>
+		<p class="charcount"><span class="count">0</span>/140</p>
+		<%= f.text_area :text, :size => '40x3' %>
 
 		<fieldset id="status-actions">
+			<% if false -%>
 			<div class="shorten-links">
 				<label class="checkbox">Shorten links? <input type="checkbox" value="true" /></label>
 				<button type="button" title="Shorten links now">now</button>
 			</div>
+			<% end -%>
 			<button type="submit" class="update">Update</button>
 		</fieldset>
 	</fieldset>
 	<% end -%>
-	<%= observe_field :twitter_status_text,
-		:frequency => 0.3,
-		:function => "$('count').innerHTML = value.length; 
-		if ( value.length > 140) { 
-			$('charcount').setStyle({color: 'red'});
-		} else { 
-		 $('charcount').setStyle({color: 'inherit'});
-		}" %>
-	
 	    
 	<p id="posting-style">Keep your posting style fun and informal, encourage public conversation. Post sites you think are great.</p>
 
