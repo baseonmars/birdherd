@@ -18,7 +18,7 @@ Rails::Initializer.run do |config|
   # development and test gems are specified in their environments
   config.gem "authlogic", :version => '>2.0.4'
   config.gem "twitter", :version => '>=0.6.11' 
-  config.gem "mbleigh-acts-as-taggable-on", :source => "http://gems.github.com", :lib => "acts-as-taggable-on"
+  # config.gem "mbleigh-acts-as-taggable-on", :source => "http://gems.github.com", :lib => "acts-as-taggable-on"
   config.gem 'oauth'
   config.gem 'vlad'                
   config.gem 'opsb-ziggy', :source => "http://gems.github.com", :lib => "ziggy"
