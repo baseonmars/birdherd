@@ -4,8 +4,16 @@ html, body {
 }
 body {        
 	font: 62.5%/1.5 "Lucida Sans", Arial, Helvetica, sans-serif;
-	color: #222222;  
-}       
+	color: #111;  
+} 
+
+h2 {
+	font-size: 2.4em;
+}                 
+
+h3 {
+	font-size: 1.8em;
+}
           
 a:link, a:visited {
 	color: #000;
@@ -23,7 +31,7 @@ pre {
 }
 
 a { color: #000; }
-a:visited { color: #666; }
+a:visited { color: #333; }
 a:hover { color: #fff; background-color:#000; }
 
 a img {border:0px none;}  
@@ -83,19 +91,35 @@ a img {border:0px none;}
 
 .user-form {
 	width: 40%;
-	display: inline-block;
+	display: block;
 	margin: 0;
 	padding: 4%;
-		vertical-align: top;
+	vertical-align: top;
+	float: left;   
+
+}         
+
+.user-form h2 {
+	font-size: 2.4em;
+	margin-bottom: 0.5em; 
 }
 
+.user-form label {
+	font-size: 1.2em;
+}
+
+.user-form input {
+	font-size: 1.4em;
+	padding: 4px;
+}
 #signin-form {
 	text-align: right;
 }
 
 #signin-form h2 {
-	width: 50%;
-	display: inline-block;
+	margin-left: 50%;
+/*	display: inline-block;
+*/
 }
 
 #signin-form form {
@@ -326,7 +350,7 @@ a img {border:0px none;}
 }
 
 #toggle-status-update.up {
-	margin-top: 0;
+	margin-top: -2px;
 }
 #toggle-status-update span.up {
 	background-image: url(/images/hide-post-update.gif);
@@ -350,16 +374,18 @@ label.checkbox {
 	position: relative;  
 	padding-left: 15px;
 	line-height: inherit;
+	
 }                    
 
 input[type=checkbox] {
 	width: 1.5em;
 	height: 1.5em;
-	position: absolute; 
-  left: 0;
-	bottom: 0;
+	vertical-align: middle;
+	position: relative;
+	left: -100%;
+	margin-right: -0.5em;
 	margin-bottom: 2px;
-	line-height: inherit;
+	line-height: 200%;
 }  
 
 button {
@@ -728,6 +754,18 @@ textarea {
    
 .tweet.collapsed .hide-tweet {
 	display: none;
+}
+              
+/* user accounts
+------------------------------*/
+
+#user_accounts {
+	padding: 8px;
+}            
+
+#user_accounts p, #user_accounts li, #user_accounts input {
+	font-size: 1.2em;
+	margin: 0.5em auto;
 }
 
 /* Misc Styles

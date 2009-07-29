@@ -1,19 +1,38 @@
-<p>You've got <%= @accounts.length %> accounts</p>
+<div id="user_accounts">
+	<p>You've got <%= @accounts.length %> accounts</p>
 
-<p>To get started you'll need to authorise an account with twitter. Click the
-button below and you'll be taken to twitter.com to authorise using lovely secure
-OAuth.</p>
+	<p>To get started you'll need to authorise an account with twitter. Click the
+		button below and you'll be taken to twitter.com to authorise using lovely secure
+		OAuth.</p>
 
-<% form_tag user_twitter_users_path do -%>
-	<%= submit_tag "Authorise", :disable_with => 'Submiting...' %>
-<% end -%>
+		<% form_tag user_twitter_users_path do -%>
+		<%= submit_tag "Authorise", :disable_with => 'Submiting...' %>
+		<% end -%>
+         
+		<h3>Existing Accounts</h3>
 
-<ul>
-	<% @accounts.each do |account| %>
-		<li><%= link_to "@#{account.screen_name}", user_twitter_user_path(account) %> - Followers <%= h account.followers_count %>, Followering <%= h account.friends_count %></li>
-		<% end %>
-</ul>
+		<ul>
+			<% @accounts.each do |account| %>
+			<li><%= link_to "@#{account.screen_name}", user_twitter_user_path(account) %> - Followers <%= h account.followers_count %>, Followering <%= h account.friends_count %></li>
+			<% end %>
+		</ul>
 
-<% if @accounts.length > 10 -%>
-	<%= link_to 'Add account', new_user_twitter_user_path %>
-<% end -%>
+		<% if @accounts.length > 10 -%>
+		<%= link_to 'Add account', new_user_twitter_user_path %>
+		<% end -%>
+
+<h2>Notices</h2>
+                
+<h3>30th July 2009</h3>
+<p>New version of Birdherd up and running. quite a few changes under the hood as well as some new ideas for the UI.</p>
+
+<p>Tested mostly in safari, a little in firefox 3.5. Birdherd uses 'new' css technology so that's all for now folks. We'll be working on a IE/Opera/Chrome port when there are some more features to look at.</p>
+
+<p>Currently the views update every 3 minutes. For a single user things work best if you just leave the window open.</p>
+
+<p>When you leave the window open tweets that are on the page aren't updated. if someone else replies to a tweet that's already on your screen the information won't update until you do a full browser refresh. Hit refresh if you're unsure of the messages reply status. this is kinda top of the list to improve.</p>
+
+<p>Finally, any and all feedback is welcome. We've got a fairly large feature set to work on but if you want to suggest features, note a bug or just have a general comment please use the Send Feedback link, we'll try and reply when we have the time</p>
+
+</div>      
+

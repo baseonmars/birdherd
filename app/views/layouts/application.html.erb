@@ -33,7 +33,7 @@
 
 			<ul id="nav">
 				<%if current_user-%>
-					<li class="first">Logged in as <%= current_user.login %></li>
+					<li class="first">Logged in as <%= link_to current_user.login, user_twitter_users_path %></li>
 					<li><%= link_to "Settings", edit_user_path %></li>
 					<%= content_tag :li, account_menu(@account, current_user) %>
 					<li>

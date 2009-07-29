@@ -67,7 +67,7 @@ Birdherd.UI = (function(){
 					$('#columns').css({top: '5em'});      
 					$('#toggle-status-update').removeClass('up').addClass('down');
  				} else {
-  				$('#columns').css({top: '18em'});
+  				$('#columns').css({top: '17.8em'});
 					$('#toggle-status-update').removeClass('down').addClass('up');
 				}
 			});

@@ -1,6 +1,7 @@
 html, body {
 	background-color: #888;
-	height: 100%;
+	height: 100%;        
+	color: #333;
 }
 body {        
 	font: 62.5%/1.5 "Lucida Sans", Arial, Helvetica, sans-serif;
@@ -471,6 +472,13 @@ textarea {
    
 .tweet.collapsed .hide-tweet {
 	display: none;
+}
+                       
+/* Signin
+------------------------------*/
+
+#signin-form h2 {
+	font-size: 1.8em;
 }
 
 /* Misc Styles
