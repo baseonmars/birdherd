@@ -117,7 +117,6 @@ a img {border:0px none;}
 	line-height: 30px;
 	padding: 0 8px;
 	position: relative;
-	z-index: 1;
 }
 #header a:link,#header a:visited {
 	color: #eee;
@@ -191,7 +190,10 @@ a img {border:0px none;}
 
 #nav .account-list:hover {
 	background-color: #333;
-	background-image: none; 
+	background-image: none;
+	vertical-align: top;                                                                 
+	position: relative;
+	z-index: 5;
 }
 
 #nav .account-list:hover li {
