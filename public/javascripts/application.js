@@ -122,29 +122,16 @@ Birdherd.UI = (function(){
 	} 
 	
 	setupCharacterCounts = function () { 
-		$('.tweet_post_form textarea').each(function(){  
-		    // get current number of characters  
-		    var length = $(this).val().length;  
-		    // get current number of words  
-		    //var length = $(this).val().split(/\b[\s,\.-:;]*/).length;  
-		    // update characters  
-		    $(this).parent().find('.count').html(length);  
-		    // bind on key up event  
-		    $(this).keyup(function(){  
-		        // get new length of characters  
-		        var new_length = $(this).val().length;  
-		        // get new length of words  
-		        //var new_length = $(this).val().split(/\b[\s,\.-:;]*/).length;  
-		        // update  
-		        $(this).parent().find('.count').html(new_length);   
-						if ( tweet_length > 140) { 
-							$(this).parents('.charcount .count').css({color: 'red'});
-						} else { 
-							$(this).parents('.charcount .count').css({color: 'inherit'});
-						}
-		    });  
+		$('.tweet_post_form textarea').live('keyup', function(){  
+			var new_length = $(this).val().length;  
+			$(this).parent().find('.count').html(new_length);   
+			if ( tweet_length > 140) { 
+				$(this).parents().find('.count').css({color: 'red'});
+			} else { 
+				$(this).parents().find('.count').css({color: 'inherit'});
+			}
 		});
-	}
+	};
     
 	// Public
 	return {
